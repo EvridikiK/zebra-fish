@@ -532,16 +532,29 @@ bibkey.tJO = {'BarrFern2010'};
 comment.tJO = 'Hypoxia data were used';
 
 data.tJX = [... % time (d post fertilization), feed intake (% body weight)
-  1 8.590
-  2 5.379
-  3 4.443
-  4 5.000
-  5 4.917
-  6 4.478];
+  32.2	11.5
+  39.3	8.50
+  44.6	4.97
+  46.5	9.51
+  63.1	5.43
+  70.6	6.85
+  72.8	4.82
+  75.7	4.45
+  78.0	4.49
+  81.2	5.50
+  88.3	3.69
+  89.6	6.48
+  95.1	4.91
+  103	2.82
+  120	4.97
+  180	4.97
+  240	2.47
+  300	5.84
+  364	5.05];
 units.tJX = {'d', '\% body weight'};  label.tJX = {'time', 'feed uptake'};
 temp.tJX = C2K(28.5);  units.temp.tJX = 'K'; label.temp.tJX = 'temperature';
 bibkey.tJX = {'LiciFron2024'};
-comment.tJX = 'times were averaged?? what about the temperature??';
+comment.tJX = 'what about the temperature??';
 
 %% set weights for all real data
 weights = setweights(data, []);
