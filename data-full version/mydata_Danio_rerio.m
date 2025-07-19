@@ -517,19 +517,19 @@ bibkey.LWw = {'Baye2005'};
 comment.LWw = 'Rep 1'; 
 
 data.tJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
-  0   8.239
-  10  40.775
-  20  35.282
-  30  30.634
-  40  19.437
-  50  12.887
-  60  8.028
-  70  5.282
-  100 3.592];
+  0   7.739
+  10  38.652
+  20  37.419
+  30  29.545
+  40  23.384
+  50  10.580
+  60  7.846
+  70  5.330
+  100 4.096];
 units.tJO = {'d', '\mumol/g/h'};  label.tJO = {'time', 'oxygen consumption'};
 temp.tJO = C2K(28);  units.temp.tJO = 'K'; label.temp.tJO = 'temperature';
 bibkey.tJO = {'BarrFern2010'};
-comment.tJO = 'Hypoxia data were used';
+comment.tJO = 'Normoxia data were used';
 
 data.tJX = [... % time (d post fertilization), feed intake (% body weight)
   32.2	11.5
