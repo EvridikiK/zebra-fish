@@ -50,18 +50,15 @@ data.ap = 75;     units.ap = 'd';    label.ap = 'age at puberty';         bibkey
 data.am = 4.5 * 365; units.am = 'd'; label.am = 'life span';              bibkey.am = 'GerhKauf2002';   
   temp.am = C2K(26); units.temp.am = 'K'; label.temp.am = 'temperature';
 
-data.L0 = 0.07;   units.L0 = 'cm';   label.L0 = 'egg diameter';           bibkey.L0 = 'ForbPres2010';
-  comment.L0 = 'yolk diameter 0.055 - 0.075 cm ForbPres2010, but egg diameter = 0.08 - 0.09 and yolk diameter around 0.05 UuliWolt2010';
 data.Lb = 4e-1;   units.Lb = 'cm';   label.Lb = 'total length at birth';  bibkey.Lb = 'Schi2002';
   comment.Lb = 'Swim bladder inflates, active feeding, pronephric tubules';
 data.Lj = 1;   units.Lj = 'cm';   label.Lj = 'total length at metam';  bibkey.Lj = 'Schi2002';
   comment.Lj = 'Adult fin and pigmentation pattern';
-data.Lp = 2.6*1.25; units.Lp = 'cm'; label.Lp = 'total length at puberty';bibkey.Lp = 'EatoFarl1974a';
+data.Lp = 3.25; units.Lp = 'cm'; label.Lp = 'total length at puberty';bibkey.Lp = 'EatoFarl1974a';
   comment.Lp = 'Female are between 2.4 - 2.6 cm SL in the study at first egg laying';
 data.Li = 5;      units.Li = 'cm';   label.Li = 'ultimate total length';  bibkey.Li = {'SpenGerl2008','Schi2002'}; 
   comment.Li = 'also Lawr pers. comm';
 
-data.Wd0 = 100e-6; units.Wd0 = 'g';    label.Wd0 = 'egg dry weight';         bibkey.Wd0 = 'Augu2009';
 data.Wwi = 1;      units.Wwi = 'g';    label.Wwi = 'ultimate wet weight';    bibkey.Wwi = 'Augu2009';
 
 data.Ri = 240;    units.Ri = '#/d';  label.Ri = 'max reproduction';       bibkey.Ri = {'EatoFarl1974b'}; 
@@ -72,81 +69,6 @@ data.GSI = 0.15;  units.GSI = 'g/g';   label.GSI = 'Gonado Somatic Index';  bibk
   comment.GSI = 'values range from 0.1 - 0.15 and grow bigger with food regime';
   
 % uni-variate data
-
-% tim-length, larval growth curve T = 28.5 + 273 K total length
-data.tL_Schi2002 = [... %  time since birth (day), TL  (mm) at 28.5 C
-2.74878081e+000	3.18144185e+000
-3.49815699e+000	3.45339935e+000
-3.89010948e+000	2.98130930e+000
-4.99499237e+000	4.06487831e+000
-5.75012189e+000	4.13414737e+000
-5.95281122e+000	3.66163105e+000
-7.81666248e+000	4.67934293e+000
-8.21053442e+000	4.13968890e+000
-9.31349909e+000	5.29082189e+000
-1.02885818e+001	4.27950408e+000
-1.04586642e+001	4.95556313e+000
-1.11888571e+001	5.90315340e+000
-1.17950094e+001	4.55316667e+000
-1.19401527e+001	6.10754867e+000
-1.25175295e+001	5.77101109e+000
-1.36435126e+001	6.11138510e+000
-1.36684492e+001	5.23306215e+000
-1.51710404e+001	5.64185269e+000
-1.57138896e+001	6.52145270e+000
-1.57311534e+001	5.91338391e+000
-1.60751521e+001	7.13037580e+000
-1.81436109e+001	7.60800737e+000
-1.81685475e+001	6.72968441e+000
-1.92945306e+001	7.07005843e+000
-1.93175490e+001	6.25929945e+000
-2.02139879e+001	8.01807497e+000
-2.11813978e+001	7.27701132e+000
-2.21430555e+001	6.73863611e+000
-2.24832178e+001	8.09075420e+000
-2.41616411e+001	8.97291360e+000
-2.41731503e+001	8.56753323e+000
-2.42230235e+001	6.81088907e+000
-2.64270322e+001	9.18071727e+000
-2.83254110e+001	8.98229156e+000
-2.84993298e+001	9.52322265e+000
-2.92717232e+001	8.98442291e+000
-3.05524406e+001	1.05413608e+001
-3.05639498e+001	1.01359804e+001
-3.11317381e+001	1.01372592e+001
-3.22442961e+001	1.09505776e+001
-3.22941694e+001	9.19393169e+000
-3.33875406e+001	1.06828811e+001
-3.43204253e+001	1.11579550e+001
-3.43511165e+001	1.00769436e+001
-3.54406513e+001	1.17010192e+001
-3.73025844e+001	1.27862933e+001
-4.23858141e+001	1.37436896e+001
-4.25980969e+001	1.29333551e+001
-4.44542754e+001	1.42213211e+001
-4.84230288e+001	1.44329613e+001
-4.87862071e+001	1.49743204e+001
-5.25618646e+001	1.53206622e+001
-5.45938751e+001	1.70819953e+001];
-data.tL_Schi2002(:,2) = data.tL_Schi2002(:,2)/10; % cm
-units.tL_Schi2002 = {'d', 'cm'};  label.tL_Schi2002 = {'time since fertilization', 'total length'};  
-  temp.tL_Schi2002 = C2K(28.5);  units.temp.tL_Schi2002 = 'K'; label.temp.tL_Schi2002 = 'temperature';
-bibkey.tL_Schi2002 = {'Schi2002'};
-
-% time-length at T = 25.5 + 273 K
-data.tL_EatoFarl1974 = [... age (dpf), SL (mm)
-4 3.35;
-8 4.32;
-15 5.54;
-20 7.8;
-25 9.6;
-39 16.9;
-54 22.2;
-75 23.9]; % with possible range from (22 -26)
-data.tL_EatoFarl1974(:,2)  = data.tL_EatoFarl1974(:,2)/ 10; % convert mm to cm
-units.tL_EatoFarl1974 = {'d', 'cm'};  label.tL_EatoFarl1974 = {'time since birth', 'standard length'};  
-  temp.tL_EatoFarl1974 = C2K(25.5);  units.temp.tL_EatoFarl1974 = 'K'; label.temp.tL_EatoFarl1974 = 'temperature';
-bibkey.tL_EatoFarl1974 = {'EatoFarl1974b'};
 
 % time-wet weight-dry weight data at T = 273 + 25 K
 tLWWY = [ ... % age d, length mm, wet W mg, dry W mg, yolk mm^3
@@ -168,82 +90,10 @@ bibkey.tL_BagaPels2001 = {'BagaPels2001'};
 %
 data.tWw_BagaPels2001 = tLWWY(:, [1 3]);
 units.tWw_BagaPels2001 = {'d', 'g'};  label.tWw_BagaPels2001 = {'time since fertilization', 'wet weight'};
+temp.tWw_BagaPels2001 = C2K(25);  units.temp.tWw_BagaPels2001 = 'K'; label.temp.tWw_BagaPels2001 = 'temperature';
 bibkey.tWw_BagaPels2001 = {'BagaPels2001'};
 %
-data.tWd_BagaPels2001 = tLWWY(:, [1 4]); 
-units.tWd_BagaPels2001 = {'d', 'g'};  label.tWd_BagaPels2001 = {'time since fertilization', 'dry weight'};
-bibkey.tWd_BagaPels2001 = {'BagaPels2001'};
 
-% time-survival from GerhKauf2002 at T = 26 + 273 K,
-data.tS  =[... % t in months and S in fraction of surviving individuals, -
-1.69260404e+001	9.97518611e-001
-1.80046222e+001	9.97518611e-001
-1.90061639e+001	9.97518611e-001
-2.00847457e+001	9.97518611e-001
-2.10092460e+001	9.97518611e-001
-2.21648691e+001	9.97518611e-001
-2.30893683e+001	9.72704715e-001
-2.40909099e+001	9.72704715e-001
-2.50924504e+001	9.72704715e-001
-2.60939920e+001	9.72704715e-001
-2.70184912e+001	9.72704715e-001
-2.79429904e+001	9.72704715e-001
-2.90215711e+001	9.13151366e-001
-2.99460714e+001	9.13151366e-001
-3.08705717e+001	9.13151366e-001
-3.19491524e+001	9.13151366e-001
-3.29506929e+001	8.83374693e-001
-3.39522357e+001	8.31265517e-001
-3.48767337e+001	7.99007446e-001
-3.60323591e+001	7.14640208e-001
-3.69568572e+001	7.14640208e-001
-3.80354401e+001	6.52605483e-001
-3.90369806e+001	6.52605483e-001
-4.00385211e+001	5.40942935e-001
-4.10400638e+001	5.03722085e-001
-4.19645619e+001	4.56575678e-001
-4.28890622e+001	3.67245661e-001
-4.39676429e+001	3.44913202e-001
-4.49691856e+001	3.42431786e-001
-4.68952220e+001	2.85359785e-001
-4.78967670e+001	2.58064565e-001
-4.88983075e+001	2.60545910e-001
-5.00539284e+001	2.58064565e-001
-5.09784287e+001	2.28287857e-001
-5.19799692e+001	1.68734512e-001
-5.28274293e+001	1.41439221e-001
-5.39060100e+001	1.16625345e-001
-5.49075505e+001	8.18858759e-002
-5.59090910e+001	8.18858759e-002
-5.69876761e+001	5.70720003e-002
-5.78351318e+001	5.70720003e-002
-5.89137125e+001	2.72952920e-002
-5.99152575e+001	2.48138756e-002
-6.08397533e+001	2.48138756e-002
-6.19953787e+001	2.48138756e-002
-6.29198790e+001	7.44417707e-003];
-data.tS(:,1) = data.tS(:,1) * 30 ;  % convert months to days
-units.tS = {'d', '-'}; label.tS = {'time since birth', 'surviving fraction'};      
-  temp.tS = C2K(26); units.temp.tS = 'K'; label.temp.tS = 'temperature';
-bibkey.tS = {'GerhKauf2002'};
-
-% time-carbon mass from BangGron2004 in developing eggs
-data.tMC = [ ... % time since fertilisation (h), mumol C
-    24 3.11; 
-    75 2.81];  
-data.tMC(:,1) = data.tMC(:,1)/24; % convert h to d
-units.tMC = {'d', 'mumol'}; label.tMC = {'age', 'C'};     
-  temp.tMC = C2K(25); units.temp.tMC = 'K'; label.temp.tMC = 'temperature';
-bibkey.tMC = {'BangGron2004'};
-%
-% time-nitrogen mass from BangGron2004 in developing eggs    
-data.tMN = [ ... time since fertilisation (h), mumol N
-    24 .572; 
-    75 .538]; 
-data.tMN(:,1) = data.tMN(:,1)/24; % convert h to d
-units.tMN = {'d', 'mumol'}; label.tMN = {'age', 'N'};     
-  temp.tMN = C2K(25); units.temp.tMN = 'K'; label.temp.tMN = 'temperature';
-bibkey.tMN = {'BangGron2004'};
 
 % BestAdat2010 T = 25 C, rotifers from day 5 till 9, then transition to
 % regular feeding from 9 till 12 was originally given in personnal
@@ -358,174 +208,16 @@ data.tL_LawrEber2002_low = [... % day, cm T = 28 + 273 K Total Length
 units.tL_LawrEber2002_low = {'d', 'cm'}; label.tL_LawrEber2002_low = {'time since birth', 'total length'}; 
   temp.tL_LawrEber2002_low = C2K(28.5); units.temp.tL_LawrEber2002_low = 'K'; label.temp.tL_LawrEber2002_low = 'temperature';
 bibkey.tL_LawrEber2002_low = {'LawrEber2008'};
-% 
-data.tLf1 = [ ...
-48.987	49.077	48.981	56.181	56.19	63.08	63.096	63.1	70.012	70.103	70.11	77.12	77.13	91.12	91.122	91.123	104.108	104.11	104.195;
-16.025	15.375	13.895	18.978	17.44	22.108	21.576	20.747	24.233	23.582	22.812	24.937	23.635	27.883	26.818	26.227	29.707	28.701	28.05
- ]';
-units.tLf1 = {'dpf', 'mm'}; label.tLf1 = {'time since fertilization', 'standard length'}; 
-  temp.tLf1 = C2K(27.1); units.temp.tLf1 = 'K'; label.temp.tLf1 = 'temperature';
-bibkey.tLf1 = {'BeauGous2015'};
-%
-data.tLf2 = [ ...
-49.071	48.976	48.975	56.079	56.076	63.179	63.177	70.094	70.093	69.999	77.006	77.004	77.002	91.104	91.011	91.101	104.097	104.095	104.094;
-13.185	12.239	11.943	15.96	14.895	18.44	17.907	20.682	20.327	19.972	22.156	21.505	20.854	24.096	23.682	22.972	26.216	25.506	25.091
- ]';
-units.tLf2 = {'dpf', 'mm'}; label.tLf2 = {'time since fertilization', 'standard length'}; 
-  temp.tLf2 = C2K(27.1); units.temp.tLf2 = 'K'; label.temp.tLf2 = 'temperature';
-bibkey.tLf2 = {'BeauGous2015'};
-comment.tLf2 = 'fasted once every three days';
-%
-data.tLf3 = [ ...
-48.975	48.973	49.06	56.074	56.072	55.977	62.987	63.077	70.086	70.085	70.084	76.997	76.996	91.003	91.094	104.18	103.994;
-11.883	11.41	9.872	14.126	13.712	12.706	15.895	15.185	18.256	17.724	17.487	19.079	18.842	21.256	20.783	22.961	22.429
-]';
-units.tLf3 = {'dpf', 'mm'}; label.tLf3 = {'time since fertilization', 'standard length'}; 
-  temp.tLf3 = C2K(27.1); units.temp.tLf3 = 'K'; label.temp.tLf3 = 'temperature';
-bibkey.tLf3 = {'BeauGous2015'};
-comment.tLf3 = 'fasted every other day';
 
-% time-fecundity over 19 days at 29 deg C:
-tN = [ ... first line is time, next lines are egg spawed on that day. Each line
-    % is an individual female
-1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20
-102	222	298	365	427	332	344	431	296	343	0	0	0	290	395	290	0	596	0	536
-200	210	219	0	0	0	595	0	320	0	0	0	0	0	0	282	0	0	0	0
-98	158	54	165	94	152	86	113	72	193	112	135	180	76	137	44	104	129	144	188
-186	186	296	285	286	239	271	232	192	0	0	326	0	0	0	0	0	0	0	0
-174	162	90	0	271	195	254	137	203	132	0	317	124	0	334	154	112	82	0	298
-247	223	182	286	436	336	277	256	236	196	278	346	314	346	264	216	218	304	304	250
-248	253	252	257	0	426	0	446	0	444	0	354	0	504	0	312	0	0	0	0
-]';
-fldnm = 'tN';
-data.(fldnm) = [tN(:,1)-1, mean(cumsum(tN(:,2:end)),2)];
-units.(fldnm) = {'d', '#'};  label.(fldnm) = {'time', 'cumulated number of eggs'};
-temp.(fldnm) = C2K(29);  units.temp.(fldnm) = 'K'; label.temp.(fldnm) = 'temperature';
-bibkey.(fldnm) = {'BeauGous2015'};
-comment.(fldnm) = 'mean value, from raw data provided as courtesy of R. Beaudouin';
-%
-tL = [...
-37	39.114
-34	37.25
-34	40.27
-37	38.25
-35	39.86
-36	39.015
-36	39.7
-];
-fldnm = 'tL1';
-data.(fldnm) = [0 mean(tL(:,1))/10; 19 mean(tL(:,2))/10];
-units.(fldnm) = {'d', 'cm'};  label.(fldnm) = {'time', 'standard length'};
-temp.(fldnm) = [C2K(29) C2K(29)];  units.temp.(fldnm) = 'K'; label.temp.(fldnm) = 'temperature';
-treat.(fldnm) = {0}; units.treat.(fldnm) = ''; label.treat.(fldnm) = '';
-bibkey.(fldnm) = {'BeauGous2015'};
-comment.(fldnm) = 'mean value, from raw data provided as courtesy of R. Beaudouin';
-%
-Ww = [ ...
-882.6
-656.8
-859
-628.6
-1013.1
-922.2
-1080.4
-];
-% the final weights are treated as zero-variate data:
-fldnm = 'Wwt';
-data.(fldnm) = mean(Ww) * 1e-3;
-units.(fldnm) = 'g';  label.(fldnm) = 'final wet weight';
-temp.(fldnm) = C2K(29);  units.temp.(fldnm) = 'K'; label.temp.(fldnm) = 'temperature';
-treat.(fldnm) = {0}; units.treat.(fldnm) = ''; label.treat.(fldnm) = '';
-bibkey.(fldnm) = {'BeauGous2015'};
-comment.(fldnm) = 'mean value, from raw data provided as courtesy of R. Beaudouin';
-
-% time-starvation(ELS):
-data.tS_starv = [... time (d)	survival probability
-0	100
-24	100
-48	100
-72	100
-96	100
-120	100
-144	97
-154	97
-168	92
-172	83
-175	72
-192	17
-196	14
-199	8
-216	0
-220	0];
-data.tS_starv(:,1) = data.tS_starv(:,1)/24; % d, time since first exogenous feeding
-data.tS_starv(:,2) = data.tS_starv(:,2)/100; % -, fraction surviving
-units.tS_starv = {'d', '#'}; label.tS_starv = {'time since hatch', 'surviving larvae'};      
-temp.tS_starv  = C2K(25); units.temp.tS_starv = 'K'; label.temp.tS_starv = 'temperature';
-bibkey.tS_starv = {'GeffSimo2013'};
-comment.tS_starv = 'time is in hours after fist exogenous feeding. Raw data from fig. 3 provided by the author as pers. comm.';
-
-% starvation experiments (adults):
-% time-length
-data.tL = [... %
-    0   24.9
-    11  26.5];
-units.tL = {'d', 'mm'};  label.tL = {'time', 'standard length'};
-temp.tL = C2K(28.5);  units.temp.tL = 'K'; label.temp.tL = 'temperature';
-treat.tL = {0}; units.treat.tL = ''; label.treat.tL = '';
-bibkey.tL = {'DrewRodn2008'};
-
-% time-weight
-data.tW = [... % time since start(d), wet weight (g)
--11  	0.3343
-0    	0.4393
-7       0.4607
-14      0.4864
-21      0.4886];
-data.tW(:,1) = data.tW(:,1) + 11; % start time at 0
-units.tW = {'d', 'g'};  label.tW = {'time', 'wet weight', 'fed'};
-temp.tW =  C2K(28.5);  units.temp.tW = 'K'; label.temp.tW = 'temperature';
-bibkey.tW = {'DrewRodn2008'};
-%
-data.tWs = [... % time since start(d), wet weight (g)
--11	0.3257
-0	0.4029
-7	0.3536
-14	0.3321
-21	0.2957];
-data.tWs(:,1) = data.tWs(:,1) + 11; % start time at 0
-units.tWs = {'d', 'g'};  label.tWs = {'time', 'wet weight', 'starved'};
-temp.tWs = C2K(28.5);  units.temp.tWs = 'K'; label.temp.tWs = 'temperature';
-bibkey.tWs = {'DrewRodn2008'};
-comment.tWs = 'starved condition'; 
-
-% length - weight
-data.LWw = [ ... total length, mm wet weight (g)
-35.2	0.38
-37.3	0.27
-31.8	0.42
-36.2	0.52
-34.7	0.36
-33.6	0.34
-38.7	0.33
-33.4	0.42
-31.9	0.38
-35.0	0.33];
-data.LWw(:,1) = data.LWw(:,1)/10; % mm to cm
-units.LWw = {'cm', 'g'};  label.LWw = {'total length', 'wet weight'};
-temp.LWw = C2K(26.4);  units.temp.LWw = 'K'; label.temp.LWw = 'temperature';
-bibkey.LWw = {'Baye2005'};
-comment.LWw = 'Rep 1'; 
 
 %% set weights for all real data
 weights = setweights(data, []);
 
 %% set pseudodata and respective weights
 [data, units, label, weights] = addpseudodata(data, units, label, weights);
-weights.psd.v   = 10 * weights.psd.v;
 
 %% pack auxData and txtData for output
 auxData.temp = temp;
-auxData.treat = treat;
 txtData.units = units;
 txtData.label = label;
 txtData.bibkey = bibkey;
@@ -533,10 +225,8 @@ txtData.comment = comment;
 
 %% Group plots
 set3 = {'tL_LawrEber2002_high','tL_LawrEber2002_low'}; subtitle3 = {'LawrEber2002 data at high, low food'};
-set5 = {'tLf1','tLf2','tLf3'}; subtitle5 = {'no fasting, fasting every 3 d, fasting every other day'};
-set8 = {'tW','tWs'}; subtitle8 = {'fed, starved'};
-metaData.grp.sets = {set3,  set5,  set8};
-metaData.grp.subtitle = {subtitle3,  subtitle5,  subtitle8};
+metaData.grp.sets = {set3};
+metaData.grp.subtitle = {subtitle3};
 
 %% Discussion points
 D1 = 'version 2018 08 08: KimBall95 and Augu2011 no longer included';
