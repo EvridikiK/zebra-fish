@@ -6,7 +6,8 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
       
   % customized filter  
   filterChecks =   E_R_init_DrewRodn2008 < 0 || E_R_init_DrewRodn2008 > 2000 || ...
-                     f_DrewRodn2008 > 1 || ~reach_birth(g, k, v_Hb, f_DrewRodn2008) ; %|| ...
+                     f_DrewRodn2008 > 1 || ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
+                    s_shrink < 0;
   
   if filterChecks  
     info = 0;
@@ -28,7 +29,7 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   TC_tS = tempcorr(temp.tS, T_ref, T_A);
   TC_BestAdat2010 = tempcorr(temp.tL_BestAdat2010, T_ref, T_A);
   TC_LawrEber2002 = tempcorr(temp.tL_LawrEber2002_high, T_ref, T_A);
-  
+  TC_28 = tempcorr(temp.TJX, T_ref, T_A);  
   
 
   TC_starv = tempcorr(temp.tW, T_ref, T_A); 
@@ -82,8 +83,8 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   GSIT = GSIT * ((1 - kap) * f^3 - k_J * U_Hp/ L_m^2/ s_M^3);    % -, GSI
 
   % life span
-  pars_tm = [g; l_T; h_a/ k_M^2; s_G];  % compose parameter vector at T_ref
-  t_m = get_tm_s(pars_tm, f, l_b);      % -, scaled mean life span at T_ref
+  pars_tm = [g; k; l_T; v_Hb; v_Hj; v_Hp; h_a/ k_M^2; s_G];  % compose parameter vector at T_ref
+  t_m = get_tm_j(pars_tm, f);      % -, scaled mean life span at T_ref
   aT_m = t_m/ k_M/ TC_am;               % d, mean life span at T
 
   % puberty at f_EatoFarl1974b
@@ -109,12 +110,35 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   prdData.GSI = GSIT;
 
   %% uni-variate data
+
+  %% Feeding data
+init_cond = [L_b; f*E_m*L_b^3; E_Hb; 0];
+[tt, LEHR] = ode45(@ode_LEHR_bi, [0, auxData.init.TJX], init_cond, [], par, f, TC_28, L_b, L_j);
+L = LEHR(end, 1); E = LEHR(end, 2); E_R = LEHR(end, 4);
+JX = f * w_X / mu_X / kap_X * p_Am * L^2;
+W = L^3 + (E + E_R) * w_E / mu_E / d_E;
+TC = tempcorr(data.TJX(:, 1), T_ref, T_A);
+prdData.TJX = TC .* JX ./ W;
+
+%% Oxygen consumption
+init_cond = [1e-10; E_0; 0; 0];
+pars_spj = [kap, kap_R, g, k_J, k_M, L_T, v, U_Hb, U_Hj, U_Hp];
+F = f_BarrFern2010;
+[tt, LEHR] = ode45(@ode_LEHR_bi, data.tW_BarrFern2010(:,1), init_cond, [], par, F, TC_28, L_b, L_j);
+L = LEHR(:, 1); E = LEHR(:, 2); E_R = LEHR(:, 4);
+pACSJGRD = scaled_power_j(L, F, pars_spj, l_b, l_j, l_p);
+p_A = pACSJGRD(:, 1); p_G = pACSJGRD(:, 5); p_D = pACSJGRD(:, 7);
+eta_M = -inv(n_M) * n_O * eta_O;
+JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am) * TC_28; % mol/d
+JO = JO * 1e6 / 24; % mumol/g/d
+W = L.^3 + (E + E_R) * w_E / mu_E / d_E; % g
+
+[~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
+prdData.tL_BarrFern2010 = L(idx_tL) / del_Mt * 10; % mm
+prdData.tW_BarrFern2010 = W * 1e3; % mg 
+[~, idx_tJO] = ismember(data.tJO(:,1) , data.tW_BarrFern2010(:,1));
+prdData.tJO = JO(idx_tJO) ./ W(idx_tJO); % mumol/g/h 
   
-% L-Ww
-
-prdData.LWw = (LWw(:,1) * del_Mt).^3 * (1 + w * f); % g, wet weight
-
-
 % survival at f
 
   % t-S data for larvae post hatch
@@ -130,6 +154,7 @@ prdData.LWw = (LWw(:,1) * del_Mt).^3 * (1 + w * f); % g, wet weight
   prdData.tS_starv = LEHS(:,4); 
 
   % tS of GerhKauf2002 
+  F = f_EatoFarl1974;
   a     = tS(:,1); % d, time since birth
   TC    = TC_tS;      % -, temp corr factor
   s_M   = l_j/ l_b;             % -, acceleration factor
@@ -152,7 +177,8 @@ prdData.LWw = (LWw(:,1) * del_Mt).^3 * (1 + w * f); % g, wet weight
 % comilation of litterature growth curves (see previous version and AuguGagn2011 for more discussion on this):
  
  % initial conditions at start:
- init_cond = [1e-10; E_0; 0]; % hardly any structure, initial enegy of the egg (J), no a maturiaty at start
+  % hardly any structure, initial enegy of the egg (J), no a maturiaty at start
+init_cond = [1e-10; E_0; 0];
 
  % BeauGous2015
  TC = TC_tL;
@@ -261,7 +287,6 @@ prdData.tL1  = [L(1); L(end)]/ del_Ms; % cm, initial and final standard length
 % reminder: the final wet weight is treated as zero-variate data
 prdData.Wwt = L(end)^3 + w_E/ mu_E/ d_E * E(end); % g, final wet weight
 
-
 % Starvation data: adults
 TC = TC_starv; f = f_DrewRodn2008;
 % initial conditions for the ODE simulations
@@ -303,7 +328,14 @@ E_R = LEHR(:,4); % J,  unripe buffer
 EWw2 = L.^3 + w_E/ mu_E/ d_E * (E + E_R); % g, total wet weight
 EWws = [EWw1; EWw2]; % g, concatenate total wet weight over full experiment
  
- % pack to output
+ 
+
+
+%% 
+
+
+
+% pack to output
   prdData.tL = ELw;  
   prdData.tW = EWw;
   prdData.tWs = EWws;
@@ -388,6 +420,50 @@ dEH = ((1 - p.kap) * pC - kT_J * EH) * (EH < p.E_Hp);    % J/d, change in cum en
 
 % pack dLEHR
 dLEH = [dL; dE; dEH];    
+end
+
+
+%% ODE for simulating from birth
+function dLEHR = ode_LEHR_bi(t, LEHR, p, f, TC, L_b, L_j)
+% Input: 
+% p: structure 'par' 
+% c: structure 'Cpar' obtained by cPar = parscomp_st(par)
+% f: scaled, scaled functional response, 
+% s_M: scalar, -, acceleration factor post metamorphosis
+% TC, scalar, -, temperature correction factor
+% L_b, scaler, cm, structural length at birth at f
+% L_j, scaler, cm, structural length at metamorphosis at f
+
+
+% --------------- unpack LEHR ------------------------------------------
+L  = max(0, LEHR(1)); % cm, volumetric structural length
+E  = max(0, LEHR(2)); % J,   energy in reserve 
+EH = max(0, LEHR(3)); % J, E_H maturity
+% ER = max(0, LEHR(4)); % J, E_R reproduction buffer
+
+% shape correction function:
+if EH < p.E_Hb
+    s_M = 1;
+elseif EH >= p.E_Hb && EH < p.E_Hj
+    s_M = L/L_b;
+else
+    s_M = L_j/L_b;
+end
+% Temperature and shape correct the relevant paramters
+vT    = s_M * p.v * TC; 
+pT_Am = s_M * p.z * p.p_M/ p.kap * TC;
+pT_M  = p.p_M * TC; 
+kT_J  = p.k_J * TC; 
+%
+pA  = f * pT_Am * L^2 * (EH >= p.E_Hb);           % J/d, assimilation
+r   = (E * vT/ L - pT_M * L^3/ p.kap)/ (E + p.E_G * L^3/ p.kap);
+pC  = E * (vT/ L - r); % J/d, mobilisation 
+dE  = pA - pC;               % J/d, change in energy in reserve
+dL  = r/ 3 * L;              % cm/d, change in structural length
+dEH = ((1 - p.kap) * pC - kT_J * EH) * (EH < p.E_Hp);    % J/d, change in cum energy invested in maturation (it is implied here that no rejuvenation occurs).
+dER = ((1 - p.kap) * pC - kT_J * EH) * (EH >= p.E_Hp); 
+% pack dLEHR
+dLEHR = [dL; dE; dEH; dER];    
 end
 
 % --------------------------------------------------

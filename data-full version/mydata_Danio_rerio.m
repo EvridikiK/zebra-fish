@@ -17,7 +17,7 @@ metaData.ecoCode.food    = {'biCi'};
 metaData.ecoCode.gender  = {'D'};
 metaData.ecoCode.reprod  = {'O'};
 
-metaData.T_typical  = C2K(20); % K, body temp
+metaData.T_typical  = C2K(25); % K, body temp
 metaData.data_0     = {'ab'; 'aj'; 'ap'; 'am'; 'L0'; 'Lb'; 'Lj'; 'Lp'; 'Li'; 'Wd0'; 'Wwi'; 'Ri'; 'GSI'}; 
 metaData.data_1     = {'t-Le'; 't-Wwe'; 't-Wde'; 't-MCe'; 't-MNe'; 't-L_fT'; 't-Ww_f'; 't-N'; 't-S'; 'L-Ww'}; 
 
@@ -498,76 +498,110 @@ temp.tWs = C2K(28.5);  units.temp.tWs = 'K'; label.temp.tWs = 'temperature';
 bibkey.tWs = {'DrewRodn2008'};
 comment.tWs = 'starved condition'; 
 
-% length - weight
-data.LWw = [ ... total length, mm wet weight (g)
-35.2	0.38
-37.3	0.27
-31.8	0.42
-36.2	0.52
-34.7	0.36
-33.6	0.34
-38.7	0.33
-33.4	0.42
-31.9	0.38
-35.0	0.33];
-data.LWw(:,1) = data.LWw(:,1)/10; % mm to cm
-units.LWw = {'cm', 'g'};  label.LWw = {'total length', 'wet weight'};
-temp.LWw = C2K(26.4);  units.temp.LWw = 'K'; label.temp.LWw = 'temperature';
-bibkey.LWw = {'Baye2005'};
-comment.LWw = 'Rep 1'; 
-
 data.tJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
-  0   7.739
-  10  38.652
-  20  37.419
-  30  29.545
-  40  23.384
-  50  10.580
-  60  7.846
-  70  5.330
-  100 4.096];
+    2.5 7.739
+    10  38.652
+    20  37.419
+    30  29.545
+    40  23.384
+    50  10.580
+    60  7.846
+    70  5.330
+    80 NaN
+    90 NaN
+    100 4.096];
 units.tJO = {'d', '\mumol/g/h'};  label.tJO = {'time', 'oxygen consumption'};
 temp.tJO = C2K(28);  units.temp.tJO = 'K'; label.temp.tJO = 'temperature';
 bibkey.tJO = {'BarrFern2010'};
 comment.tJO = 'Normoxia data were used';
 
-data.tJX = [... % time (d post fertilization), feed intake (% body weight)
-  32.2	11.5
-  39.3	8.50
-  44.6	4.97
-  46.5	9.51
-  63.1	5.43
-  70.6	6.85
-  72.8	4.82
-  75.7	4.45
-  78.0	4.49
-  81.2	5.50
-  88.3	3.69
-  89.6	6.48
-  95.1	4.91
-  103	2.82
-  120	4.97
-  180	4.97
-  240	2.47
-  300	5.84
-  364	5.05];
-units.tJX = {'d', '\% body weight'};  label.tJX = {'time', 'feed uptake'};
-temp.tJX = C2K(28.5);  units.temp.tJX = 'K'; label.temp.tJX = 'temperature';
-bibkey.tJX = {'LiciFron2024'};
-comment.tJX = 'what about the temperature??';
+data.tL_BarrFern2010 = [... % time since fertilization (d), length (mm)
+    2.5 NaN
+    10 3.1
+    20  3.1
+    30  6.3
+    40  8.9
+    50  10.9
+    60  14.2
+    70  18.4
+    80  23.9
+    90 28.1
+    100 30.6];
+units.tL_BarrFern2010 = {'d', 'mm'};  label.tL_BarrFern2010 = {'time', 'standard length'};
+temp.tL_BarrFern2010 = C2K(28);  units.temp.tL_BarrFern2010 = 'K'; label.temp.tL_BarrFern2010 = 'temperature';
+bibkey.tL_BarrFern2010 = {'BarrFern2010'};
+
+% time-weight
+data.tW_BarrFern2010 = [... % time since fertilization (d), wet weight (mg)
+    2.5 0.4
+    10 0.4
+    20  2.0
+    30  4.1
+    40  8.3
+    50  10.4
+    60  89.7
+    70  236.4
+    80  352.2
+    90  473.3
+    100 501.3];
+units.tW_BarrFern2010 = {'d', 'mg'};  label.tW_BarrFern2010 = {'time', 'wet weight', 'fed'};
+temp.tW_BarrFern2010 =  C2K(28);  units.temp.tW_BarrFern2010 = 'K'; label.temp.tW_BarrFern2010 = 'temperature';
+bibkey.tW_BarrFern2010 = {'BarrFern2010'};
+
+% data.tJX = [... % time (d post fertilization), feed intake (% body weight)
+%   32.2	11.5
+%   39.3	8.50
+%   44.6	4.97
+%   46.5	9.51
+%   63.1	5.43
+%   70.6	6.85
+%   72.8	4.82
+%   75.7	4.45
+%   78.0	4.49
+%   81.2	5.50
+%   88.3	3.69
+%   89.6	6.48
+%   95.1	4.91
+%   103	2.82
+%   120	4.97
+%   180	4.97
+%   240	2.47
+%   300	5.84
+%   364	5.05];
+% units.tJX = {'d', '\% body weight'};  label.tJX = {'time', 'feed uptake'};
+% temp.tJX = C2K(28.5);  units.temp.tJX = 'K'; label.temp.tJX = 'temperature';
+% bibkey.tJX = {'LiciFron2024'};
+% comment.tJX = 'what about the temperature??';
+
+data.TJX = [... % Temperature (ºC), feed intake (% body weight)
+28 4.582
+22 2.492
+16 1.180
+13 0.141
+];
+data.TJX(:, 1) = C2K(data.TJX(:,1));
+data.TJX(:, 2) = data.TJX(:, 2) / 100; % Normalize feed intake to fraction
+units.TJX = {'K', 'g feed / g weight / d'};  label.TJX = {'temperature', 'feed uptake'};
+temp.TJX = C2K(28);  units.temp.TJX = 'K'; label.temp.TJX = 'temperature before trials';
+bibkey.TJX = {'LiciFron2024'};
+init.TJX = 115; units.init.TJX = 'd'; label.init.TJX = 'time since birth at trial';
+
+ 
 
 %% set weights for all real data
 weights = setweights(data, []);
+% weights.tJO = 0 * weights.tJO;
 
 %% set pseudodata and respective weights
 [data, units, label, weights] = addpseudodata(data, units, label, weights);
-weights.psd.v   = 10 * weights.psd.v;
+% weights.psd.v   = 10 * weights.psd.v;
 
 %% pack auxData and txtData for output
 auxData.temp = temp;
 auxData.treat = treat;
 txtData.units = units;
 txtData.label = label;
+auxData.init = init;
 txtData.bibkey = bibkey;
 txtData.comment = comment;
 
