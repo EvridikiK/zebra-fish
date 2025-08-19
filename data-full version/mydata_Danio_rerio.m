@@ -573,24 +573,55 @@ bibkey.tW_BarrFern2010 = {'BarrFern2010'};
 % bibkey.tJX = {'LiciFron2024'};
 % comment.tJX = 'what about the temperature??';
 
-data.TJX = [... % Temperature (ºC), feed intake (% body weight)
-28 4.582
-22 2.492
-16 1.180
-13 0.141
-];
+% data.TJX = [... % Temperature (ºC), feed intake (% body weight)
+% 28 4.582
+% 22 2.492
+% 16 1.180
+% 13 0.141
+% ];
+data.TJX = [... % Temperature (ºC), feed intake (g/d)
+28 0.0160
+22 0.0087
+16 0.0041
+13 0.0005
+]; 
 data.TJX(:, 1) = C2K(data.TJX(:,1));
 data.TJX(:, 2) = data.TJX(:, 2) / 100; % Normalize feed intake to fraction
-units.TJX = {'K', 'g feed / g weight / d'};  label.TJX = {'temperature', 'feed uptake'};
+units.TJX = {'K', 'g feed / d'};  label.TJX = {'temperature', 'feed uptake'};
 temp.TJX = C2K(28);  units.temp.TJX = 'K'; label.temp.TJX = 'temperature before trials';
-bibkey.TJX = {'LiciFron2024'};
+bibkey.TJX = {'Lu2019'};
 init.TJX = 115; units.init.TJX = 'd'; label.init.TJX = 'time since birth at trial';
-
- 
 
 %% set weights for all real data
 weights = setweights(data, []);
 % weights.tJO = 0 * weights.tJO;
+% weights.tW_BarrFern2010 = 0 * weights.tW_BarrFern2010;
+% weights.tL_BarrFern2010 = 0 * weights.tL_BarrFern2010;
+% weights.TJX = 0 * weights.TJX;
+
+% weights.Wd0 = 0 * weights.Wd0;
+% weights.L0 = 0 * weights.L0;
+% weights.tWd_BagaPels2001 = 0 * weights.tWd_BagaPels2001;
+% weights.tL_EatoFarl1974 = 0 * weights.tL_EatoFarl1974;
+% weights.tL_Schi2002 = 0 * weights.tL_Schi2002;
+% weights.tLf1 = 0 * weights.tLf1;
+% weights.tLf2 = 0 * weights.tLf2;
+% weights.tLf3 = 0 * weights.tLf3;
+
+% weights.tMC = 0 * weights.tMC;
+% weights.tMN = 0 * weights.tMN;
+% 
+% weights.Wwt = 0 * weights.Wwt;
+% weights.tL1 = 0 * weights.tL1;
+% weights.tN = 0 * weights.tN;
+% weights.tL = 0 * weights.tL;
+% weights.tW = 0 * weights.tW;
+% 
+% weights.tWs = 0 * weights.tWs;
+% weights.tS_starv = 0 * weights.tS_starv;
+% weights.tS = 0 * weights.tS;
+
+% weights. = 0 * weights.;
 
 %% set pseudodata and respective weights
 [data, units, label, weights] = addpseudodata(data, units, label, weights);

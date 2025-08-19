@@ -20,15 +20,12 @@ par.E_G = 4400;    free.E_G   = 1;   units.E_G = 'J/cm^3';     label.E_G = '[E_G
 par.E_Hb = .275;   free.E_Hb  = 1;   units.E_Hb = 'J';         label.E_Hb = 'maturity at birth'; 
 par.E_Hj = .300;   free.E_Hj  = 1;   units.E_Hj = 'J';         label.E_Hj = 'maturity at metam'; 
 par.E_Hp = 166;    free.E_Hp  = 1;   units.E_Hp = 'J';         label.E_Hp = 'maturity at puberty'; 
-par.h_a = 1e-9;    free.h_a   = 1;   units.h_a = '1/d^2';      label.h_a = 'Weibull aging acceleration'; 
+par.h_a = 1e-4;    free.h_a   = 1;   units.h_a = '1/d^2';      label.h_a = 'Weibull aging acceleration'; 
 par.s_G = 1e-4;    free.s_G   = 1;   units.s_G = '-';          label.s_G = 'Gompertz stress coefficient'; 
 
 %% other parameters 
-par.E_R_init_BeauGous2015 = 800;    free.E_R_init_BeauGous2015 = 0;   units.E_R_init_BeauGous2015 = 'J';  label.E_R_init_BeauGous2015 = 'initial energy in the repro buffer, BeauGous2015'; 
-par.E_R_init_DrewRodn2008 = 200;    free.E_R_init_DrewRodn2008 = 0;   units.E_R_init_DrewRodn2008 = 'J';  label.E_R_init_DrewRodn2008 = 'initial energy in the repro buffer, DrewRodn2008'; 
-par.T_A = 8000;                     free.T_A   = 1;                   units.T_A = 'K';          label.T_A = 'Arrhenius temp'; 
-par.del_Mt = 0.14246;               free.del_Mt = 1;                  units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult'; 
-par.del_X = 1;                      free.del_X = 1;                   units.del_X = '-';        label.del_X = 'shrinking threshold'; 
+par.T_A = 8000;                     free.T_A   = 0;                   units.T_A = 'K';          label.T_A = 'Arrhenius temp'; 
+par.del_Mt = 0.2;                   free.del_Mt = 1;                  units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult'; 
 par.f = 1;                          free.f     = 0;                   units.f = '-';            label.f = 'scaled functional response'; 
 par.f_BagaPels2001 = 1;             free.f_BagaPels2001 = 1;          units.f_BagaPels2001 = '-';  label.f_BagaPels2001 = 'scaled functional response of BagaPels2001 data'; 
 par.f_BeauGous2015 = 1;             free.f_BeauGous2015 = 1;          units.f_BeauGous2015 = '-';  label.f_BeauGous2015 = 'sc. func. resp., BeauGous2015'; 
@@ -39,8 +36,14 @@ par.f_LawrEber2002_high = 1;        free.f_LawrEber2002_high = 1;     units.f_La
 par.f_LawrEber2002_low = 1;         free.f_LawrEber2002_low = 1;      units.f_LawrEber2002_low = '-';  label.f_LawrEber2002_low = 'scaled functional response of LawrEber2002_low data'; 
 par.f_Schi2002 = 1;                 free.f_Schi2002 = 1;              units.f_Schi2002 = '-';   label.f_Schi2002 = 'scaled functional response of Schi2002 data'; 
 par.f_BarrFern2010 = 1;             free.f_BarrFern2010 = 1;          units.f_BarrFern2010 = '-'; label.f_BarrFern2010 = 'scaled functional response of BarrFern2010 data'; 
+
+% Starvation paramaters
+par.del_X = 1;                      free.del_X = 1;                   units.del_X = '-';        label.del_X = 'shrinking threshold'; 
 par.s_rejuv = 0;                    free.s_rejuv = 0;                 units.s_rejuv = '-';      label.s_rejuv = 'rejuvenation stress coefficient'; 
 par.s_shrink = 202.009;             free.s_shrink = 1;                units.s_shrink = '-';     label.s_shrink = 'shrinking stress coefficient'; 
+par.E_R_init_DrewRodn2008 = 200;    free.E_R_init_DrewRodn2008 = 0;   units.E_R_init_DrewRodn2008 = 'J';  label.E_R_init_DrewRodn2008 = 'initial energy in the repro buffer, DrewRodn2008'; 
+
+par.E_R_init_BeauGous2015 = 800;    free.E_R_init_BeauGous2015 = 0;   units.E_R_init_BeauGous2015 = 'J';  label.E_R_init_BeauGous2015 = 'initial energy in the repro buffer, BeauGous2015'; 
 
 %% set chemical parameters from Kooy2010 
 [par, units, label, free] = addchem(par, units, label, free, metaData.phylum, metaData.class); 

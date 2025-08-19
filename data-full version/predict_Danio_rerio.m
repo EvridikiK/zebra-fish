@@ -83,8 +83,9 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   GSIT = GSIT * ((1 - kap) * f^3 - k_J * U_Hp/ L_m^2/ s_M^3);    % -, GSI
 
   % life span
-  pars_tm = [g; k; l_T; v_Hb; v_Hj; v_Hp; h_a/ k_M^2; s_G];  % compose parameter vector at T_ref
-  t_m = get_tm_j(pars_tm, f);      % -, scaled mean life span at T_ref
+  pars_tm = [g; l_T; h_a/k_M^2; s_G];
+  [t_m, ~, ~, info] = get_tm_s(pars_tm, f, l_b, l_p);
+  if ~info; prdData=[]; return; end
   aT_m = t_m/ k_M/ TC_am;               % d, mean life span at T
 
   % puberty at f_EatoFarl1974b
@@ -116,9 +117,10 @@ init_cond = [L_b; f*E_m*L_b^3; E_Hb; 0];
 [tt, LEHR] = ode45(@ode_LEHR_bi, [0, auxData.init.TJX], init_cond, [], par, f, TC_28, L_b, L_j);
 L = LEHR(end, 1); E = LEHR(end, 2); E_R = LEHR(end, 4);
 JX = f * w_X / mu_X / kap_X * p_Am * L^2;
-W = L^3 + (E + E_R) * w_E / mu_E / d_E;
+% W = L^3 + (E + E_R) * w_E / mu_E / d_E;
 TC = tempcorr(data.TJX(:, 1), T_ref, T_A);
-prdData.TJX = TC .* JX ./ W;
+% prdData.TJX = TC .* JX ./ W;
+prdData.TJX = TC .* JX;
 
 %% Oxygen consumption
 init_cond = [1e-10; E_0; 0; 0];
@@ -150,7 +152,7 @@ prdData.tJO = JO(idx_tJO) ./ W(idx_tJO); % mumol/g/h
   % solve ODEs:
   [tt, LEHS] =  ode45(@dget_LEHS, tS_starv(:,1), [L_b; E_m; E_Hb; 1; L_b; E_Hb] ,[],...
     pT_Am, vT, pT_M, E_G, kap, kap_G, kT_J, kT_J1, s_rejuv, s_shrink, del_X, 0); 
-  
+
   prdData.tS_starv = LEHS(:,4); 
 
   % tS of GerhKauf2002 
@@ -184,38 +186,46 @@ init_cond = [1e-10; E_0; 0];
  TC = TC_tL;
  % --------- high food level:
  F = f_BeauGous2015;  a = [0; tLf1(:,1)];
- L_j = get_lj(pars_lj, F) * L_m; % cm, structural length at metamorphosis at F
+ [lj, lp, lb, info] = get_lj(pars_lj, F);
+ if ~info; prdData=[]; return; end
+ L_j = lj * L_m; % cm, structural length at metamorphosis at F
  [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
  [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
-  L    = LEH(:,1); % cm, structural length
-  Lw   = L/ del_Ms; % cm, standard length
-  Lw   = Lw(it_sort); % reconstruct L
-  ELw1 = Lw(2:end) * 10; % mm, standard length
+ L    = LEH(:,1); % cm, structural length
+ Lw   = L/ del_Ms; % cm, standard length
+ Lw   = Lw(it_sort); % reconstruct L
+ ELw1 = Lw(2:end) * 10; % mm, standard length
  % ----------- medium food level:
-  F = f_BeauGous2015 * 0.9;  a = [0; tLf2(:,1)];
-  L_j = get_lj(pars_lj, F) * L_m; % cm, structural length at metamorphosis at F
-  [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
-  [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
-  L    = LEH(:,1); % cm, structural length
-  Lw   = L/ del_Ms; % cm, standard length
-  Lw   = Lw(it_sort); % reconstruct L
-  ELw2 = Lw(2:end) * 10; % mm, standard length
-% --------------- low food level:
-  F = f_BeauGous2015 * 0.8;  a = [0; tLf3(:,1)];
-  L_j = get_lj(pars_lj, F) * L_m; % cm, structural length at metamorphosis at F
-  [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
-  [tt, LEH] = ode45(@ode_LEH, t_sort, [1e-5; E_0; 0], [], par, F, TC, L_b, L_j);
-  L = LEH(:,1);  % cm, structural length
-  Lw = L/ del_Ms; % cm, standard length
-  Lw = Lw(it_sort); % reconstruct L
-  ELw3= Lw(2:end) * 10; % mm, standard length
+ F = f_BeauGous2015 * 0.9;  a = [0; tLf2(:,1)];
+ [lj, lp, lb, info] = get_lj(pars_lj, F);
+ if ~info; prdData=[]; return; end
+ L_j = lj * L_m; % cm, structural length at metamorphosis at F  
+ [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
+ [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
+ L    = LEH(:,1); % cm, structural length
+ Lw   = L/ del_Ms; % cm, standard length
+ Lw   = Lw(it_sort); % reconstruct L
+ ELw2 = Lw(2:end) * 10; % mm, standard length
+ % --------------- low food level:
+ F = f_BeauGous2015 * 0.8;  a = [0; tLf3(:,1)];
+ [lj, lp, lb, info] = get_lj(pars_lj, F);
+ if ~info; prdData=[]; return; end
+ L_j = lj * L_m; % cm, structural length at metamorphosis at F 
+ [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
+ [tt, LEH] = ode45(@ode_LEH, t_sort, [1e-5; E_0; 0], [], par, F, TC, L_b, L_j);
+ L = LEH(:,1);  % cm, structural length
+ Lw = L/ del_Ms; % cm, standard length
+ Lw = Lw(it_sort); % reconstruct L
+ ELw3= Lw(2:end) * 10; % mm, standard length
 
 % tL_LawrEber2002 at low and high
   TC = TC_LawrEber2002;
   % Low: 
   F = f_LawrEber2002_low;  a = [0; tL_LawrEber2002_low(:,1)];
   [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
-  L_j = get_lj(pars_lj, F) * L_m; % cm, structural length at metamorphosis at F
+  [lj, lp, lb, info] = get_lj(pars_lj, F);
+  if ~info; prdData=[]; return; end
+  L_j = lj * L_m; % cm, structural length at metamorphosis at F
   [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
   L = LEH(:,1); % cm, structural length
   Lw = L/ del_Mt; Lw = Lw(it_sort); % reconstruct L
@@ -223,15 +233,19 @@ init_cond = [1e-10; E_0; 0];
   % High:
   F = f_LawrEber2002_high; a = [0; tL_LawrEber2002_high(:,1)];
   [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
-  L_j = get_lj(pars_lj, F) * L_m; % cm, structural length at metamorphosis at F
-  [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
+ [lj, ~, ~, info] = get_lj(pars_lj, F);
+ if ~info; prdData=[]; return; end
+ L_j = lj * L_m; % cm, structural length at metamorphosis at F
+ [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
   L = LEH(:,1); % cm, structural length
   Lw = L/ del_Mt; Lw = Lw(it_sort); % reconstruct L
   ELw_LawrEber2002_high = Lw(2:end); % cm, total length
 
   % tL_BestAdat2010:
   TC = TC_BestAdat2010;  F = f_BestAdat2010; a = [0; tL_BestAdat2010(:,1)];
-  L_j = get_lj(pars_lj, F) * L_m; % cm, structural length at metamorphosis at F
+[lj, ~, ~, info] = get_lj(pars_lj, F);
+ if ~info; prdData=[]; return; end
+ L_j = lj * L_m; % cm, structural length at metamorphosis at F
   [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
   [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
   L    = LEH(:,1); % cm, structural length
@@ -240,7 +254,9 @@ init_cond = [1e-10; E_0; 0];
   
   % tL of Schi2002
   TC = TC_Schi2002; F = f_Schi2002; a = [0; tL_Schi2002(:,1)];
-  L_j = get_lj(pars_lj, F) * L_m; % cm, structural length at metamorphosis at F
+[lj, ~, ~, info] = get_lj(pars_lj, F);
+ if ~info; prdData=[]; return; end
+ L_j = lj * L_m; % cm, structural length at metamorphosis at F
   [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
   [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
   L    = LEH(:,1); % cm, structural length
@@ -249,7 +265,9 @@ init_cond = [1e-10; E_0; 0];
   
   % tL of EatoFarl1974
   TC = TC_EatoFarl1974; F = f_EatoFarl1974; a = [0; tL_EatoFarl1974(:,1)];
-  L_j = get_lj(pars_lj, F) * L_m; % cm, structural length at metamorphosis at F
+[lj, ~, ~, info] = get_lj(pars_lj, F);
+ if ~info; prdData=[]; return; end
+ L_j = lj * L_m; % cm, structural length at metamorphosis at F
   [t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
   [tt, LEH] = ode45(@ode_LEH, t_sort, init_cond, [], par, F, TC, L_b, L_j);
   L    = LEH(:,1); % cm, structural length
@@ -259,7 +277,9 @@ init_cond = [1e-10; E_0; 0];
   % tL, tWw and tWd of BagaPels2001
   F = f_BagaPels2001; TC = TC_BagaPels2001; 
   a = [0; tL_BagaPels2001(:,1)];
-  l_j = get_lj(pars_lj, F);  L_j = l_j * L_m;
+[lj, ~, ~, info] = get_lj(pars_lj, F);
+ if ~info; prdData=[]; return; end
+ L_j = lj * L_m; % cm, structural length at metamorphosis at F
   [tt, LEH] = ode45(@ode_LEH, a, init_cond, [], par, F, TC, L_b, L_j);
   LEH(1,:) = []; L    = LEH(:,1);  E    = LEH(:,2); % cm, stuct length; J, energy in resrve
   prdData.tWw_BagaPels2001  = L.^3 + w_E/ mu_E/ d_E * E; % g, wet weight
@@ -332,6 +352,20 @@ EWws = [EWw1; EWw2]; % g, concatenate total wet weight over full experiment
 
 
 %% 
+% prdData.tJO = data.tJO;
+% prdData.tW_BarrFern2010 = data.tW_BarrFern2010;
+% prdData.tL_BarrFern2010 = data.tL_BarrFern2010;
+% prdData.TJX = data.TJX;
+% prdData.tMC = data.tMC;
+% prdData.tMN = data.tMN;
+% prdData.Wwt = 0.7;
+% prdData.tL1 = data.tL1;
+% prdData.tN = data.tN;
+% prdData.tWs = data.tWs;
+% prdData.tS_starv = data.tS_starv;
+% prdData.tS = data.tS;
+% prdData.tL = data.tL;
+% prdData.tW = data.tW;
 
 
 
@@ -339,7 +373,7 @@ EWws = [EWw1; EWw2]; % g, concatenate total wet weight over full experiment
   prdData.tL = ELw;  
   prdData.tW = EWw;
   prdData.tWs = EWws;
-  
+
   
   
   % pack to output
