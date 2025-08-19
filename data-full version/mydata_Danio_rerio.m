@@ -544,7 +544,7 @@ data.tW_BarrFern2010 = [... % time since fertilization (d), wet weight (mg)
     80  352.2
     90  473.3
     100 501.3];
-units.tW_BarrFern2010 = {'d', 'mg'};  label.tW_BarrFern2010 = {'time', 'wet weight', 'fed'};
+units.tW_BarrFern2010 = {'d', 'mg'};  label.tW_BarrFern2010 = {'time', 'wet weight'};
 temp.tW_BarrFern2010 =  C2K(28);  units.temp.tW_BarrFern2010 = 'K'; label.temp.tW_BarrFern2010 = 'temperature';
 bibkey.tW_BarrFern2010 = {'BarrFern2010'};
 
@@ -627,14 +627,34 @@ weights = setweights(data, []);
 [data, units, label, weights] = addpseudodata(data, units, label, weights);
 % weights.psd.v   = 10 * weights.psd.v;
 
+%% Auto add titles to univariate data
+title = struct();
+datanames = fieldnames(data);
+for i=1:numel(datanames)
+    datum = datanames{i};
+    % Skip zero-variate data
+    if isscalar(data.(datum))
+        continue
+    end
+    if ~isfield(title, datum)
+        dataTitle = [strjoin(label.(datum), ' vs ') ', ' datum];
+        if isfield(bibkey, datum)
+            dataTitle = [dataTitle ', ' bibkey.(datum){:}];
+        end
+        title.(datum) = dataTitle;
+    end
+end
+
 %% pack auxData and txtData for output
 auxData.temp = temp;
 auxData.treat = treat;
+auxData.init = init;
+
 txtData.units = units;
 txtData.label = label;
-auxData.init = init;
 txtData.bibkey = bibkey;
 txtData.comment = comment;
+txtData.title = title;
 
 %% Group plots
 set3 = {'tL_LawrEber2002_high','tL_LawrEber2002_low'}; subtitle3 = {'LawrEber2002 data at high, low food'};
