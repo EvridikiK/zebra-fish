@@ -9,7 +9,7 @@ par.T_ref = 293.15;   free.T_ref = 0;   units.T_ref = 'K';        label.T_ref = 
 par.z = 1;         free.z     = 1;   units.z = '-';            label.z = 'zoom factor'; 
 par.F_m = 6.5;     free.F_m   = 0;   units.F_m = 'l/d.cm^2';   label.F_m = '{F_m}, max spec searching rate'; 
 par.kap_X = 0.8;   free.kap_X = 1;   units.kap_X = '-';        label.kap_X = 'digestion efficiency of food to reserve'; 
-par.kap_P = 0.1;   free.kap_P = 0;   units.kap_P = '-';        label.kap_P = 'faecation efficiency of food to faeces'; 
+par.kap_P = 0.1;   free.kap_P = 1;   units.kap_P = '-';        label.kap_P = 'faecation efficiency of food to faeces'; 
 par.v = 0.02;      free.v     = 1;   units.v = 'cm/d';         label.v = 'energy conductance'; 
 par.kap = 0.8;     free.kap   = 1;   units.kap = '-';          label.kap = 'allocation fraction to soma'; 
 par.kap_R = 0.95;  free.kap_R = 0;   units.kap_R = '-';        label.kap_R = 'reproduction efficiency'; 
@@ -36,6 +36,7 @@ par.f_LawrEber2002_high = 1;        free.f_LawrEber2002_high = 1;     units.f_La
 par.f_LawrEber2002_low = 1;         free.f_LawrEber2002_low = 1;      units.f_LawrEber2002_low = '-';  label.f_LawrEber2002_low = 'scaled functional response of LawrEber2002_low data'; 
 par.f_Schi2002 = 1;                 free.f_Schi2002 = 1;              units.f_Schi2002 = '-';   label.f_Schi2002 = 'scaled functional response of Schi2002 data'; 
 par.f_BarrFern2010 = 1;             free.f_BarrFern2010 = 1;          units.f_BarrFern2010 = '-'; label.f_BarrFern2010 = 'scaled functional response of BarrFern2010 data'; 
+par.f_ValKwa2022 = 1;               free.f_ValKwa2022 = 1;            units.f_ValKwa2022 = '-'; label.f_ValKwa2022 = 'scaled functional response of BarrFern2010 data'; 
 
 % Starvation paramaters
 par.del_X = 1;                      free.del_X = 1;                   units.del_X = '-';        label.del_X = 'shrinking threshold'; 

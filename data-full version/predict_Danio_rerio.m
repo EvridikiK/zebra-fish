@@ -7,7 +7,7 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   % customized filter  
   filterChecks =   E_R_init_DrewRodn2008 < 0 || E_R_init_DrewRodn2008 > 2000 || ...
                      f_DrewRodn2008 > 1 || ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
-                    s_shrink < 0;
+                    s_shrink < 0 || del_X < 0 || (kap_P + kap_X) > 1;
   
   if filterChecks  
     info = 0;
@@ -29,9 +29,9 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   TC_tS = tempcorr(temp.tS, T_ref, T_A);
   TC_BestAdat2010 = tempcorr(temp.tL_BestAdat2010, T_ref, T_A);
   TC_LawrEber2002 = tempcorr(temp.tL_LawrEber2002_high, T_ref, T_A);
-  TC_28 = tempcorr(temp.TJX, T_ref, T_A);  
+  TC_28 = tempcorr(temp.tJO, T_ref, T_A);
+  TC_26_72 = tempcorr(temp.tJX_ValKwa2022, T_ref, T_A);
   
-
   TC_starv = tempcorr(temp.tW, T_ref, T_A); 
   
   TC_tL = tempcorr(temp.tLf1, T_ref, T_A); % juvenile growth trials
@@ -83,10 +83,10 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   GSIT = GSIT * ((1 - kap) * f^3 - k_J * U_Hp/ L_m^2/ s_M^3);    % -, GSI
 
   % life span
-  pars_tm = [g; l_T; h_a/k_M^2; s_G];
-  [t_m, ~, ~, info] = get_tm_s(pars_tm, f, l_b, l_p);
-  if ~info; prdData=[]; return; end
-  aT_m = t_m/ k_M/ TC_am;               % d, mean life span at T
+  % pars_tm = [g; k; v_Hb; v_Hj; v_Hp; h_a/k_M^2; s_G];
+  [tau_m, ~, ~] = get_tm_mod('abj', par, f);
+  % if ~info; prdData=[]; return; end
+  aT_m = tau_m/ k_M/ TC_am;               % d, mean life span at T
 
   % puberty at f_EatoFarl1974b
   F = f_EatoFarl1974;
@@ -112,15 +112,25 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
 
   %% uni-variate data
 
-  %% Feeding data
-init_cond = [L_b; f*E_m*L_b^3; E_Hb; 0];
-[tt, LEHR] = ode45(@ode_LEHR_bi, [0, auxData.init.TJX], init_cond, [], par, f, TC_28, L_b, L_j);
-L = LEHR(end, 1); E = LEHR(end, 2); E_R = LEHR(end, 4);
-JX = f * w_X / mu_X / kap_X * p_Am * L^2;
-% W = L^3 + (E + E_R) * w_E / mu_E / d_E;
-TC = tempcorr(data.TJX(:, 1), T_ref, T_A);
-% prdData.TJX = TC .* JX ./ W;
-prdData.TJX = TC .* JX;
+  %% Feeding data 
+% Valentine and Kwasek 2022
+init_cond = [1e-10; E_0; 0];
+F = f_ValKwa2022;
+[~, ~, ~, l_j, ~, l_b, ~, ~, ~, info] = get_tj(pars_tj, F);
+if ~info; prdData=[]; return; end
+L_b = L_m * l_b;                  % cm, structural length at birth at f
+L_j = L_m * l_j;                  % cm, structural length at metamorphosis at f
+
+[tt, LEH] = ode45(@ode_LEH, [0; data.tJX_ValKwa2022(:, 1)], init_cond, [], par, F, TC_26_72, L_b, L_j);
+L = LEH(2:end, 1); E = LEH(2:end, 2);
+W = L.^3 + E * w_E / mu_E / d_E;
+s_M = min(L, L_j) / L_b;
+JX = TC_26_72 * F * w_X / mu_X / kap_X * p_Am * L.^2 .* s_M;
+
+prdData.tL_ValKwa2022 = L / del_Mt * 10; % mm 
+prdData.tWw_ValKwa2022 = W * 1000; % mg
+prdData.tJX_ValKwa2022 = JX ./ W * 100 / auxData.init.tJX_ValKwa2022; % (%bw/d)
+
 
 %% Oxygen consumption
 init_cond = [1e-10; E_0; 0; 0];

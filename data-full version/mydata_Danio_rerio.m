@@ -548,49 +548,27 @@ units.tW_BarrFern2010 = {'d', 'mg'};  label.tW_BarrFern2010 = {'time', 'wet weig
 temp.tW_BarrFern2010 =  C2K(28);  units.temp.tW_BarrFern2010 = 'K'; label.temp.tW_BarrFern2010 = 'temperature';
 bibkey.tW_BarrFern2010 = {'BarrFern2010'};
 
-% data.tJX = [... % time (d post fertilization), feed intake (% body weight)
-%   32.2	11.5
-%   39.3	8.50
-%   44.6	4.97
-%   46.5	9.51
-%   63.1	5.43
-%   70.6	6.85
-%   72.8	4.82
-%   75.7	4.45
-%   78.0	4.49
-%   81.2	5.50
-%   88.3	3.69
-%   89.6	6.48
-%   95.1	4.91
-%   103	2.82
-%   120	4.97
-%   180	4.97
-%   240	2.47
-%   300	5.84
-%   364	5.05];
-% units.tJX = {'d', '\% body weight'};  label.tJX = {'time', 'feed uptake'};
-% temp.tJX = C2K(28.5);  units.temp.tJX = 'K'; label.temp.tJX = 'temperature';
-% bibkey.tJX = {'LiciFron2024'};
-% comment.tJX = 'what about the temperature??';
+% Data from Valentine and Kwasek 2022
+dataValKwa2022 = [ ... % age (d), weight (mg), total length (mm), % feed intake (%bw/d)
+ 33 15.4 11.8 11.5
+ 40 27.6 14.5  8.6
+ 47 52.4 19.3  9.7
+];
+data.tWw_ValKwa2022 = [dataValKwa2022(:, 1), dataValKwa2022(:, 2)];
+units.tWw_ValKwa2022 = {'d', 'mg'};  label.tWw_ValKwa2022 = {'time', 'wet weight'};
+temp.tWw_ValKwa2022 =  C2K(26.72);  units.temp.tWw_ValKwa2022 = 'K'; label.temp.tWw_ValKwa2022 = 'temperature';
+bibkey.tWw_ValKwa2022 = {'ValKwa2022'};
 
-% data.TJX = [... % Temperature (ºC), feed intake (% body weight)
-% 28 4.582
-% 22 2.492
-% 16 1.180
-% 13 0.141
-% ];
-data.TJX = [... % Temperature (ºC), feed intake (g/d)
-28 0.0160
-22 0.0087
-16 0.0041
-13 0.0005
-]; 
-data.TJX(:, 1) = C2K(data.TJX(:,1));
-data.TJX(:, 2) = data.TJX(:, 2) / 100; % Normalize feed intake to fraction
-units.TJX = {'K', 'g feed / d'};  label.TJX = {'temperature', 'feed uptake'};
-temp.TJX = C2K(28);  units.temp.TJX = 'K'; label.temp.TJX = 'temperature before trials';
-bibkey.TJX = {'Lu2019'};
-init.TJX = 115; units.init.TJX = 'd'; label.init.TJX = 'time since birth at trial';
+data.tL_ValKwa2022 = [dataValKwa2022(:, 1), dataValKwa2022(:, 3)];
+units.tL_ValKwa2022 = {'d', 'mm'};  label.tL_ValKwa2022 = {'time', 'total length'};
+temp.tL_ValKwa2022 =  C2K(26.72);  units.temp.tL_ValKwa2022 = 'K'; label.temp.tL_ValKwa2022 = 'temperature';
+bibkey.tL_ValKwa2022 = {'ValKwa2022'};
+
+data.tJX_ValKwa2022 = [dataValKwa2022(:, 1), dataValKwa2022(:, 4)];
+units.tJX_ValKwa2022 = {'d', '%bw/d'};  label.tJX_ValKwa2022 = {'time', 'feed intake'};
+init.tJX_ValKwa2022 = 0.789; label.init.tJX_ValKwa2022 = 'ash-free dry/wet ratio'; units.init.tJX_ValKwa2022 = '-';
+temp.tJX_ValKwa2022 =  C2K(26.72);  units.temp.tJX_ValKwa2022 = 'K'; label.temp.tJX_ValKwa2022 = 'temperature';
+bibkey.tJX_ValKwa2022 = {'ValKwa2022'};
 
 %% set weights for all real data
 weights = setweights(data, []);
