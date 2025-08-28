@@ -498,22 +498,58 @@ temp.tWs = C2K(28.5);  units.temp.tWs = 'K'; label.temp.tWs = 'temperature';
 bibkey.tWs = {'DrewRodn2008'};
 comment.tWs = 'starved condition'; 
 
-data.tJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
-    2.5 7.739
-    10  38.652
-    20  37.419
-    30  29.545
-    40  23.384
-    50  10.580
-    60  7.846
-    70  5.330
-    80 NaN
-    90 NaN
-    100 4.096];
-units.tJO = {'d', '\mumol/g/h'};  label.tJO = {'time', 'oxygen consumption'};
-temp.tJO = C2K(28);  units.temp.tJO = 'K'; label.temp.tJO = 'temperature';
-bibkey.tJO = {'BarrFern2010'};
-comment.tJO = 'Normoxia data were used';
+data.tTJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
+    % 0   2.356  3.934  5.302
+    10  27.417 39.307 47.934
+    20  20.175 30.592 39.642
+    30  19.563 27.349 34.820
+    40  12.428 17.373 22.212
+    50  9.395  13.288 18.444
+    60  3.943  5.732  8.151
+    70  3.120  5.118  7.328
+    100 2.336  4.228  6.754]; 
+units.tTJO = {'d', '\mumol/g/h'};  label.tTJO = {'time', 'oxygen consumption'};
+% temp.tTJO = C2K(28);  units.temp.tTJO = 'K'; label.temp.tTJO = 'temperature';
+treat.tTJO = {1 {'25','28','31'}}; label.treat.tTJO = 'temperature';
+bibkey.tTJO = {'BarrBurg1999'};
+comment.tTJO = 'MO2 for different temperatures';
+
+data.tTL = [... % time (d post hatch), length (mm)
+    % 5   1.9  3.1  3.4
+    10  2.7  3.6  3.4
+    20  3.3  3.5  4.5
+    30  4.1  7.2  8.7
+    40  5.0  9.8  10.9
+    50  6.4  11.1 13.6
+    60  8.0  15.2 14.8
+    70  9.8  17.2 16.5
+    100 16.0 25.0 20.4];
+    % 150 22.2 27.3 30.4
+    % 200 24.3 29.8 32.3]; 
+units.tTL = {'d', 'mm'};  label.tTL = {'time', 'length'};
+% temp.tTJO = C2K(28);  units.temp.tTJO = 'K'; label.temp.tTJO = 'temperature';
+treat.tTL = {1 {'25','28','31'}}; label.treat.tTL = 'temperature';
+bibkey.tTL = {'BarrBurg1999'};
+comment.tTL = 'length (snought to tail) for different temperatures';
+
+data.tTWw = [... % time (d post hatch), wet weight (mg)
+    % 0   0.2   0.2   0.2
+    % 5   0.4   0.5   1.0
+    10  0.6   0.9   1.4
+    20  1.0   2.0   2.0
+    30  2.0   4.0   5.0
+    40  2.0   9.0   11.0
+    50  5.0   13.0  18.0
+    60  10.0  27.0  59.0
+    70  14.0  214.0 102.0
+    100 92.0  481.0 260.0];
+    % 150 172.0 681.0 520.0
+    % 200 367.0 831.0 739.0]; 
+units.tTWw = {'d', 'mg'};  label.tTWw = {'time', 'wet weight'};
+% temp.tTJO = C2K(28);  units.temp.tTJO = 'K'; label.temp.tTJO = 'temperature';
+treat.tTWw = {1 {'25','28','31'}}; label.treat.tTWw = 'temperature';
+bibkey.tTWw = {'BarrBurg1999'};
+comment.tTWw = 'wet weight for different temperatures';
 
 data.tL_BarrFern2010 = [... % time since fertilization (d), length (mm)
     2.5 NaN
@@ -530,6 +566,23 @@ data.tL_BarrFern2010 = [... % time since fertilization (d), length (mm)
 units.tL_BarrFern2010 = {'d', 'mm'};  label.tL_BarrFern2010 = {'time', 'standard length'};
 temp.tL_BarrFern2010 = C2K(28);  units.temp.tL_BarrFern2010 = 'K'; label.temp.tL_BarrFern2010 = 'temperature';
 bibkey.tL_BarrFern2010 = {'BarrFern2010'};
+
+data.tJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
+    2.5 7.739
+    10  38.652
+    20  37.419
+    30  29.545
+    40  23.384
+    50  10.580
+    60  7.846
+    70  5.330
+    80 NaN
+    90 NaN
+    100 4.096];
+units.tJO = {'d', '\mumol/g/h'};  label.tJO = {'time', 'oxygen consumption'};
+temp.tJO = C2K(28);  units.temp.tJO = 'K'; label.temp.tJO = 'temperature';
+bibkey.tJO = {'BarrFern2010'};
+comment.tJO = 'Normoxia data were used';
 
 % time-weight
 data.tW_BarrFern2010 = [... % time since fertilization (d), wet weight (mg)
@@ -890,5 +943,12 @@ bibkey = 'LiciFron2024'; type = 'Article'; bib = [ ...
 'volume = {13}, '...
 'pages = {209}'];
 metaData.biblist.(bibkey) = ['''@', type, '{', bibkey, ', ' bib, '}'';'];
-
-
+%
+bibkey = 'BarrBurg1999'; type = 'Article'; bib = [ ...  
+'author = {Barrionuevo, W.R. and Burggren W. W.}, ' ...
+'year = {1999}, ' ...
+'title = {O2 consumption and heart rate in developing zebrafish, (\textit{Danio rerio}): influence of temperature and ambient O2}, ' ... 
+'journal = {Am. J. Physiol.}, ' ...
+'volume = {276}, '...
+'pages = {505-513}'];
+metaData.biblist.(bibkey) = ['''@', type, '{', bibkey, ', ' bib, '}'';'];
