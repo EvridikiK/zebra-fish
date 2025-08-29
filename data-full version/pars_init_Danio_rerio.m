@@ -24,7 +24,7 @@ par.h_a = 1e-4;    free.h_a   = 1;   units.h_a = '1/d^2';      label.h_a = 'Weib
 par.s_G = 1e-4;    free.s_G   = 1;   units.s_G = '-';          label.s_G = 'Gompertz stress coefficient'; 
 
 %% other parameters 
-par.T_A = 8000;                     free.T_A   = 1;                   units.T_A = 'K';          label.T_A = 'Arrhenius temp'; 
+par.T_A = 8000;                     free.T_A   = 0;                   units.T_A = 'K';          label.T_A = 'Arrhenius temp'; 
 par.del_Mt = 0.2;                   free.del_Mt = 1;                  units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult'; 
 par.f = 1;                          free.f     = 0;                   units.f = '-';            label.f = 'scaled functional response'; 
 par.f_BagaPels2001 = 1;             free.f_BagaPels2001 = 1;          units.f_BagaPels2001 = '-';  label.f_BagaPels2001 = 'scaled functional response of BagaPels2001 data'; 
