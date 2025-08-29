@@ -7,7 +7,7 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   % customized filter  
   filterChecks =   E_R_init_DrewRodn2008 < 0 || E_R_init_DrewRodn2008 > 2000 || ...
                      f_DrewRodn2008 > 1 || ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
-                    s_shrink < 0 || del_X < 0 || (kap_P + kap_X) > 1;
+                    s_shrink < 0 || del_X < 0 || (kap_P + kap_X) > 0.91;
   
   if filterChecks  
     info = 0;
@@ -152,21 +152,19 @@ prdData.tW_BarrFern2010 = W * 1e3; % mg
 prdData.tJO = JO(idx_tJO) ./ W(idx_tJO); % mumol/g/h 
 
 %% Oxygen consumption
-T = [25;28;31]; TC_JO = tempcorr(T, T_ref, T_A);
+T = [25;28;31]; TC_JO = tempcorr(C2K(T), T_ref, T_A);
 init_cond = [1e-10; E_0; 0; 0];
 pars_spj = [kap, kap_R, g, k_J, k_M, L_T, v, U_Hb, U_Hj, U_Hp];
-F = f;
+F = f_tTJO;
 for i=1:length(TC_JO)
     [tt, LEHR] = ode45(@ode_LEHR_bi, data.tTL(:,1), init_cond, [], par, F, TC_JO(i), L_b, L_j);
     TL(:,i) = LEHR(:, 1); TE(:,i) = LEHR(:, 2); TE_R(:,i) = LEHR(:, 4);
     pACSJGRD = scaled_power_j(TL(:,i), F, pars_spj, l_b, l_j, l_p);
     p_A = pACSJGRD(:, 1); p_G = pACSJGRD(:, 5); p_D = pACSJGRD(:, 7);
     eta_M = -inv(n_M) * n_O * eta_O;
-    JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am) * TC_28; % mol/d
+    JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am) * TC_JO(i); % mol/d
     TJO(:,i) = JO * 1e6 / 24; % mumol/g/d
     TW(:,i) = TL(:,i).^3 + (TE(:,i) + TE_R(:,i)) * w_E / mu_E / d_E; % g
-
-    
 
     % [~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
     % prdData.tL_BarrFern2010 = L(idx_tL) / del_Mt * 10; % mm

@@ -35,8 +35,9 @@ par.f_EatoFarl1974 = 1;             free.f_EatoFarl1974 = 1;          units.f_Ea
 par.f_LawrEber2002_high = 1;        free.f_LawrEber2002_high = 1;     units.f_LawrEber2002_high = '-';  label.f_LawrEber2002_high = 'scaled functional response of LawrEber2002_high data'; 
 par.f_LawrEber2002_low = 1;         free.f_LawrEber2002_low = 1;      units.f_LawrEber2002_low = '-';  label.f_LawrEber2002_low = 'scaled functional response of LawrEber2002_low data'; 
 par.f_Schi2002 = 1;                 free.f_Schi2002 = 1;              units.f_Schi2002 = '-';   label.f_Schi2002 = 'scaled functional response of Schi2002 data'; 
-par.f_BarrFern2010 = 1;             free.f_BarrFern2010 = 1;          units.f_BarrFern2010 = '-'; label.f_BarrFern2010 = 'scaled functional response of BarrFern2010 data'; 
+par.f_BarrFern2010 = 1;             free.f_BarrFern2010 = 0;          units.f_BarrFern2010 = '-'; label.f_BarrFern2010 = 'scaled functional response of BarrFern2010 data'; 
 par.f_ValKwa2022 = 1;               free.f_ValKwa2022 = 1;            units.f_ValKwa2022 = '-'; label.f_ValKwa2022 = 'scaled functional response of BarrFern2010 data'; 
+par.f_tTJO = 1;                     free.f_tTJO = 1;                  units.f_tTJO = '-'; label.f_tTJO = 'scaled functional response of BarrFern2010 data'; 
 
 % Starvation paramaters
 par.del_X = 1;                      free.del_X = 1;                   units.del_X = '-';        label.del_X = 'shrinking threshold'; 
