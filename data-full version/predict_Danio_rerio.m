@@ -7,7 +7,7 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   % customized filter  
   filterChecks =   E_R_init_DrewRodn2008 < 0 || E_R_init_DrewRodn2008 > 2000 || ...
                      f_DrewRodn2008 > 1 || ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
-                    s_shrink < 0 || del_X < 0 || (kap_P + kap_X) > 0.91;
+                    s_shrink < 0 || s_G < 0 || del_X < 0 || (kap_P + kap_X) > 0.91;
   
   if filterChecks  
     info = 0;
@@ -69,6 +69,10 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   aT_j = t_j/ k_M/ TC_aj;           % d, age at metam
 
   % puberty is here at end of 0-variate data because of deviating f
+  % [t_j, t_p, t_b, l_j, l_p, l_b, l_i, rho_j, rho_B, info] = get_tj(pars_tj, f);
+  % L_p = L_m * l_p;                  % cm, structural length at puberty at F
+  % Lw_p = L_p/ del_Mt;                % cm, total length at puberty at F
+  % aT_p = t_p/ k_M/ TC_ap;           % d, time since birth at puberty at F and T
 
   % ultimate
   L_i = L_m * l_i;                  % cm, ultimate structural length at f
@@ -136,12 +140,15 @@ prdData.tJX_ValKwa2022 = JX ./ W * 100 / auxData.init.tJX_ValKwa2022; % (%bw/d)
 init_cond = [1e-10; E_0; 0; 0];
 pars_spj = [kap, kap_R, g, k_J, k_M, L_T, v, U_Hb, U_Hj, U_Hp];
 F = f_BarrFern2010;
-[tt, LEHR] = ode45(@ode_LEHR_bi, data.tW_BarrFern2010(:,1), init_cond, [], par, F, TC_28, L_b, L_j);
+[t_j_tJO, t_p_tJO, t_b_tJO, l_j_tJO, l_p_tJO, l_b_tJO, l_i_tJO, rho_j_tJO, rho_B_tJO, info] = get_tj(pars_tj, F);
+L_b_tJO = l_b_tJO * L_m; L_j_tJO = l_j_tJO * L_m;
+[tt, LEHR] = ode45(@ode_LEHR_bi, data.tW_BarrFern2010(:,1), init_cond, [], par, F, TC_28, L_b_tJO, L_j_tJO);
 L = LEHR(:, 1); E = LEHR(:, 2); E_R = LEHR(:, 4);
-pACSJGRD = scaled_power_j(L, F, pars_spj, l_b, l_j, l_p);
+pACSJGRD = scaled_power_j(L, F, pars_spj, l_b, l_j_tJO, l_p_tJO);
 p_A = pACSJGRD(:, 1); p_G = pACSJGRD(:, 5); p_D = pACSJGRD(:, 7);
 eta_M = -inv(n_M) * n_O * eta_O;
-JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am) * TC_28; % mol/d
+s_M = min(L, L_j_tJO) / L_b_tJO;
+JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am * s_M) * TC_28; % mol/d
 JO = JO * 1e6 / 24; % mumol/g/d
 W = L.^3 + (E + E_R) * w_E / mu_E / d_E; % g
 
@@ -156,13 +163,16 @@ T = [25;28;31]; TC_JO = tempcorr(C2K(T), T_ref, T_A);
 init_cond = [1e-10; E_0; 0; 0];
 pars_spj = [kap, kap_R, g, k_J, k_M, L_T, v, U_Hb, U_Hj, U_Hp];
 F = f_tTJO;
+[t_j_tTJO, t_p_tTJO, t_b_tTJO, l_j_tTJO, l_p_tTJO, l_b_tTJO, l_i_tTJO, rho_j_tTJO, rho_B_tTJO, info] = get_tj(pars_tj, F);
+L_b_tTJO = l_b_tTJO * L_m; L_j_tTJO = l_j_tTJO * L_m;
 for i=1:length(TC_JO)
-    [tt, LEHR] = ode45(@ode_LEHR_bi, data.tTL(:,1), init_cond, [], par, F, TC_JO(i), L_b, L_j);
+    [tt, LEHR] = ode45(@ode_LEHR_bi, data.tTL(:,1), init_cond, [], par, F, TC_JO(i), L_b_tTJO, L_j_tTJO);
     TL(:,i) = LEHR(:, 1); TE(:,i) = LEHR(:, 2); TE_R(:,i) = LEHR(:, 4);
-    pACSJGRD = scaled_power_j(TL(:,i), F, pars_spj, l_b, l_j, l_p);
+    s_M = min(TL(i), L_j_tTJO) / L_b_tTJO;
+    pACSJGRD = scaled_power_j(TL(:,i), F, pars_spj, l_b_tTJO, l_j_tTJO, l_p_tTJO);
     p_A = pACSJGRD(:, 1); p_G = pACSJGRD(:, 5); p_D = pACSJGRD(:, 7);
     eta_M = -inv(n_M) * n_O * eta_O;
-    JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am) * TC_JO(i); % mol/d
+    JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am * s_M) * TC_JO(i); % mol/d
     TJO(:,i) = JO * 1e6 / 24; % mumol/g/d
     TW(:,i) = TL(:,i).^3 + (TE(:,i) + TE_R(:,i)) * w_E / mu_E / d_E; % g
 
@@ -192,7 +202,7 @@ prdData.tTJO = TJO ./ TW; % mumol/g/h
   prdData.tS_starv = LEHS(:,4); 
 
   % tS of GerhKauf2002 
-  F = f_EatoFarl1974;
+  F = f;%f_EatoFarl1974;
   a     = tS(:,1); % d, time since birth
   TC    = TC_tS;      % -, temp corr factor
   s_M   = l_j/ l_b;             % -, acceleration factor
