@@ -147,16 +147,16 @@ L = LEHR(:, 1); E = LEHR(:, 2); E_R = LEHR(:, 4);
 pACSJGRD = scaled_power_j(L, F, pars_spj, l_b, l_j_tJO, l_p_tJO);
 p_A = pACSJGRD(:, 1); p_G = pACSJGRD(:, 5); p_D = pACSJGRD(:, 7);
 eta_M = -inv(n_M) * n_O * eta_O;
-s_M = min(L, L_j_tJO) / L_b_tJO;
-JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am * s_M) * TC_28; % mol/d
-JO = JO * 1e6 / 24; % mumol/g/d
-W = L.^3 + (E + E_R) * w_E / mu_E / d_E; % g
+s_M = max(1, min(L, L_j_tJO) / L_b_tJO);
+J_O = [p_A, p_D, p_G] * eta_M(3, :)' .* (L_m^2 * p_Am) * TC_28; % mol/d
+J_O = -J_O * 1e6 / 24; % mumol/g/d
+W = 1 * L.^3 + (E + E_R) * w_E / mu_E / d_E; % g
 
 [~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
 prdData.tL_BarrFern2010 = L(idx_tL) / del_Mt * 10; % mm
 prdData.tW_BarrFern2010 = W * 1e3; % mg 
 [~, idx_tJO] = ismember(data.tJO(:,1) , data.tW_BarrFern2010(:,1));
-prdData.tJO = JO(idx_tJO) ./ W(idx_tJO); % mumol/g/h 
+prdData.tJO = J_O(idx_tJO) ./ W(idx_tJO); % mumol/g/h 
 
 %% Oxygen consumption
 T = [25;28;31]; TC_JO = tempcorr(C2K(T), T_ref, T_A);
@@ -168,13 +168,13 @@ L_b_tTJO = l_b_tTJO * L_m; L_j_tTJO = l_j_tTJO * L_m;
 for i=1:length(TC_JO)
     [tt, LEHR] = ode45(@ode_LEHR_bi, data.tTL(:,1), init_cond, [], par, F, TC_JO(i), L_b_tTJO, L_j_tTJO);
     TL(:,i) = LEHR(:, 1); TE(:,i) = LEHR(:, 2); TE_R(:,i) = LEHR(:, 4);
-    s_M = min(TL(i), L_j_tTJO) / L_b_tTJO;
+    s_M = max(1, min(TL(:, i), L_j_tTJO) / L_b_tTJO);
     pACSJGRD = scaled_power_j(TL(:,i), F, pars_spj, l_b_tTJO, l_j_tTJO, l_p_tTJO);
     p_A = pACSJGRD(:, 1); p_G = pACSJGRD(:, 5); p_D = pACSJGRD(:, 7);
     eta_M = -inv(n_M) * n_O * eta_O;
-    JO = [p_A, p_G, p_D] * eta_M(1, :)' .* (L_m^2 * p_Am * s_M) * TC_JO(i); % mol/d
-    TJO(:,i) = JO * 1e6 / 24; % mumol/g/d
-    TW(:,i) = TL(:,i).^3 + (TE(:,i) + TE_R(:,i)) * w_E / mu_E / d_E; % g
+    J_O = [p_A, p_D, p_G] * eta_M(3, :)' .* (L_m^2 * p_Am) * TC_JO(i); % mol/d
+    TJO(:,i) = -J_O * 1e6 / 24; % mumol/g/d
+    TW(:,i) = 1 * TL(:,i).^3 + (TE(:,i) + TE_R(:,i)) * w_E / mu_E / d_E; % g
 
     % [~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
     % prdData.tL_BarrFern2010 = L(idx_tL) / del_Mt * 10; % mm
