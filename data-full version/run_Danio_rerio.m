@@ -11,7 +11,7 @@ estim_options('max_fun_evals',5e4);
 global simplex_size 
 simplex_size = 0.05;
 estim_options('simplex_size', simplex_size);
-estim_options('filter',0);
+estim_options('filter', 1);
 tol_simplex = 1e-4;  
 estim_options('tol_simplex',tol_simplex);
 
