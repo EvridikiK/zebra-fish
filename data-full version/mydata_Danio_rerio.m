@@ -498,7 +498,7 @@ temp.tWs = C2K(28.5);  units.temp.tWs = 'K'; label.temp.tWs = 'temperature';
 bibkey.tWs = {'DrewRodn2008'};
 comment.tWs = 'starved condition'; 
 
-data.tTJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
+data.tTJO_BarrBurg1999 = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
     % 0   2.356  3.934  5.302
     10  27.417 39.307 47.934
     20  20.175 30.592 39.642
@@ -508,12 +508,13 @@ data.tTJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
     60  3.943  5.732  8.151
     70  3.120  5.118  7.328
     100 2.336  4.228  6.754]; 
-units.tTJO = {'d', '\mumol/g/h'};  label.tTJO = {'time', 'oxygen consumption'};
-treat.tTJO = {1 {'25','28','31'}}; label.treat.tTJO = 'temperature';
-bibkey.tTJO = {'BarrBurg1999'};
-comment.tTJO = 'MO2 for different temperatures';
+units.tTJO_BarrBurg1999 = {'d', '\mumol/g/h'};  label.tTJO_BarrBurg1999 = {'time', 'oxygen consumption'};
+treat.tTJO_BarrBurg1999 = {1 {'25','28','31'}}; label.treat.tTJO_BarrBurg1999 = 'temperature';
+bibkey.tTJO_BarrBurg1999 = {'BarrBurg1999'};
+comment.tTJO_BarrBurg1999 = 'MO2 for different temperatures';
+temp.tTJO_BarrBurg1999 = [25 28 31]; units.temp.tTJO_BarrBurg1999 = 'K'; label.temp.tTJO_BarrBurg1999 = 'temperature';
 
-data.tTL = [... % time (d post hatch), length (mm)
+data.tTL_BarrBurg1999 = [... % time (d post hatch), length (mm)
     % 5   1.9  3.1  3.4
     10  2.7  3.6  3.4
     20  3.3  3.5  4.5
@@ -525,12 +526,13 @@ data.tTL = [... % time (d post hatch), length (mm)
     100 16.0 25.0 20.4];
     % 150 22.2 27.3 30.4
     % 200 24.3 29.8 32.3]; 
-units.tTL = {'d', 'mm'};  label.tTL = {'time', 'length'};
-treat.tTL = {1 {'25','28','31'}}; label.treat.tTL = 'temperature';
-bibkey.tTL = {'BarrBurg1999'};
-comment.tTL = 'length (snought to tail) for different temperatures';
+units.tTL_BarrBurg1999 = {'d', 'mm'};  label.tTL_BarrBurg1999 = {'time', 'length'};
+treat.tTL_BarrBurg1999 = {1 {'25','28','31'}}; label.treat.tTL_BarrBurg1999 = 'temperature';
+bibkey.tTL_BarrBurg1999 = {'BarrBurg1999'};
+comment.tTL_BarrBurg1999 = 'length (snought to tail) for different temperatures';
+temp.tTL_BarrBurg1999 = [25 28 31]; units.temp.tTL_BarrBurg1999 = 'K'; label.temp.tTL_BarrBurg1999 = 'temperature';
 
-data.tTWw = [... % time (d post hatch), wet weight (mg)
+data.tTWw_BarrBurg1999 = [... % time (d post hatch), wet weight (mg)
     % 0   0.2   0.2   0.2
     % 5   0.4   0.5   1.0
     10  0.6   0.9   1.4
@@ -543,10 +545,11 @@ data.tTWw = [... % time (d post hatch), wet weight (mg)
     100 92.0  481.0 260.0];
     % 150 172.0 681.0 520.0
     % 200 367.0 831.0 739.0]; 
-units.tTWw = {'d', 'mg'};  label.tTWw = {'time', 'wet weight'};
-treat.tTWw = {1 {'25','28','31'}}; label.treat.tTWw = 'temperature';
-bibkey.tTWw = {'BarrBurg1999'};
-comment.tTWw = 'wet weight for different temperatures';
+units.tTWw_BarrBurg1999 = {'d', 'mg'};  label.tTWw_BarrBurg1999 = {'time', 'wet weight'};
+treat.tTWw_BarrBurg1999 = {1 {'25','28','31'}}; label.treat.tTWw_BarrBurg1999 = 'temperature';
+bibkey.tTWw_BarrBurg1999 = {'BarrBurg1999'};
+comment.tTWw_BarrBurg1999 = 'wet weight for different temperatures';
+temp.tTWw_BarrBurg1999 = [25 28 31]; units.temp.tTWw_BarrBurg1999 = 'K'; label.temp.tTWw_BarrBurg1999 = 'temperature';
 
 data.tL_BarrFern2010 = [... % time since fertilization (d), length (mm)
     2.5 NaN
@@ -564,7 +567,7 @@ units.tL_BarrFern2010 = {'d', 'mm'};  label.tL_BarrFern2010 = {'time', 'standard
 temp.tL_BarrFern2010 = C2K(28);  units.temp.tL_BarrFern2010 = 'K'; label.temp.tL_BarrFern2010 = 'temperature';
 bibkey.tL_BarrFern2010 = {'BarrFern2010'};
 
-data.tJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
+data.tJO_BarrFern2010 = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
     2.5 7.739
     10  38.652
     20  37.419
@@ -576,10 +579,10 @@ data.tJO = [... % time (d post hatch), oxygen consumption MO2 (μmol/g/h)
     80 NaN
     90 NaN
     100 4.096];
-units.tJO = {'d', '\mumol/g/h'};  label.tJO = {'time', 'oxygen consumption'};
-temp.tJO = C2K(28);  units.temp.tJO = 'K'; label.temp.tJO = 'temperature';
-bibkey.tJO = {'BarrFern2010'};
-comment.tJO = 'Normoxia data were used';
+units.tJO_BarrFern2010 = {'d', '\mumol/g/h'};  label.tJO_BarrFern2010 = {'time', 'oxygen consumption'};
+temp.tJO_BarrFern2010 = C2K(28);  units.temp.tJO_BarrFern2010 = 'K'; label.temp.tJO_BarrFern2010 = 'temperature';
+bibkey.tJO_BarrFern2010 = {'BarrFern2010'};
+comment.tJO_BarrFern2010 = 'Normoxia data were used';
 
 % time-weight
 data.tW_BarrFern2010 = [... % time since fertilization (d), wet weight (mg)
@@ -598,7 +601,7 @@ units.tW_BarrFern2010 = {'d', 'mg'};  label.tW_BarrFern2010 = {'time', 'wet weig
 temp.tW_BarrFern2010 =  C2K(28);  units.temp.tW_BarrFern2010 = 'K'; label.temp.tW_BarrFern2010 = 'temperature';
 bibkey.tW_BarrFern2010 = {'BarrFern2010'};
 
-% Data from Valentine and Kwasek 2022
+%% Data from Valentine and Kwasek 2022
 dataValKwa2022 = [ ... % age (d), weight (mg), total length (mm), % feed intake (%bw/d)
  33 15.4 11.8 11.5
  40 27.6 14.5  8.6
@@ -620,14 +623,58 @@ init.tJX_ValKwa2022 = 0.789; label.init.tJX_ValKwa2022 = 'ash-free dry/wet ratio
 temp.tJX_ValKwa2022 =  C2K(26.72);  units.temp.tJX_ValKwa2022 = 'K'; label.temp.tJX_ValKwa2022 = 'temperature';
 bibkey.tJX_ValKwa2022 = {'ValKwa2022'};
 
+%% Data form Yang et al. 2019
+
+data.tL_YangYama2019 = [... % time since fertilization (d), length (cm)
+     30  1.336;
+     60  2.323;
+    120  3.109;
+    180  3.345;
+    % 300  3.441;
+    % 420  3.659;
+    % 660  3.799
+];
+units.tL_YangYama2019 = {'d', 'cm'};  label.tL_YangYama2019 = {'time', 'standard length'};
+temp.tL_YangYama2019 = C2K(28);  units.temp.tL_YangYama2019 = 'K'; label.temp.tL_YangYama2019 = 'temperature';
+bibkey.tL_YangYama2019 = {'YangYama2019'};
+
+% time-weight
+data.tWw_YangYama2019 = [... % time since fertilization (d), wet weight (g)
+     30  0.018;
+     60  0.094;
+    120  0.228;
+    180  0.312;
+    % 300  0.323;
+    % 420  0.369;
+    % 660  0.359
+];
+units.tWw_YangYama2019 = {'d', 'g'};  label.tWw_YangYama2019 = {'time', 'wet weight'};
+temp.tWw_YangYama2019 =  C2K(28);  units.temp.tWw_YangYama2019 = 'K'; label.temp.tWw_YangYama2019 = 'temperature';
+bibkey.tWw_YangYama2019 = {'YangYama2019'};
+
+data.tJO_YangYama2019 = [... % time (d post hatch), oxygen consumption MO2 (μmol/h)
+     30  71.242
+     60  121.569
+    120  188.235
+    180  262.092
+    % 300  260.131
+    % 420  209.804
+    % 660  218.301
+
+];
+units.tJO_YangYama2019 = {'d', '\mumol/h'};  label.tJO_YangYama2019 = {'time', 'oxygen consumption'};
+temp.tJO_YangYama2019 = C2K(28);  units.temp.tJO_YangYama2019 = 'K'; label.temp.tJO_YangYama2019 = 'temperature';
+bibkey.tJO_YangYama2019 = {'YangYama2019'};
+
+
 %% set weights for all real data
 weights = setweights(data, []);
-weights.tJO = 0 * weights.tJO;
-% weights.tTL = 0 * weights.tTL;
-% weights.tTWw = 0 * weights.tTWw;
+weights.tJO_BarrFern2010 = 0 * weights.tJO_BarrFern2010;
 weights.tW_BarrFern2010 = 0 * weights.tW_BarrFern2010;
 weights.tL_BarrFern2010 = 0 * weights.tL_BarrFern2010;
-% weights.TJX = 0 * weights.TJX;
+weights.tTL_BarrBurg1999 = 0 * weights.tTL_BarrBurg1999;
+weights.tTWw_BarrBurg1999 = 0 * weights.tTWw_BarrBurg1999;
+weights.tTJO_BarrBurg1999 = 0 * weights.tTJO_BarrBurg1999;
 
 % weights.Wd0 = 0 * weights.Wd0;
 % weights.L0 = 0 * weights.L0;
@@ -653,9 +700,19 @@ weights.tL_BarrFern2010 = 0 * weights.tL_BarrFern2010;
 
 % weights. = 0 * weights.;
 
+% o2_weight = 1;
+% weights.tTJO_BarrBurg1999 = o2_weight * weights.tTJO_BarrBurg1999;
+% weights.tTWw_BarrBurg1999 = o2_weight * weights.tTWw_BarrBurg1999;
+% weights.tTL_BarrBurg1999 = o2_weight * weights.tTL_BarrBurg1999;
+
 %% set pseudodata and respective weights
 [data, units, label, weights] = addpseudodata(data, units, label, weights);
 % weights.psd.v   = 10 * weights.psd.v;
+% data.psd.kap_P = 0.27; units.psd.kap_P = '-'; label.psd.kap_P = 'faecation efficiency of food to faeces'; 
+% weights.psd.kap_P = 1;
+
+% weights.psd.k_J = 0;
+% weights.psd.k = .1;
 
 %% Auto add titles to univariate data
 title = struct();

@@ -6,20 +6,20 @@ metaPar.model = 'abj';
 par.T_ref = 293.15;   free.T_ref = 0;   units.T_ref = 'K';        label.T_ref = 'Reference temperature'; 
 
 %% core primary parameters 
-par.z = 0.23;         free.z     = 1;   units.z = '-';            label.z = 'zoom factor'; 
+par.z = 1;         free.z     = 1;   units.z = '-';            label.z = 'zoom factor'; 
 par.F_m = 6.5;     free.F_m   = 0;   units.F_m = 'l/d.cm^2';   label.F_m = '{F_m}, max spec searching rate'; 
-par.kap_X = 0.5;   free.kap_X = 1;   units.kap_X = '-';        label.kap_X = 'digestion efficiency of food to reserve'; 
-par.kap_P = 0.1;   free.kap_P = 1;   units.kap_P = '-';        label.kap_P = 'faecation efficiency of food to faeces'; 
+par.kap_X = 0.8;   free.kap_X = 0;   units.kap_X = '-';        label.kap_X = 'digestion efficiency of food to reserve'; 
+par.kap_P = 0.1;   free.kap_P = 0;   units.kap_P = '-';        label.kap_P = 'faecation efficiency of food to faeces'; 
 par.v = 0.02;      free.v     = 1;   units.v = 'cm/d';         label.v = 'energy conductance'; 
-par.kap = 0.36;     free.kap   = 1;   units.kap = '-';          label.kap = 'allocation fraction to soma'; 
+par.kap = 0.8;     free.kap   = 1;   units.kap = '-';          label.kap = 'allocation fraction to soma'; 
 par.kap_R = 0.95;  free.kap_R = 0;   units.kap_R = '-';        label.kap_R = 'reproduction efficiency'; 
-par.p_M = 189;      free.p_M   = 1;   units.p_M = 'J/d.cm^3';   label.p_M = '[p_M], vol-spec somatic maint'; 
+par.p_M = 18;      free.p_M   = 1;   units.p_M = 'J/d.cm^3';   label.p_M = '[p_M], vol-spec somatic maint'; 
 par.p_T = 0;       free.p_T   = 0;   units.p_T = 'J/d.cm^2';   label.p_T = '{p_T}, surf-spec somatic maint'; 
 par.k_J = 0.002;   free.k_J   = 0;   units.k_J = '1/d';        label.k_J = 'maturity maint rate coefficient'; 
 par.E_G = 5220;    free.E_G   = 1;   units.E_G = 'J/cm^3';     label.E_G = '[E_G], spec cost for structure'; 
-par.E_Hb = .526;   free.E_Hb  = 1;   units.E_Hb = 'J';         label.E_Hb = 'maturity at birth'; 
-par.E_Hj = 22.66;   free.E_Hj  = 1;   units.E_Hj = 'J';         label.E_Hj = 'maturity at metam'; 
-par.E_Hp = 3500;    free.E_Hp  = 1;   units.E_Hp = 'J';         label.E_Hp = 'maturity at puberty'; 
+par.E_Hb = .1;     free.E_Hb  = 1;   units.E_Hb = 'J';         label.E_Hb = 'maturity at birth'; 
+par.E_Hj = 10;     free.E_Hj  = 1;   units.E_Hj = 'J';         label.E_Hj = 'maturity at metam'; 
+par.E_Hp = 1000;   free.E_Hp  = 1;   units.E_Hp = 'J';         label.E_Hp = 'maturity at puberty'; 
 par.h_a = 1e-9;    free.h_a   = 1;   units.h_a = '1/d^2';      label.h_a = 'Weibull aging acceleration'; 
 par.s_G = 1e-4;    free.s_G   = 1;   units.s_G = '-';          label.s_G = 'Gompertz stress coefficient'; 
 
@@ -37,14 +37,14 @@ par.f_LawrEber2002_low = 1;         free.f_LawrEber2002_low = 1;      units.f_La
 par.f_Schi2002 = 1;                 free.f_Schi2002 = 1;              units.f_Schi2002 = '-';   label.f_Schi2002 = 'scaled functional response of Schi2002 data'; 
 par.f_BarrFern2010 = 1;             free.f_BarrFern2010 = 0;          units.f_BarrFern2010 = '-'; label.f_BarrFern2010 = 'scaled functional response of BarrFern2010 data'; 
 par.f_ValKwa2022 = 1;               free.f_ValKwa2022 = 1;            units.f_ValKwa2022 = '-'; label.f_ValKwa2022 = 'scaled functional response of BarrFern2010 data'; 
-par.f_tTJO = 1;                     free.f_tTJO = 1;                  units.f_tTJO = '-'; label.f_tTJO = 'scaled functional response of BarrFern2010 data'; 
+par.f_BarrBurg1999 = 1;             free.f_BarrBurg1999 = 0;          units.f_BarrBurg1999 = '-'; label.f_BarrBurg1999 = 'scaled functional response of BarrBurg1999 data'; 
+par.f_YangYama2019 = 1;             free.f_YangYama2019 = 1;          units.f_YangYama2019 = '-'; label.f_YangYama2019 = 'scaled functional response of YangYama2019 data'; 
 
 % Starvation paramaters
 par.del_X = 1;                      free.del_X = 1;                   units.del_X = '-';        label.del_X = 'shrinking threshold'; 
 par.s_rejuv = 0;                    free.s_rejuv = 0;                 units.s_rejuv = '-';      label.s_rejuv = 'rejuvenation stress coefficient'; 
 par.s_shrink = 202.009;             free.s_shrink = 1;                units.s_shrink = '-';     label.s_shrink = 'shrinking stress coefficient'; 
 par.E_R_init_DrewRodn2008 = 200;    free.E_R_init_DrewRodn2008 = 0;   units.E_R_init_DrewRodn2008 = 'J';  label.E_R_init_DrewRodn2008 = 'initial energy in the repro buffer, DrewRodn2008'; 
-
 par.E_R_init_BeauGous2015 = 800;    free.E_R_init_BeauGous2015 = 0;   units.E_R_init_BeauGous2015 = 'J';  label.E_R_init_BeauGous2015 = 'initial energy in the repro buffer, BeauGous2015'; 
 
 %% set chemical parameters from Kooy2010 

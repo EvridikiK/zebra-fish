@@ -6,8 +6,8 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
       
   % customized filter  
   filterChecks =   E_R_init_DrewRodn2008 < 0 || E_R_init_DrewRodn2008 > 2000 || ...
-                     f_DrewRodn2008 > 1 || ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
-                    s_shrink < 0 || s_G < 0 || del_X < 0 || (kap_P + kap_X) > 0.91;
+                     ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
+                    s_shrink < 0 || s_G < 0 || del_X < 0 || (kap_P + kap_X) > 1;
   
   if filterChecks  
     info = 0;
@@ -29,7 +29,7 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   TC_tS = tempcorr(temp.tS, T_ref, T_A);
   TC_BestAdat2010 = tempcorr(temp.tL_BestAdat2010, T_ref, T_A);
   TC_LawrEber2002 = tempcorr(temp.tL_LawrEber2002_high, T_ref, T_A);
-  TC_28 = tempcorr(temp.tJO, T_ref, T_A);
+  TC_28 = tempcorr(temp.tJO_YangYama2019, T_ref, T_A);
   TC_26_72 = tempcorr(temp.tJX_ValKwa2022, T_ref, T_A);
   
   TC_starv = tempcorr(temp.tW, T_ref, T_A); 
@@ -155,26 +155,78 @@ W = 1 * L.^3 + (E + E_R) * w_E / mu_E / d_E; % g
 [~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
 prdData.tL_BarrFern2010 = L(idx_tL) / del_Mt * 10; % mm
 prdData.tW_BarrFern2010 = W * 1e3; % mg 
-[~, idx_tJO] = ismember(data.tJO(:,1) , data.tW_BarrFern2010(:,1));
-prdData.tJO = J_O(idx_tJO) ./ W(idx_tJO); % mumol/g/h 
+[~, idx_tJO] = ismember(data.tJO_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
+prdData.tJO_BarrFern2010 = J_O(idx_tJO) ./ W(idx_tJO); % mumol/g/h 
+
+% %% Oxygen consumption
+% T = [25;28;31]; TC_JO = tempcorr(C2K(T), T_ref, T_A);
+% init_cond = [1e-10; E_0; 0; 0];
+% pars_spj = [kap, kap_R, g, k_J, k_M, L_T, v, U_Hb, U_Hj, U_Hp];
+% F = f_tTJO;
+% [t_j_tTJO, t_p_tTJO, t_b_tTJO, l_j_tTJO, l_p_tTJO, l_b_tTJO, l_i_tTJO, rho_j_tTJO, rho_B_tTJO, info] = get_tj(pars_tj, F);
+% L_b_tTJO = l_b_tTJO * L_m; L_j_tTJO = l_j_tTJO * L_m;
+% for i=1:length(TC_JO)
+%     [tt, LEHR] = ode45(@ode_LEHR_bi, [0; data.tTL(:,1)], init_cond, [], par, F, TC_JO(i), L_b_tTJO, L_j_tTJO);
+%     TL(:,i) = LEHR(2:end, 1); TE(:,i) = LEHR(2:end, 2); TE_H(:,i) = LEHR(2:end, 3); TE_R(:,i) = LEHR(2:end, 4);
+% 
+%     % Compute powers using scaled_power_j
+%     % pACSJGRD = scaled_power_j(TL(:,i), F, pars_spj, l_b_tTJO, l_j_tTJO, l_p_tTJO);
+%     % p_A = pACSJGRD(:, 1) .* (L_m^2 * p_Am); p_G = pACSJGRD(:, 5) .* (L_m^2 * p_Am); p_D = pACSJGRD(:, 7) .* (L_m^2 * p_Am);
+% 
+%     % Compute powers
+%     assim = TE_H(:,i) > E_Hb;
+%     s_M = max(1, min(TL(:, i), L_j_tTJO) / L_b_tTJO);
+%     p_A = assim * F .* s_M .* TL(:,i).^2 * p_Am;
+%     p_C = TE(:,i) .* (E_G * v ./ TL(:,i) .* s_M + p_M)./(kap.*TE(:,i)./TL(:,i).^3 + E_G);
+%     p_S = p_M * TL(:,i).^3;
+%     p_G = kap * p_C - p_S;
+%     p_J = k_J * TE_H(:, i);
+%     p_R = (1-kap)*p_C - p_J;
+%     p_D = p_S + p_J + (1 - kap_R .* (TE_H(:,i) > E_Hp)) .* p_R;
+% 
+%     eta_M = -inv(n_M) * n_O * eta_O;      
+%     J_O = [p_A, p_D, p_G] * eta_M(3, :)' * TC_JO(i); % mol/d
+%     TJO(:,i) = -J_O * 1e6 / 24; % mumol/g/d
+%     TW(:,i) = 1 * TL(:,i).^3 + (TE(:,i) + TE_R(:,i)) * w_E / mu_E / d_E; % g
+% 
+%     % [~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
+%     % prdData.tL_BarrFern2010 = L(idx_tL) / del_Mt * 10; % mm
+%     % prdData.tW_BarrFern2010 = W * 1e3; % mg 
+%     % [~, idx_tJO] = ismember(data.tJO(:,1) , data.tW_BarrFern2010(:,1));
+%     % prdData.tJO = TJO(idx_tJO) ./ W(idx_tJO); % mumol/g/h 
+% end
+% 
+% prdData.tTL = TL/ del_Mt * 10; % mm
+% prdData.tTWw = TW * 1e3; % mg 
+% prdData.tTJO = TJO ./ TW; % mumol/g/h 
 
 %% Oxygen consumption
-T = [25;28;31]; TC_JO = tempcorr(C2K(T), T_ref, T_A);
-init_cond = [1e-10; E_0; 0; 0];
-pars_spj = [kap, kap_R, g, k_J, k_M, L_T, v, U_Hb, U_Hj, U_Hp];
-F = f_tTJO;
-[t_j_tTJO, t_p_tTJO, t_b_tTJO, l_j_tTJO, l_p_tTJO, l_b_tTJO, l_i_tTJO, rho_j_tTJO, rho_B_tTJO, info] = get_tj(pars_tj, F);
-L_b_tTJO = l_b_tTJO * L_m; L_j_tTJO = l_j_tTJO * L_m;
+T = [25;28;31]; 
+TC_JO = tempcorr(C2K(temp.tTJO_BarrBurg1999), T_ref, T_A);
+init_cond = [1e-10; E_0; 0; 0; 1];
+F = f_BarrBurg1999;
 for i=1:length(TC_JO)
-    [tt, LEHR] = ode45(@ode_LEHR_bi, [0; data.tTL(:,1)], init_cond, [], par, F, TC_JO(i), L_b_tTJO, L_j_tTJO);
-    TL(:,i) = LEHR(2:end, 1); TE(:,i) = LEHR(2:end, 2); TE_R(:,i) = LEHR(2:end, 4);
-    s_M = max(1, min(TL(:, i), L_j_tTJO) / L_b_tTJO);
-    pACSJGRD = scaled_power_j(TL(:,i), F, pars_spj, l_b_tTJO, l_j_tTJO, l_p_tTJO);
-    p_A = pACSJGRD(:, 1); p_G = pACSJGRD(:, 5); p_D = pACSJGRD(:, 7);
-    eta_M = -inv(n_M) * n_O * eta_O;
-    J_O = [p_A, p_D, p_G] * eta_M(3, :)' .* (L_m^2 * p_Am) * TC_JO(i); % mol/d
+    [tt, VEHRsM] = ode45(@ode_VEHRsM, [0; data.tTL_BarrBurg1999(:,1)], init_cond, [], par, F, TC_JO(i));
+    TV(:,i) = VEHRsM(2:end, 1); TE(:,i) = VEHRsM(2:end, 2); TE_H(:,i) = VEHRsM(2:end, 3); TE_R(:,i) = VEHRsM(2:end, 4); Ts_M(:, i) = VEHRsM(2:end, 5);
+    
+    % Compute powers using scaled_power_j
+    % pACSJGRD = scaled_power_j(TL(:,i), F, pars_spj, l_b_tTJO, l_j_tTJO, l_p_tTJO);
+    % p_A = pACSJGRD(:, 1) .* (L_m^2 * p_Am); p_G = pACSJGRD(:, 5) .* (L_m^2 * p_Am); p_D = pACSJGRD(:, 7) .* (L_m^2 * p_Am);
+    
+    % Compute powers
+    assim = TE_H(:,i) > E_Hb;
+    p_A = assim * F .* Ts_M(:, i) .* TV(:,i).^(2/3) * p_Am;
+    p_C = TE(:,i) .* (E_G * v ./ TV(:,i).^(1/3) .* Ts_M(:, i) + p_M) ./ (kap .* TE(:,i) ./ TV(:,i) + E_G);
+    p_S = p_M * TV(:,i);
+    p_G = kap * p_C - p_S;
+    p_J = k_J * TE_H(:, i);
+    p_R = (1 - kap) * p_C - p_J;
+    p_D = p_S + p_J + (1 - kap_R .* (TE_H(:,i) > E_Hp)) .* p_R;
+    
+    eta_M = -inv(n_M) * n_O * eta_O;      
+    J_O = [p_A, p_D, p_G] * eta_M(3, :)' * TC_JO(i); % mol/d
     TJO(:,i) = -J_O * 1e6 / 24; % mumol/g/d
-    TW(:,i) = 1 * TL(:,i).^3 + (TE(:,i) + TE_R(:,i)) * w_E / mu_E / d_E; % g
+    TW(:,i) = 1 * TV(:,i) + (TE(:,i) + TE_R(:,i)) * w_E / mu_E / d_E; % g
 
     % [~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
     % prdData.tL_BarrFern2010 = L(idx_tL) / del_Mt * 10; % mm
@@ -183,10 +235,39 @@ for i=1:length(TC_JO)
     % prdData.tJO = TJO(idx_tJO) ./ W(idx_tJO); % mumol/g/h 
 end
 
-prdData.tTL = TL/ del_Mt * 10; % mm
-prdData.tTWw = TW * 1e3; % mg 
-prdData.tTJO = TJO ./ TW; % mumol/g/h 
-  
+prdData.tTL_BarrBurg1999 = TV.^(1/3) / del_Mt * 10; % mm
+prdData.tTWw_BarrBurg1999 = TW * 1e3; % mg 
+prdData.tTJO_BarrBurg1999 = TJO ./ TW; % mumol/g/h 
+
+%% Data from Yang et al. 2019
+init_cond = [1e-10; E_0; 0; 0; 1];
+F = f_YangYama2019;
+[tt, VEHRsM] = ode45(@ode_VEHRsM, [0; data.tL_YangYama2019(:,1)], init_cond, [], par, F, TC_28);
+V = VEHRsM(2:end, 1); E = VEHRsM(2:end, 2); E_H = VEHRsM(2:end, 3); E_R = VEHRsM(2:end, 4); s_M = VEHRsM(2:end, 5);
+
+% Compute powers
+assim = E_H > E_Hb;
+p_A = assim * F .* s_M .* V.^(2/3) * p_Am;
+p_C = E .* (E_G * v ./ V.^(1/3) .* s_M + p_M) ./ (kap .* E ./ V + E_G);
+p_S = p_M * V;
+p_G = kap * p_C - p_S;
+p_J = k_J * E_H;
+p_R = (1 - kap) * p_C - p_J;
+% p_D = p_S + p_J + (1 - kap_R .* (E_H > E_Hp)) .* p_R;
+p_D = p_S + p_J + p_R;
+
+eta_M = -inv(n_M) * n_O * eta_O;      
+J_O = [p_A, p_D, p_G] * eta_M(3, :)' * TC_28; % mol/d
+J_O = -J_O * 32 * 1e6 / 24; % mug/hr
+W = 1 * V + (E + E_R) * w_E / mu_E / d_E; % g
+
+prdData.tL_YangYama2019 = V.^(1/3) / del_Mt; % cm
+prdData.tWw_YangYama2019 = W; % g 
+prdData.tJO_YangYama2019 = J_O; % mumol/h 
+
+
+
+%%
 % survival at f
 
   % t-S data for larvae post hatch
@@ -502,6 +583,35 @@ dEH = ((1 - p.kap) * pC - kT_J * EH) * (EH < p.E_Hp);    % J/d, change in cum en
 dLEH = [dL; dE; dEH];    
 end
 
+function dVEHRsM = ode_VEHRsM(t, VEHRsM, p, f, TC)
+
+V  = VEHRsM(1); % cm, volumetric structural length
+E  = VEHRsM(2); % J,   energy in reserve 
+E_H = VEHRsM(3); % J, E_H maturity
+% ER = max(0, LEHR(4)); % J, E_R reproduction buffer
+s_M = VEHRsM(5);
+
+% Parameters
+p_Am = TC * p.z * p.p_M / p.kap; v = TC * p.v; p_M = TC * p.p_M; k_J = TC * p.k_J;
+kap = p.kap; E_G = p.kap; E_Hb = p.E_Hb; E_Hj = p.E_Hj; E_Hp = p.E_Hp;
+% Powers
+p_A = f * p_Am * s_M * V.^(2/3) * (E_H >= E_Hb);
+p_C = E .* (E_G * v / V.^(1/3) .* s_M + p_M) ./ (kap .*E ./ V + E_G);
+p_S = p_M * V;
+p_G = kap * p_C - p_S;
+p_J = k_J * E_H;
+p_R = (1 - kap) * p_C - p_J;
+
+% State changes
+dE = p_A - p_C;
+dV = p_G / E_G;
+dE_H = p_R * (E_H < E_Hp);
+dE_R = p_R * (E_H >= E_Hp);
+ds_M = s_M / 3 / V * dV * ((E_Hb < E_H) && (E_H < E_Hj));
+
+dVEHRsM = [dV; dE; dE_H; dE_R; ds_M];      
+
+end
 
 %% ODE for simulating from birth
 function dLEHR = ode_LEHR_bi(t, LEHR, p, f, TC, L_b, L_j)
