@@ -7,6 +7,7 @@ function [prdData, info] = predict_Danio_rerio(par, data, auxData)
   % customized filter  
   filterChecks =   E_R_init_DrewRodn2008 < 0 || E_R_init_DrewRodn2008 > 2000 || ...
                      ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
+                     f_DrewRodn2008 > 1 || f_EatoFarl1974 >1 || f_ValKwa2022 >1 || ...
                     s_shrink < 0 || s_G < 0 || del_X < 0 || (kap_P + kap_X) > 1;
   
   if filterChecks  
@@ -203,7 +204,7 @@ prdData.tJO_BarrFern2010 = J_O(idx_tJO) ./ W(idx_tJO); % mumol/g/h
 %% Oxygen consumption
 T = [25;28;31]; 
 TC_JO = tempcorr(C2K(temp.tTJO_BarrBurg1999), T_ref, T_A);
-init_cond = [1e-10; E_0; 0; 0; 1];
+init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_BarrBurg1999;
 for i=1:length(TC_JO)
     [tt, VEHRsM] = ode45(@ode_VEHRsM, [0; data.tTL_BarrBurg1999(:,1)], init_cond, [], par, F, TC_JO(i));
@@ -240,7 +241,7 @@ prdData.tTWw_BarrBurg1999 = TW * 1e3; % mg
 prdData.tTJO_BarrBurg1999 = TJO ./ TW; % mumol/g/h 
 
 %% Data from Yang et al. 2019
-init_cond = [1e-10; E_0; 0; 0; 1];
+init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_YangYama2019;
 [tt, VEHRsM] = ode45(@ode_VEHRsM, [0; data.tL_YangYama2019(:,1)], init_cond, [], par, F, TC_28);
 V = VEHRsM(2:end, 1); E = VEHRsM(2:end, 2); E_H = VEHRsM(2:end, 3); E_R = VEHRsM(2:end, 4); s_M = VEHRsM(2:end, 5);
@@ -588,7 +589,7 @@ function dVEHRsM = ode_VEHRsM(t, VEHRsM, p, f, TC)
 V  = VEHRsM(1); % cm, volumetric structural length
 E  = VEHRsM(2); % J,   energy in reserve 
 E_H = VEHRsM(3); % J, E_H maturity
-% ER = max(0, LEHR(4)); % J, E_R reproduction buffer
+E_R = VEHRsM(4); % J, E_R reproduction buffer
 s_M = VEHRsM(5);
 
 % Parameters
@@ -601,15 +602,17 @@ p_S = p_M * V;
 p_G = kap * p_C - p_S;
 p_J = k_J * E_H;
 p_R = (1 - kap) * p_C - p_J;
+p_C2 = 0.95*v*s_M/V^(1/3)*E_R;
 
 % State changes
 dE = p_A - p_C;
 dV = p_G / E_G;
 dE_H = p_R * (E_H < E_Hp);
-dE_R = p_R * (E_H >= E_Hp);
+dE_R = (p_R- p_C2) * (E_H >= E_Hp);
 ds_M = s_M / 3 / V * dV * ((E_Hb < E_H) && (E_H < E_Hj));
+dEgg = p_C2;
 
-dVEHRsM = [dV; dE; dE_H; dE_R; ds_M];      
+dVEHRsM = [dV; dE; dE_H; dE_R; ds_M; dEgg];      
 
 end
 

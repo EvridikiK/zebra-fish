@@ -630,9 +630,9 @@ data.tL_YangYama2019 = [... % time since fertilization (d), length (cm)
      60  2.323;
     120  3.109;
     180  3.345;
-    % 300  3.441;
-    % 420  3.659;
-    % 660  3.799
+    300  3.441;
+    420  3.659;
+    660  3.799
 ];
 units.tL_YangYama2019 = {'d', 'cm'};  label.tL_YangYama2019 = {'time', 'standard length'};
 temp.tL_YangYama2019 = C2K(28);  units.temp.tL_YangYama2019 = 'K'; label.temp.tL_YangYama2019 = 'temperature';
@@ -644,9 +644,9 @@ data.tWw_YangYama2019 = [... % time since fertilization (d), wet weight (g)
      60  0.094;
     120  0.228;
     180  0.312;
-    % 300  0.323;
-    % 420  0.369;
-    % 660  0.359
+    300  0.323;
+    420  0.369;
+    660  0.359
 ];
 units.tWw_YangYama2019 = {'d', 'g'};  label.tWw_YangYama2019 = {'time', 'wet weight'};
 temp.tWw_YangYama2019 =  C2K(28);  units.temp.tWw_YangYama2019 = 'K'; label.temp.tWw_YangYama2019 = 'temperature';
@@ -657,9 +657,9 @@ data.tJO_YangYama2019 = [... % time (d post hatch), oxygen consumption MO2 (μmo
      60  121.569
     120  188.235
     180  262.092
-    % 300  260.131
-    % 420  209.804
-    % 660  218.301
+    300  260.131
+    420  209.804
+    660  218.301
 
 ];
 units.tJO_YangYama2019 = {'d', '\mumol/h'};  label.tJO_YangYama2019 = {'time', 'oxygen consumption'};
