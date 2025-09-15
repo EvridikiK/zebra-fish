@@ -219,7 +219,7 @@ prdData.tS = exp(6 * h3_W /h_G^3 * (1 - exp(h_G * a) + h_G * a + h_G^2 * a.^2 /2
 
 %% BangGron2004: tMC and tMN, T = 25 �C
 F = f; TC = TC_egg;
-init_cond = [1e-10; E_0; 0; 0; 1; 0];
+init_cond = [1e-8; E_0; 0; 0; 1; 0];
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tMC(:,1)], init_cond, [], par, F, TC);
 V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2);
 MV = V * M_V; % mol of V
@@ -270,7 +270,7 @@ TC = TC_LawrEber2002;
 % --- Low:
 F = f_LawrEber2002_low;  
 a = [0; tL_LawrEber2002_low(:,1)];
-[t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
+[t_sort, ~, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
 
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, t_sort, init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); L = V.^(1/3);
@@ -281,7 +281,7 @@ prdData.tL_LawrEber2002_low = L / del_Mt;
 % --- High:
 F = f_LawrEber2002_high; 
 a = [0; tL_LawrEber2002_high(:,1)];
-[t_sort, it, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
+[t_sort, ~, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
 
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, t_sort, init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); L = V.^(1/3);
@@ -332,9 +332,8 @@ prdData.tL_EatoFarl1974 = L / del_Mt;
 %% tL, tWw and tWd of BagaPels2001
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_BagaPels2001; TC = TC_BagaPels2001;
-a = [0; tL_BagaPels2001(:,1)];
 
-[~, VEHRsMG] = ode45(@ode_VEHRsMG, t_sort, init_cond, [], par, F, TC);
+[~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; tL_BagaPels2001(:,1)], init_cond, [], par, F, TC);
 V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_R = VEHRsMG(2:end, 4);
 
 prdData.tWw_BagaPels2001  = 1 * V + w_E / mu_E / d_E * (E + E_R); % g, wet weight
