@@ -165,6 +165,7 @@ data.tL_BagaPels2001 = tLWWY(:, [1 2]);
 units.tL_BagaPels2001 = {'d', 'cm'};  label.tL_BagaPels2001 = {'time since fertilization', 'total length'};
   temp.tL_BagaPels2001 = C2K(25);  units.temp.tL_BagaPels2001 = 'K'; label.temp.tL_BagaPels2001 = 'temperature';
 bibkey.tL_BagaPels2001 = {'BagaPels2001'};
+
 %
 data.tWw_BagaPels2001 = tLWWY(:, [1 3]);
 units.tWw_BagaPels2001 = {'d', 'g'};  label.tWw_BagaPels2001 = {'time since fertilization', 'wet weight'};
@@ -359,31 +360,31 @@ units.tL_LawrEber2002_low = {'d', 'cm'}; label.tL_LawrEber2002_low = {'time sinc
   temp.tL_LawrEber2002_low = C2K(28.5); units.temp.tL_LawrEber2002_low = 'K'; label.temp.tL_LawrEber2002_low = 'temperature';
 bibkey.tL_LawrEber2002_low = {'LawrEber2008'};
 % 
-data.tLf1 = [ ...
+data.tLf1_BeauGous2015 = [ ...
 48.987	49.077	48.981	56.181	56.19	63.08	63.096	63.1	70.012	70.103	70.11	77.12	77.13	91.12	91.122	91.123	104.108	104.11	104.195;
 16.025	15.375	13.895	18.978	17.44	22.108	21.576	20.747	24.233	23.582	22.812	24.937	23.635	27.883	26.818	26.227	29.707	28.701	28.05
  ]';
-units.tLf1 = {'dpf', 'mm'}; label.tLf1 = {'time since fertilization', 'standard length'}; 
-  temp.tLf1 = C2K(27.1); units.temp.tLf1 = 'K'; label.temp.tLf1 = 'temperature';
-bibkey.tLf1 = {'BeauGous2015'};
+units.tLf1_BeauGous2015 = {'dpf', 'mm'}; label.tLf1_BeauGous2015 = {'time since fertilization', 'standard length'}; 
+  temp.tLf1_BeauGous2015 = C2K(27.1); units.temp.tLf1_BeauGous2015 = 'K'; label.temp.tLf1_BeauGous2015 = 'temperature';
+bibkey.tLf1_BeauGous2015 = {'BeauGous2015'};
 %
-data.tLf2 = [ ...
+data.tLf2_BeauGous2015 = [ ...
 49.071	48.976	48.975	56.079	56.076	63.179	63.177	70.094	70.093	69.999	77.006	77.004	77.002	91.104	91.011	91.101	104.097	104.095	104.094;
 13.185	12.239	11.943	15.96	14.895	18.44	17.907	20.682	20.327	19.972	22.156	21.505	20.854	24.096	23.682	22.972	26.216	25.506	25.091
  ]';
-units.tLf2 = {'dpf', 'mm'}; label.tLf2 = {'time since fertilization', 'standard length'}; 
-  temp.tLf2 = C2K(27.1); units.temp.tLf2 = 'K'; label.temp.tLf2 = 'temperature';
-bibkey.tLf2 = {'BeauGous2015'};
-comment.tLf2 = 'fasted once every three days';
+units.tLf2_BeauGous2015 = {'dpf', 'mm'}; label.tLf2_BeauGous2015 = {'time since fertilization', 'standard length'}; 
+  temp.tLf2_BeauGous2015 = C2K(27.1); units.temp.tLf2_BeauGous2015 = 'K'; label.temp.tLf2_BeauGous2015 = 'temperature';
+bibkey.tLf2_BeauGous2015 = {'BeauGous2015'};
+comment.tLf2_BeauGous2015 = 'fasted once every three days';
 %
-data.tLf3 = [ ...
+data.tLf3_BeauGous2015 = [ ...
 48.975	48.973	49.06	56.074	56.072	55.977	62.987	63.077	70.086	70.085	70.084	76.997	76.996	91.003	91.094	104.18	103.994;
 11.883	11.41	9.872	14.126	13.712	12.706	15.895	15.185	18.256	17.724	17.487	19.079	18.842	21.256	20.783	22.961	22.429
 ]';
-units.tLf3 = {'dpf', 'mm'}; label.tLf3 = {'time since fertilization', 'standard length'}; 
-  temp.tLf3 = C2K(27.1); units.temp.tLf3 = 'K'; label.temp.tLf3 = 'temperature';
-bibkey.tLf3 = {'BeauGous2015'};
-comment.tLf3 = 'fasted every other day';
+units.tLf3_BeauGous2015 = {'dpf', 'mm'}; label.tLf3_BeauGous2015 = {'time since fertilization', 'standard length'}; 
+  temp.tLf3_BeauGous2015 = C2K(27.1); units.temp.tLf3_BeauGous2015 = 'K'; label.temp.tLf3_BeauGous2015 = 'temperature';
+bibkey.tLf3_BeauGous2015 = {'BeauGous2015'};
+comment.tLf3_BeauGous2015 = 'fasted every other day';
 
 % time-fecundity over 19 days at 29 deg C:
 tN = [ ... first line is time, next lines are egg spawed on that day. Each line
@@ -619,7 +620,7 @@ bibkey.tL_ValKwa2022 = {'ValKwa2022'};
 
 data.tJX_ValKwa2022 = [dataValKwa2022(:, 1), dataValKwa2022(:, 4)];
 units.tJX_ValKwa2022 = {'d', '%bw/d'};  label.tJX_ValKwa2022 = {'time', 'feed intake'};
-init.tJX_ValKwa2022 = 0.789; label.init.tJX_ValKwa2022 = 'ash-free dry/wet ratio'; units.init.tJX_ValKwa2022 = '-';
+init.tJX_ValKwa2022 = 0.789; label.init.tJX_ValKwa2022 = 'ash-free dry/wet ratio of feed'; units.init.tJX_ValKwa2022 = '-';
 temp.tJX_ValKwa2022 =  C2K(26.72);  units.temp.tJX_ValKwa2022 = 'K'; label.temp.tJX_ValKwa2022 = 'temperature';
 bibkey.tJX_ValKwa2022 = {'ValKwa2022'};
 
@@ -681,9 +682,9 @@ weights.tTJO_BarrBurg1999 = 0 * weights.tTJO_BarrBurg1999;
 % weights.tWd_BagaPels2001 = 0 * weights.tWd_BagaPels2001;
 % weights.tL_EatoFarl1974 = 0 * weights.tL_EatoFarl1974;
 % weights.tL_Schi2002 = 0 * weights.tL_Schi2002;
-% weights.tLf1 = 0 * weights.tLf1;
-% weights.tLf2 = 0 * weights.tLf2;
-% weights.tLf3 = 0 * weights.tLf3;
+% weights.tLf1_BeauGous2015 = 0 * weights.tLf1_BeauGous2015;
+% weights.tLf2_BeauGous2015 = 0 * weights.tLf2_BeauGous2015;
+% weights.tLf3_BeauGous2015 = 0 * weights.tLf3_BeauGous2015;
 
 % weights.tMC = 0 * weights.tMC;
 % weights.tMN = 0 * weights.tMN;
@@ -691,19 +692,14 @@ weights.tTJO_BarrBurg1999 = 0 * weights.tTJO_BarrBurg1999;
 % weights.Wwt = 0 * weights.Wwt;
 % weights.tL1 = 0 * weights.tL1;
 % weights.tN = 0 * weights.tN;
-% weights.tL = 0 * weights.tL;
-% weights.tW = 0 * weights.tW;
+weights.tL = 0 * weights.tL;
+weights.tW = 0 * weights.tW;
 % 
-% weights.tWs = 0 * weights.tWs;
-% weights.tS_starv = 0 * weights.tS_starv;
-% weights.tS = 0 * weights.tS;
+weights.tWs = 0 * weights.tWs;
+weights.tS_starv = 0 * weights.tS_starv;
+weights.tS = 0 * weights.tS;
 
 % weights. = 0 * weights.;
-
-% o2_weight = 1;
-% weights.tTJO_BarrBurg1999 = o2_weight * weights.tTJO_BarrBurg1999;
-% weights.tTWw_BarrBurg1999 = o2_weight * weights.tTWw_BarrBurg1999;
-% weights.tTL_BarrBurg1999 = o2_weight * weights.tTL_BarrBurg1999;
 
 %% set pseudodata and respective weights
 [data, units, label, weights] = addpseudodata(data, units, label, weights);
@@ -745,7 +741,7 @@ txtData.title = title;
 
 %% Group plots
 set3 = {'tL_LawrEber2002_high','tL_LawrEber2002_low'}; subtitle3 = {'LawrEber2002 data at high, low food'};
-set5 = {'tLf1','tLf2','tLf3'}; subtitle5 = {'no fasting, fasting every 3 d, fasting every other day'};
+set5 = {'tLf1_BeauGous2015','tLf2_BeauGous2015','tLf3_BeauGous2015'}; subtitle5 = {'no fasting, fasting every 3 d, fasting every other day'};
 set8 = {'tW','tWs'}; subtitle8 = {'fed, starved'};
 metaData.grp.sets = {set3,  set5,  set8};
 metaData.grp.subtitle = {subtitle3,  subtitle5,  subtitle8};
