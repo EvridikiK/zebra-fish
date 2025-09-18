@@ -677,6 +677,9 @@ weights.tTL_BarrBurg1999 = 0 * weights.tTL_BarrBurg1999;
 weights.tTWw_BarrBurg1999 = 0 * weights.tTWw_BarrBurg1999;
 weights.tTJO_BarrBurg1999 = 0 * weights.tTJO_BarrBurg1999;
 
+% weights.tJX_ValKwa2022 = 0 * weights.tJX_ValKwa2022;
+% weights.tJO_YangYama2019 = 0* weights.tJO_YangYama2019;
+
 % weights.Wd0 = 0 * weights.Wd0;
 % weights.L0 = 0 * weights.L0;
 % weights.tWd_BagaPels2001 = 0 * weights.tWd_BagaPels2001;
@@ -689,15 +692,15 @@ weights.tTJO_BarrBurg1999 = 0 * weights.tTJO_BarrBurg1999;
 % weights.tMC = 0 * weights.tMC;
 % weights.tMN = 0 * weights.tMN;
 % 
-% weights.Wwt = 0 * weights.Wwt;
+weights.Wwt = 0 * weights.Wwt;
 % weights.tL1 = 0 * weights.tL1;
 % weights.tN = 0 * weights.tN;
-weights.tL = 0 * weights.tL;
-weights.tW = 0 * weights.tW;
+% weights.tL = 0 * weights.tL;
+% weights.tW = 0 * weights.tW;
 % 
-weights.tWs = 0 * weights.tWs;
-weights.tS_starv = 0 * weights.tS_starv;
-weights.tS = 0 * weights.tS;
+% weights.tWs = 0 * weights.tWs;
+% weights.tS_starv = 0 * weights.tS_starv;
+% weights.tS = 0 * weights.tS;
 
 % weights. = 0 * weights.;
 

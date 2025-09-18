@@ -7,7 +7,7 @@ vars_pull(cPar);  vars_pull(data);  vars_pull(auxData);
 % customized filter
 filterChecks =   E_R_init_DrewRodn2008 < 0 || E_R_init_DrewRodn2008 > 2000 || ...
     ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
-    f_DrewRodn2008 > 1 || f_EatoFarl1974 >1 || f_ValKwa2022 >1 || ...
+    f_DrewRodn2008 > 1 || f_EatoFarl1974 >1 || f_ValKwa2022 >1 || f_LawrEber2002_high > 1 || ...
     s_shrink < 0 || s_G < 0 || del_X < 0 || (kap_P + kap_X) > 1;
 
 if filterChecks
@@ -123,11 +123,11 @@ prdData.GSI = GSIT;
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_ValKwa2022;
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tJX_ValKwa2022(:,1)], init_cond, [], par, F, TC_26_72);
-V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5);
+V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5); E_egg = VEHRsMG(2:end, 5);
 [p_A, ~, ~, ~, ~, ~, ~] = compute_powers(V, E, E_H, E_R, s_M, TC_26_72, F, par);
 
 L = V.^(1/3);
-W = 1 * V + (E + E_R) * w_E / mu_E / d_E;
+W = 1 * V + (E + E_R + E_egg) * w_E / mu_E / d_E;
 JX = w_X / kap_X / mu_X .* p_A;
 
 prdData.tL_ValKwa2022 = L / del_Mt * 10; % mm
@@ -139,7 +139,7 @@ prdData.tJX_ValKwa2022 = JX ./ W * 100 / auxData.init.tJX_ValKwa2022; % (%bw/d)
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_BarrFern2010;
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tW_BarrFern2010(:,1)], init_cond, [], par, F, TC_28);
-V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5);
+V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5); E_egg = VEHRsMG(2:end, 5);
 
 [p_A, ~, p_S, p_G, p_J, p_R, p_C2] = compute_powers(V, E, E_H, E_R, s_M, TC_28, F, par);
 p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, E_H, E_Hp, kap_R);
@@ -147,7 +147,7 @@ p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, E_H, E_Hp, kap_R);
 eta_M = -inv(n_M) * n_O * eta_O;
 J_O = [p_A, p_D, p_G] * eta_M(3, :)' .* (L_m^2 * p_Am) * TC_28; % mol/d
 J_O = -J_O * 1e6 / 24; % mumol/g/d
-W = 1 * V + (E + E_R) * w_E / mu_E / d_E; % g
+W = 1 * V + (E + E_R + E_egg) * w_E / mu_E / d_E; % g
 
 [~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
 prdData.tL_BarrFern2010 = V(idx_tL).^(1/3) / del_Mt * 10; % mm
@@ -162,7 +162,7 @@ init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_BarrBurg1999;
 for i=1:length(TC_JO)
     [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tTL_BarrBurg1999(:,1)], init_cond, [], par, F, TC_JO(i));
-    TV(:,i) = VEHRsMG(2:end, 1); TE(:,i) = VEHRsMG(2:end, 2); TE_H(:,i) = VEHRsMG(2:end, 3); TE_R(:,i) = VEHRsMG(2:end, 4); Ts_M(:, i) = VEHRsMG(2:end, 5);
+    TV(:,i) = VEHRsMG(2:end, 1); TE(:,i) = VEHRsMG(2:end, 2); TE_H(:,i) = VEHRsMG(2:end, 3); TE_R(:,i) = VEHRsMG(2:end, 4); Ts_M(:, i) = VEHRsMG(2:end, 5); TE_egg(:,i) = VEHRsMG(2:end, 5);
 
     [p_A, ~, p_S, p_G, p_J, p_R, p_C2] = compute_powers(TV(:,i), TE(:,i), TE_H(:,i), TE_R(:,i), Ts_M(:,i), TC_JO(i), F, par);
     p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, TE_H(:,i), E_Hp, kap_R);
@@ -170,7 +170,7 @@ for i=1:length(TC_JO)
     eta_M = -inv(n_M) * n_O * eta_O;
     J_O = [p_A, p_D, p_G] * eta_M(3, :)' * TC_JO(i); % mol/d
     TJO(:,i) = -J_O * 1e6 / 24; % mumol/g/d
-    TW(:,i) = 1 * TV(:,i) + (TE(:,i) + TE_R(:,i)) * w_E / mu_E / d_E; % g
+    TW(:,i) = 1 * TV(:,i) + (TE(:,i) + TE_R(:,i) + TE_egg(:,i)) * w_E / mu_E / d_E; % g
 end
 
 prdData.tTL_BarrBurg1999 = TV.^(1/3) / del_Mt * 10; % mm
@@ -181,7 +181,7 @@ prdData.tTJO_BarrBurg1999 = TJO ./ TW; % mumol/g/h
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_YangYama2019;
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tL_YangYama2019(:,1)], init_cond, [], par, F, TC_28);
-V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5);
+V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5); E_egg = VEHRsMG(2:end, 5);
 
 [p_A, ~, p_S, p_G, p_J, p_R, p_C2] = compute_powers(V, E, E_H, E_R, s_M, TC_28, F, par);
 p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, E_H, E_Hp, kap_R);
@@ -189,7 +189,7 @@ p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, E_H, E_Hp, kap_R);
 eta_M = -inv(n_M) * n_O * eta_O;
 J_O = [p_A, p_D, p_G] * eta_M(3, :)'; % mol/d
 J_O = -J_O * 32 * 1e6 / 24; % mug/hr
-W = 1 * V + (E + E_R) * w_E / mu_E / d_E; % g
+W = 1 * V + (E + E_R + E_egg) * w_E / mu_E / d_E; % g
 
 prdData.tL_YangYama2019 = V.^(1/3) / del_Mt; % cm
 prdData.tWw_YangYama2019 = W; % g
@@ -334,10 +334,10 @@ init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_BagaPels2001; TC = TC_BagaPels2001;
 
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; tL_BagaPels2001(:,1)], init_cond, [], par, F, TC);
-V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_R = VEHRsMG(2:end, 4);
+V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_R = VEHRsMG(2:end, 4); E_egg = VEHRsMG(2:end, 5);
 
-prdData.tWw_BagaPels2001  = 1 * V + w_E / mu_E / d_E * (E + E_R); % g, wet weight
-prdData.tWd_BagaPels2001  = d_V * V + w_E / mu_E * (E + E_R); % g, dry weight
+prdData.tWw_BagaPels2001  = 1 * V + w_E / mu_E / d_E * (E + E_R + E_egg); % g, wet weight
+prdData.tWd_BagaPels2001  = d_V * V + w_E / mu_E * (E + E_R + E_egg); % g, dry weight
 prdData.tL_BagaPels2001   = V.^(1/3) / del_Mt; % cm, total length
 
 %% reproduction trials with individual females BeauGous2015
@@ -351,7 +351,7 @@ V = VEHRsMG(:, 1); E = VEHRsMG(:, 2); E_H = VEHRsMG(:, 3); E_R = VEHRsMG(:, 4); 
 
 prdData.tN = E_egg / E_0;
 prdData.tL1 = V([1 end]).^(1/3) / del_Ms;
-prdData.Wwt = 1 * V(end) + w_E / mu_E / d_E * (E(end) + E_R(end));
+prdData.Wwt = 1 * V(end) + w_E / mu_E / d_E * (E(end) + E_R(end) + E_egg(end));
 
 %% Starvation data: adults
 TC = TC_starv; F = f_DrewRodn2008;
@@ -445,7 +445,7 @@ dV = p_G / E_G;
 dE_H = p_R * (E_H < E_Hp);
 dE_R = (p_R - p_C2) * (E_H >= E_Hp);
 ds_M = s_M / 3 / V * dV * ((E_Hb < E_H) && (E_H < E_Hj));
-dEgg = p_C2;
+dEgg = p_C2 * (E_H >= E_Hp);
 
 dVEHRsMG = [dV; dE; dE_H; dE_R; ds_M; dEgg];
 
