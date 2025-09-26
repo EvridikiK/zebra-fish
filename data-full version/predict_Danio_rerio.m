@@ -88,6 +88,12 @@ t_R  = 3; % d, period of accumulaton of reprod buffer at T
 GSIT = (t_R * TC_GSI * k_M * g/ f^3)/ (f + kap * g * y_V_E);
 GSIT = GSIT * ((1 - kap) * f^3 - k_J * U_Hp/ L_m^2/ s_M_f^3);    % -, GSI
 
+% init_cond = [1e-10; E_0; 0; 0; 1; 0];
+% opts = odeset('Events',@ultimate_size);
+% [t, VEHRsMG] = ode45(@ode_VEHRsMG, [0; 10*365], init_cond, [], par, f, TC_Ri);
+% E_Ri = VEHRsMG(end, 4);
+% RT_i = kap_R*v*s_M_f*L_i*E_Ri;                 % ultimate reproduction rate
+
 % life span
 % pars_tm = [g; k; v_Hb; v_Hj; v_Hp; h_a/k_M^2; s_G];
 [tau_m, ~, ~] = get_tm_mod('abj', par, f);
@@ -342,9 +348,10 @@ prdData.tL_BagaPels2001   = V.^(1/3) / del_Mt; % cm, total length
 
 %% reproduction trials with individual females BeauGous2015
 F = f; TC = TC_tN;
-V_init =  max(Lp_tN, 36/10)^3;
+V_init =  max(Lp_tN*del_Mt, L_i)^3;
 E_init   = f * E_m * V_init;                  % J, inital energy in reserve
 init_cond = [V_init; E_init; E_Hp; E_R_init_BeauGous2015; s_M_f; 0];
+% init_cond = [V_init; E_init; E_Hp; 0; s_M_f; 0];
 
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, data.tN(:,1), init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); E = VEHRsMG(:, 2); E_H = VEHRsMG(:, 3); E_R = VEHRsMG(:, 4); s_M = VEHRsMG(:, 5); E_egg = VEHRsMG(:, 6);
@@ -558,6 +565,18 @@ dS = - S * (h_J + h_sh); % 1/d, survival fraction
 % pack state variables
 dLEHS = [dL; dE; dEH; dS; dmaxL; dmaxEH];
 
+end
+
+function [value,isterminal,direction] = ultimate_size(t, VEHRsM, p, f, TC)
+  L_m = p.z; 
+  if VEHRsM(3) >= p.E_Hp
+      a = (VEHRsM(5)* L_m)^3;
+  else
+      a = 0;
+  end
+  value = VEHRsM(1) - a;
+  isterminal = 1;
+  direction = 0;
 end
 
 

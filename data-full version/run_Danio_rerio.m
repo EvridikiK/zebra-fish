@@ -19,6 +19,7 @@ estim_options('pars_init_method', 2);
 estim_options('results_output', 0);
 estim_options('method', 'nm');
 [nsteps, info, fval] = estim_pars;
+% estim_pars
 
 n_runs = 50;
 estim_options('pars_init_method', 1);
