@@ -23,15 +23,15 @@ TC_ap = tempcorr(temp.ap, T_ref, T_A);
 TC_am = tempcorr(temp.am, T_ref, T_A);
 TC_Ri = tempcorr(temp.Ri, T_ref, T_A);
 TC_GSI = tempcorr(temp.GSI, T_ref, T_A);
-TC_egg = tempcorr(temp.tMC, T_ref, T_A);
+% TC_egg = tempcorr(temp.tMC, T_ref, T_A);
 TC_Schi2002 = tempcorr(temp.tL_Schi2002, T_ref, T_A);
 TC_EatoFarl1974 = tempcorr(temp.tL_EatoFarl1974, T_ref, T_A);
 TC_BagaPels2001 = tempcorr(temp.tL_BagaPels2001, T_ref, T_A);
 TC_tS = tempcorr(temp.tS, T_ref, T_A);
 TC_BestAdat2010 = tempcorr(temp.tL_BestAdat2010, T_ref, T_A);
 TC_LawrEber2002 = tempcorr(temp.tL_LawrEber2002_high, T_ref, T_A);
-TC_28 = tempcorr(temp.tJO_YangYama2019, T_ref, T_A);
-TC_26_72 = tempcorr(temp.tJX_ValKwa2022, T_ref, T_A);
+TC_28 = tempcorr(temp.tL_YangYama2019, T_ref, T_A);
+TC_26_72 = tempcorr(temp.tL_ValKwa2022, T_ref, T_A);
 
 TC_starv = tempcorr(temp.tW, T_ref, T_A);
 
@@ -128,7 +128,7 @@ prdData.GSI = GSIT;
 
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
 F = f_ValKwa2022;
-[~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tJX_ValKwa2022(:,1)], init_cond, [], par, F, TC_26_72);
+[~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tL_ValKwa2022(:,1)], init_cond, [], par, F, TC_26_72);
 V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5); E_egg = VEHRsMG(2:end, 5);
 [p_A, ~, ~, ~, ~, ~, ~] = compute_powers(V, E, E_H, E_R, s_M, TC_26_72, F, par);
 
@@ -142,46 +142,46 @@ prdData.tJX_ValKwa2022 = JX ./ W * 100 / auxData.init.tJX_ValKwa2022; % (%bw/d)
 
 
 %% Oxygen consumption
-init_cond = [1e-10; E_0; 0; 0; 1; 0];
-F = f_BarrFern2010;
-[~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tW_BarrFern2010(:,1)], init_cond, [], par, F, TC_28);
-V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5); E_egg = VEHRsMG(2:end, 5);
-
-[p_A, ~, p_S, p_G, p_J, p_R, p_C2] = compute_powers(V, E, E_H, E_R, s_M, TC_28, F, par);
-p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, E_H, E_Hp, kap_R);
-
-eta_M = -inv(n_M) * n_O * eta_O;
-J_O = [p_A, p_D, p_G] * eta_M(3, :)' .* (L_m^2 * p_Am) * TC_28; % mol/d
-J_O = -J_O * 1e6 / 24; % mumol/g/d
-W = 1 * V + (E + E_R + E_egg) * w_E / mu_E / d_E; % g
-
-[~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
-prdData.tL_BarrFern2010 = V(idx_tL).^(1/3) / del_Mt * 10; % mm
-prdData.tW_BarrFern2010 = W * 1e3; % mg
-[~, idx_tJO] = ismember(data.tJO_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
-prdData.tJO_BarrFern2010 = J_O(idx_tJO) ./ W(idx_tJO); % mumol/g/h
+% % init_cond = [1e-10; E_0; 0; 0; 1; 0];
+% % F = f_BarrFern2010;
+% % [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tW_BarrFern2010(:,1)], init_cond, [], par, F, TC_28);
+% % V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5); E_egg = VEHRsMG(2:end, 5);
+% % 
+% % [p_A, ~, p_S, p_G, p_J, p_R, p_C2] = compute_powers(V, E, E_H, E_R, s_M, TC_28, F, par);
+% % p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, E_H, E_Hp, kap_R);
+% % 
+% % eta_M = -inv(n_M) * n_O * eta_O;
+% % J_O = [p_A, p_D, p_G] * eta_M(3, :)' .* (L_m^2 * p_Am) * TC_28; % mol/d
+% % J_O = -J_O * 1e6 / 24; % mumol/g/d
+% % W = 1 * V + (E + E_R + E_egg) * w_E / mu_E / d_E; % g
+% % 
+% % [~, idx_tL] = ismember(data.tL_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
+% % prdData.tL_BarrFern2010 = V(idx_tL).^(1/3) / del_Mt * 10; % mm
+% % prdData.tW_BarrFern2010 = W * 1e3; % mg
+% % [~, idx_tJO] = ismember(data.tJO_BarrFern2010(:,1) , data.tW_BarrFern2010(:,1));
+% % prdData.tJO_BarrFern2010 = J_O(idx_tJO) ./ W(idx_tJO); % mumol/g/h
 
 
 %% Oxygen consumption
-TC_JO = tempcorr(C2K(temp.tTJO_BarrBurg1999), T_ref, T_A);
-init_cond = [1e-10; E_0; 0; 0; 1; 0];
-F = f_BarrBurg1999;
-for i=1:length(TC_JO)
-    [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tTL_BarrBurg1999(:,1)], init_cond, [], par, F, TC_JO(i));
-    TV(:,i) = VEHRsMG(2:end, 1); TE(:,i) = VEHRsMG(2:end, 2); TE_H(:,i) = VEHRsMG(2:end, 3); TE_R(:,i) = VEHRsMG(2:end, 4); Ts_M(:, i) = VEHRsMG(2:end, 5); TE_egg(:,i) = VEHRsMG(2:end, 5);
-
-    [p_A, ~, p_S, p_G, p_J, p_R, p_C2] = compute_powers(TV(:,i), TE(:,i), TE_H(:,i), TE_R(:,i), Ts_M(:,i), TC_JO(i), F, par);
-    p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, TE_H(:,i), E_Hp, kap_R);
-
-    eta_M = -inv(n_M) * n_O * eta_O;
-    J_O = [p_A, p_D, p_G] * eta_M(3, :)' * TC_JO(i); % mol/d
-    TJO(:,i) = -J_O * 1e6 / 24; % mumol/g/d
-    TW(:,i) = 1 * TV(:,i) + (TE(:,i) + TE_R(:,i) + TE_egg(:,i)) * w_E / mu_E / d_E; % g
-end
-
-prdData.tTL_BarrBurg1999 = TV.^(1/3) / del_Mt * 10; % mm
-prdData.tTWw_BarrBurg1999 = TW * 1e3; % mg
-prdData.tTJO_BarrBurg1999 = TJO ./ TW; % mumol/g/h
+% % TC_JO = tempcorr(C2K(temp.tTJO_BarrBurg1999), T_ref, T_A);
+% % init_cond = [1e-10; E_0; 0; 0; 1; 0];
+% % F = f_BarrBurg1999;
+% % for i=1:length(TC_JO)
+% %     [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tTL_BarrBurg1999(:,1)], init_cond, [], par, F, TC_JO(i));
+% %     TV(:,i) = VEHRsMG(2:end, 1); TE(:,i) = VEHRsMG(2:end, 2); TE_H(:,i) = VEHRsMG(2:end, 3); TE_R(:,i) = VEHRsMG(2:end, 4); Ts_M(:, i) = VEHRsMG(2:end, 5); TE_egg(:,i) = VEHRsMG(2:end, 5);
+% % 
+% %     [p_A, ~, p_S, p_G, p_J, p_R, p_C2] = compute_powers(TV(:,i), TE(:,i), TE_H(:,i), TE_R(:,i), Ts_M(:,i), TC_JO(i), F, par);
+% %     p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, TE_H(:,i), E_Hp, kap_R);
+% % 
+% %     eta_M = -inv(n_M) * n_O * eta_O;
+% %     J_O = [p_A, p_D, p_G] * eta_M(3, :)' * TC_JO(i); % mol/d
+% %     TJO(:,i) = -J_O * 1e6 / 24; % mumol/g/d
+% %     TW(:,i) = 1 * TV(:,i) + (TE(:,i) + TE_R(:,i) + TE_egg(:,i)) * w_E / mu_E / d_E; % g
+% % end
+% % 
+% % prdData.tTL_BarrBurg1999 = TV.^(1/3) / del_Mt * 10; % mm
+% % prdData.tTWw_BarrBurg1999 = TW * 1e3; % mg
+% % prdData.tTJO_BarrBurg1999 = TJO ./ TW; % mumol/g/h
 
 %% Data from Yang et al. 2019
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
@@ -224,14 +224,14 @@ h_G   = TC * s_G * F^4 * v * s_M/ L_i;
 prdData.tS = exp(6 * h3_W /h_G^3 * (1 - exp(h_G * a) + h_G * a + h_G^2 * a.^2 /2));
 
 %% BangGron2004: tMC and tMN, T = 25 �C
-F = f; TC = TC_egg;
-init_cond = [1e-8; E_0; 0; 0; 1; 0];
-[~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tMC(:,1)], init_cond, [], par, F, TC);
-V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2);
-MV = V * M_V; % mol of V
-ME = E / mu_E; % mol of E
-prdData.tMC = 1e6 * (MV + ME); % mumol, carbon mass
-prdData.tMN = 1e6 * (n_O(4,2) * MV + n_O(4,3) * ME); % mumol, nitroen mass
+% % F = f; TC = TC_egg;
+% % init_cond = [1e-8; E_0; 0; 0; 1; 0];
+% % [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tMC(:,1)], init_cond, [], par, F, TC);
+% % V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2);
+% % MV = V * M_V; % mol of V
+% % ME = E / mu_E; % mol of E
+% % prdData.tMC = 1e6 * (MV + ME); % mumol, carbon mass
+% % prdData.tMN = 1e6 * (n_O(4,2) * MV + n_O(4,3) * ME); % mumol, nitroen mass
 
 % compilation of literature growth curves (see previous version and AuguGagn2011 for more discussion on this):
 
