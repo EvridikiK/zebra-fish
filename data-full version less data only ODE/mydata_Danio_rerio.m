@@ -511,8 +511,8 @@ weights = setweights(data, []);
 % data.psd.kap_P = 0.27; units.psd.kap_P = '-'; label.psd.kap_P = 'faecation efficiency of food to faeces'; 
 % weights.psd.kap_P = 1;
 
-weights.psd.k_J = 0;
-weights.psd.k = .1;
+% weights.psd.k_J = 0;
+% weights.psd.k = .1;
 
 %% Auto add titles to univariate data
 title = struct();

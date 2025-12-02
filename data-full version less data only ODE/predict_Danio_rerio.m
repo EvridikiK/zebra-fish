@@ -279,7 +279,7 @@ E_0 = U_E0 * p_Am;
 [~, ~, ~, L_b, L_j, L_p, info] = getAgeAndLengthAtTransitions(par, F, TC, E_0);
 if ~info; prdData = []; return; end
 s_M_F = L_j/L_b;
-V_init =  (max(L_p, init.tN * del_Mt))^3; % Either initial length or puberty length, whichever is largest
+V_init =  (max(L_p, init.tN * del_Ms))^3; % Either initial length or puberty length, whichever is largest
 E_init   = F * E_m * V_init;                  % J, inital energy in reserve
 max_E_R = get_max_E_R(V_init, par, E_m, F, s_M_F);
 

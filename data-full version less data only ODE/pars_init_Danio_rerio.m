@@ -18,19 +18,19 @@ par.v = 0.06714;      free.v     = p;   units.v = 'cm/d';         label.v = 'ene
 par.kap = 0.4156;     free.kap   = p;   units.kap = '-';          label.kap = 'allocation fraction to soma'; 
 par.p_M = 55.5502;    free.p_M   = p;   units.p_M = 'J/d.cm^3';   label.p_M = '[p_M], vol-spec somatic maint'; 
 par.p_T = 0;          free.p_T   = 0;   units.p_T = 'J/d.cm^2';   label.p_T = '{p_T}, surf-spec somatic maint'; 
-par.k_J = 0.002;      free.k_J   = p;   units.k_J = '1/d';        label.k_J = 'maturity maint rate coefficient'; 
+par.k_J = 0.002;      free.k_J   = 0;   units.k_J = '1/d';        label.k_J = 'maturity maint rate coefficient'; 
 par.E_G = 5127.2141;  free.E_G   = k;   units.E_G = 'J/cm^3';     label.E_G = '[E_G], spec cost for structure'; 
 par.E_Hb = 2.826e-01; free.E_Hb  = p;   units.E_Hb = 'J';         label.E_Hb = 'maturity at birth'; 
 par.E_Hj = 4.036e+00; free.E_Hj  = p;   units.E_Hj = 'J';         label.E_Hj = 'maturity at metam'; 
 par.E_Hp = 9.444e+02; free.E_Hp  = p;   units.E_Hp = 'J';         label.E_Hp = 'maturity at puberty'; 
 par.kap_R = 0.95;     free.kap_R = 0;   units.kap_R = '-';        label.kap_R = 'reproduction efficiency'; 
 par.h_a = 1.936e-08;  free.h_a   = p;   units.h_a = '1/d^2';      label.h_a = 'Weibull aging acceleration'; 
-par.s_G = 0.0001069;  free.s_G   = 0;   units.s_G = '-';          label.s_G = 'Gompertz stress coefficient'; 
+par.s_G = 0.0001;     free.s_G   = 0;   units.s_G = '-';          label.s_G = 'Gompertz stress coefficient'; 
 
 %% other parameters 
 % par.E_R_init_BeauGous2015 = 2000;  free.E_R_init_BeauGous2015 = 1;   units.E_R_init_BeauGous2015 = 'J';  label.E_R_init_BeauGous2015 = 'initial energy in the repro buffer, BeauGous2015'; 
 par.del_Mt = 0.1857;  free.del_Mt = p;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult'; 
-par.V_0 = 1e-10;        free.V_0 = 0;       units.V_0 = 'cm^3';        label.V_0 = 'initial structure of egg';
+par.V_0 = 1e-10;      free.V_0 = 0;      units.V_0 = 'cm^3';       label.V_0 = 'initial structure of egg';
 
 par.f = 1;                        free.f     = 0;   units.f = '-';            label.f = 'scaled functional response'; 
 par.f_BagaPels2001 = 1.0000;      free.f_BagaPels2001 = e;   units.f_BagaPels2001 = '-';  label.f_BagaPels2001 = 'scaled functional response of BagaPels2001 data'; 
