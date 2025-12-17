@@ -164,7 +164,7 @@ tLWWY(:,2) = tLWWY(:,2)/ 10; % convert mm to cm
 tLWWY(:,[3 4 5]) = tLWWY(:,[3 4 5])/ 1000; % convert mg to g, mm^3 to cm^3
 %
 data.tL_BagaPels2001 = tLWWY(:, [1 2]);
-units.tL_BagaPels2001 = {'d', 'cm'};  label.tL_BagaPels2001 = {'time since fertilization', 'total length'};
+units.tL_BagaPels2001 = {'d', 'cm'};  label.tL_BagaPels2001 = {'time since fertilizatixon', 'total length'};
   temp.tL_BagaPels2001 = C2K(25);  units.temp.tL_BagaPels2001 = 'K'; label.temp.tL_BagaPels2001 = 'temperature';
 bibkey.tL_BagaPels2001 = {'BagaPels2001'};
 
@@ -476,7 +476,7 @@ weights = setweights(data, []);
 % % weights.tL_ValKwa2022 = 0 * weights.tL_ValKwa2022;
 % % 
 % % weights.tWw_YangYama2019 = 0* weights.tWw_YangYama2019;
-% % weights.tL_YangYama2019 = 0* weights.tL_YangYama2019;
+weights.tL_YangYama2019 = 0* weights.tL_YangYama2019;
 % % 
 % % % weights.Wd0 = 0 * weights.Wd0;
 % % % weights.L0 = 0 * weights.L0;
@@ -503,8 +503,8 @@ weights = setweights(data, []);
 % weights.Ri = 3 * weights.Ri;
 % weights.tN = 3 * weights.tN;
 % weights.GSI = 10 * weights.GSI;
-% weights.Lj = 3 * weights.Lj;
-% weights.Lb = 3 * weights.Lb;
+weights.ab = 0 * weights.ab;
+weights.Lb = 0 * weights.Lb;
 
 %% set pseudodata and respective weights
 [data, units, label, weights] = addpseudodata(data, units, label, weights);

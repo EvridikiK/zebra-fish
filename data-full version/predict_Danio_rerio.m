@@ -7,8 +7,8 @@ vars_pull(cPar);  vars_pull(data);  vars_pull(auxData);
 % customized filter
 filterChecks =   E_R_init_DrewRodn2008 < 0 || E_R_init_DrewRodn2008 > 2000 || ...
     ~reach_birth(g, k, v_Hb, f_DrewRodn2008) || ...
-    f_DrewRodn2008 > 1 || f_EatoFarl1974 >1 || f_ValKwa2022 >1 || f_LawrEber2002_high > 1 || ...
     s_shrink < 0 || s_G < 0 || del_X < 0 || (kap_P + kap_X) > 1;
+% f_DrewRodn2008 > 1 || f_EatoFarl1974 >1 || f_ValKwa2022 >1 || f_LawrEber2002_high > 1 || ...
 
 if filterChecks
     info = 0;
@@ -82,17 +82,26 @@ Lw_i = L_i/ del_Mt;                % cm, ultimate total length at f
 Ww_i = L_i^3 * (1 + f * w);       % g, ultimate wet weight
 
 % reproduction
-pars_R = [kap; kap_R; g; k_J; k_M; L_T; v; U_Hb; U_Hj; U_Hp]; % compose parameter vector
-RT_i = TC_Ri * reprod_rate_j(L_i, f, pars_R);                 % ultimate reproduction rate
-t_R  = 3; % d, period of accumulaton of reprod buffer at T
-GSIT = (t_R * TC_GSI * k_M * g/ f^3)/ (f + kap * g * y_V_E);
-GSIT = GSIT * ((1 - kap) * f^3 - k_J * U_Hp/ L_m^2/ s_M_f^3);    % -, GSI
+% pars_R = [kap; kap_R; g; k_J; k_M; L_T; v; U_Hb; U_Hj; U_Hp]; % compose parameter vector
+% RT_i = TC_Ri * reprod_rate_j(L_i, f, pars_R);                 % ultimate reproduction rate
+% t_R  = 3; % d, period of accumulaton of reprod buffer at T
+% GSIT = (t_R * TC_GSI * k_M * g/ f^3)/ (f + kap * g * y_V_E);
+% GSIT = GSIT * ((1 - kap) * f^3 - k_J * U_Hp/ L_m^2/ s_M_f^3);    % -, GSI
 
-% init_cond = [1e-10; E_0; 0; 0; 1; 0];
-% opts = odeset('Events',@ultimate_size);
-% [t, VEHRsMG] = ode45(@ode_VEHRsMG, [0; 10*365], init_cond, [], par, f, TC_Ri);
-% E_Ri = VEHRsMG(end, 4);
-% RT_i = kap_R*v*s_M_f*L_i*E_Ri;                 % ultimate reproduction rate
+% Maximum reproduction rate
+V = (L_m * s_M_f)^3; E = E_m * V; E_H = E_Hp; E_R = 0; 
+[~, ~, ~, ~, ~, p_R, ~] = compute_powers(V, E, E_H, E_R, s_M_f, TC_Ri, f, par);
+E_R_max = p_R / (kap_R * v / L_m); 
+p_C2_max = E_R_max * v / L_m * kap_R;
+RT_i =  kap_R * p_C2_max / E_0; % Temperature correction is done inside the compute_powers function
+% Gonado-somatic index
+stateUltimateSizeMaxReprodBuffer = [V, E, E_H, E_R_max, s_M_f, 0];
+[~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; init.GSI], stateUltimateSizeMaxReprodBuffer, [], par, f, TC_GSI); % Simulate evolution for 3 days
+MV = VEHRsMG(end, 1) * M_V * w_V;
+ME = VEHRsMG(end, 2) / mu_E * w_E;
+ME_R = VEHRsMG(end, 4) / mu_E * w_E;
+ME_e = VEHRsMG(end, 6) / mu_E * w_E;
+GSIT = (ME_e) / (ME + MV + ME_R + ME_e); % Temperature correction is done inside the compute_powers function
 
 % life span
 % pars_tm = [g; k; v_Hb; v_Hj; v_Hp; h_a/k_M^2; s_G];
@@ -348,15 +357,16 @@ prdData.tL_BagaPels2001   = V.^(1/3) / del_Mt; % cm, total length
 
 %% reproduction trials with individual females BeauGous2015
 F = f; TC = TC_tN;
-V_init =  max(Lp_tN*del_Mt, L_i)^3;
-E_init   = f * E_m * V_init;                  % J, inital energy in reserve
+V_init =  (max(Lp_tN, init.tN) * del_Mt)^3; % Either initial length or puberty length, whichever is largest
+E_init   = F * E_m * V_init;                  % J, inital energy in reserve
+max_E_R = get_max_E_R(V_init, par, E_m, F, s_M_f);
+if (0 > E_R_init_BeauGous2015) || (max_E_R < E_R_init_BeauGous2015); info=0; prdData=[]; return; end
 init_cond = [V_init; E_init; E_Hp; E_R_init_BeauGous2015; s_M_f; 0];
 % init_cond = [V_init; E_init; E_Hp; 0; s_M_f; 0];
-
-[~, VEHRsMG] = ode45(@ode_VEHRsMG, data.tN(:,1), init_cond, [], par, F, TC);
+[~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tN(:,1)], init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); E = VEHRsMG(:, 2); E_H = VEHRsMG(:, 3); E_R = VEHRsMG(:, 4); s_M = VEHRsMG(:, 5); E_egg = VEHRsMG(:, 6);
 
-prdData.tN = E_egg / E_0;
+prdData.tN = E_egg(2:end) / E_0;
 prdData.tL1 = V([1 end]).^(1/3) / del_Ms;
 prdData.Wwt = 1 * V(end) + w_E / mu_E / d_E * (E(end) + E_R(end) + E_egg(end));
 
@@ -364,12 +374,15 @@ prdData.Wwt = 1 * V(end) + w_E / mu_E / d_E * (E(end) + E_R(end) + E_egg(end));
 TC = TC_starv; F = f_DrewRodn2008;
 [lj, ~, lb, info] = get_lj(pars_lj, F);
 if ~info; prdData=[]; return; end
+s_M = lj / lb;
 
 % initial conditions for the ODE simulations
 L_init  = 2.49 * del_Ms; % cm, structural length at start
-E_init = F * E_m * L_init^3; % J, inital energy in reserve
+V_init = L_init^3;
+E_init = F * E_m * V_init; % J, inital energy in reserve
+max_E_R = get_max_E_R(V_init, par, E_m, f, s_M);
+if (0 > E_R_init_DrewRodn2008) || (max_E_R < E_R_init_DrewRodn2008); info=0; prdData=[]; return; end
 InitCond = [L_init; E_init; E_Hp; E_R_init_DrewRodn2008]; % concatenate initial conditions
-s_M = lj / lb;
 
 % growth during the first 11 days in the fed condition:
 t = tW(:,1);
@@ -417,7 +430,7 @@ end
 function [p_A, p_C, p_S, p_G, p_J, p_R, p_C2] = compute_powers(V, E, E_H, E_R, s_M, TC, f, p)
 
 p_Am = TC * p.z * p.p_M / p.kap; v = TC * p.v; p_M = TC * p.p_M; k_J = TC * p.k_J;
-kap = p.kap; E_G = p.kap; E_Hb = p.E_Hb; kap_R = p.kap_R;
+kap = p.kap; E_G = p.kap; E_Hb = p.E_Hb;
 
 % Powers
 p_A = f * p_Am .* s_M .* V.^(2/3) .* (E_H >= E_Hb);
@@ -426,7 +439,7 @@ p_S = p_M * V;
 p_G = kap * p_C - p_S;
 p_J = k_J * E_H;
 p_R = (1 - kap) * p_C - p_J;
-p_C2 = kap_R * v .* s_M ./ V.^(1/3) .* E_R;
+p_C2 = v .* s_M ./ V.^(1/3) .* E_R;
 
 end
 
@@ -442,7 +455,7 @@ E_H = VEHRsM(3); % J, E_H maturity
 E_R = VEHRsM(4); % J, E_R reproduction buffer
 s_M = VEHRsM(5);
 
-E_G = p.kap; E_Hb = p.E_Hb; E_Hj = p.E_Hj; E_Hp = p.E_Hp;
+E_G = p.kap; E_Hb = p.E_Hb; E_Hj = p.E_Hj; E_Hp = p.E_Hp; kap_R = p.kap_R;
 
 [p_A, p_C, p_S, p_G, p_J, p_R, p_C2] = compute_powers(V, E, E_H, E_R, s_M, TC, f, p);
 
@@ -452,10 +465,19 @@ dV = p_G / E_G;
 dE_H = p_R * (E_H < E_Hp);
 dE_R = (p_R - p_C2) * (E_H >= E_Hp);
 ds_M = s_M / 3 / V * dV * ((E_Hb < E_H) && (E_H < E_Hj));
-dEgg = p_C2 * (E_H >= E_Hp);
+dEgg = kap_R * p_C2 * (E_H >= E_Hp);
 
 dVEHRsMG = [dV; dE; dE_H; dE_R; ds_M; dEgg];
 
+end
+
+function max_E_R = get_max_E_R(V, par, E_m, f, s_M_max)
+E = V * E_m;
+E_H = par.E_Hp;
+E_R = 0;
+TC = 1;
+[~, ~, ~, ~, ~, p_R, ~] = compute_powers(V, E, E_H, E_R, s_M_max, TC, f, par);
+max_E_R = p_R ./ (par.v * s_M_max ./ V.^(1/3));
 end
 
 % --------------------------------------------------

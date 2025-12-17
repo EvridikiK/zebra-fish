@@ -28,7 +28,7 @@ prev_fval = 1e10;
 i = 2;
 % full simplex without significant improvement
 while (abs(prev_fval-fval) > tol_simplex) && (i < n_runs)
-    simplex_size = simplex_size;
+    simplex_size = -simplex_size;
     prev_fval = fval;
     fprintf('Run %d\n', i)
     [nsteps, info, fval] = estim_pars;

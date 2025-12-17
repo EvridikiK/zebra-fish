@@ -69,7 +69,9 @@ data.Ri = 240;    units.Ri = '#/d';  label.Ri = 'max reproduction';       bibkey
   
 data.GSI = 0.15;  units.GSI = 'g/g';   label.GSI = 'Gonado Somatic Index';  bibkey.GSI = {'ForbPres2010'}; 
   temp.GSI = C2K(26); units.temp.GSI = 'K'; label.temp.GSI = 'temperature';
+  init.GSI = 28; units.init.GSI = 'd'; label.init.GSI = 'simulation time for GSI';
   comment.GSI = 'values range from 0.1 - 0.15 and grow bigger with food regime';
+
   
 % uni-variate data
 
@@ -386,26 +388,8 @@ units.tLf3_BeauGous2015 = {'dpf', 'mm'}; label.tLf3_BeauGous2015 = {'time since 
 bibkey.tLf3_BeauGous2015 = {'BeauGous2015'};
 comment.tLf3_BeauGous2015 = 'fasted every other day';
 
-% time-fecundity over 19 days at 29 deg C:
-tN = [ ... first line is time, next lines are egg spawed on that day. Each line
-    % is an individual female
-1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20
-102	222	298	365	427	332	344	431	296	343	0	0	0	290	395	290	0	596	0	536
-200	210	219	0	0	0	595	0	320	0	0	0	0	0	0	282	0	0	0	0
-98	158	54	165	94	152	86	113	72	193	112	135	180	76	137	44	104	129	144	188
-186	186	296	285	286	239	271	232	192	0	0	326	0	0	0	0	0	0	0	0
-174	162	90	0	271	195	254	137	203	132	0	317	124	0	334	154	112	82	0	298
-247	223	182	286	436	336	277	256	236	196	278	346	314	346	264	216	218	304	304	250
-248	253	252	257	0	426	0	446	0	444	0	354	0	504	0	312	0	0	0	0
-]';
-fldnm = 'tN';
-data.(fldnm) = [tN(:,1)-1, mean(cumsum(tN(:,2:end)),2)];
-units.(fldnm) = {'d', '#'};  label.(fldnm) = {'time', 'cumulated number of eggs'};
-temp.(fldnm) = C2K(29);  units.temp.(fldnm) = 'K'; label.temp.(fldnm) = 'temperature';
-bibkey.(fldnm) = {'BeauGous2015'};
-comment.(fldnm) = 'mean value, from raw data provided as courtesy of R. Beaudouin';
-
-tL = [...
+L_BeauGous2015 = [...
+% 0  19 (days)
 37	39.114
 34	37.25
 34	40.27
@@ -415,12 +399,13 @@ tL = [...
 36	39.7
 ];
 fldnm = 'tL1';
-data.(fldnm) = [0 mean(tL(:,1))/10; 19 mean(tL(:,2))/10];
+data.(fldnm) = [0 mean(L_BeauGous2015(:,1))/10; 19 mean(L_BeauGous2015(:,2))/10];
 units.(fldnm) = {'d', 'cm'};  label.(fldnm) = {'time', 'standard length'};
 temp.(fldnm) = [C2K(29) C2K(29)];  units.temp.(fldnm) = 'K'; label.temp.(fldnm) = 'temperature';
 treat.(fldnm) = {0}; units.treat.(fldnm) = ''; label.treat.(fldnm) = '';
 bibkey.(fldnm) = {'BeauGous2015'};
 comment.(fldnm) = 'mean value, from raw data provided as courtesy of R. Beaudouin';
+
 %
 Ww = [ ...
 882.6
@@ -439,6 +424,26 @@ temp.(fldnm) = C2K(29);  units.temp.(fldnm) = 'K'; label.temp.(fldnm) = 'tempera
 treat.(fldnm) = {0}; units.treat.(fldnm) = ''; label.treat.(fldnm) = '';
 bibkey.(fldnm) = {'BeauGous2015'};
 comment.(fldnm) = 'mean value, from raw data provided as courtesy of R. Beaudouin';
+
+% time-fecundity over 19 days at 29 deg C:
+tN = [ ... first line is time, next lines are egg spawed on that day. Each line
+    % is an individual female
+1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20
+102	222	298	365	427	332	344	431	296	343	0	0	0	290	395	290	0	596	0	536
+200	210	219	0	0	0	595	0	320	0	0	0	0	0	0	282	0	0	0	0
+98	158	54	165	94	152	86	113	72	193	112	135	180	76	137	44	104	129	144	188
+186	186	296	285	286	239	271	232	192	0	0	326	0	0	0	0	0	0	0	0
+174	162	90	0	271	195	254	137	203	132	0	317	124	0	334	154	112	82	0	298
+247	223	182	286	436	336	277	256	236	196	278	346	314	346	264	216	218	304	304	250
+248	253	252	257	0	426	0	446	0	444	0	354	0	504	0	312	0	0	0	0
+]';
+fldnm = 'tN';
+data.(fldnm) = [tN(:,1), mean(cumsum(tN(:,2:end)),2)];
+units.(fldnm) = {'d', '#'};  label.(fldnm) = {'time', 'cumulated number of eggs'};
+temp.(fldnm) = C2K(29);  units.temp.(fldnm) = 'K'; label.temp.(fldnm) = 'temperature';
+bibkey.(fldnm) = {'BeauGous2015'};
+comment.(fldnm) = 'mean value, from raw data provided as courtesy of R. Beaudouin';
+init.(fldnm) = data.tL1(1, 2); units.init.(fldnm) = 'cm'; label.init.(fldnm) = 'initial length';
 
 % time-starvation(ELS):
 data.tS_starv = [... time (d)	survival probability
@@ -700,18 +705,18 @@ weights = setweights(data, []);
 % % weights.tMC = 0 * weights.tMC;
 % % weights.tMN = 0 * weights.tMN;
 % % 
-% % weights.Wwt = 0 * weights.Wwt;
-% % weights.tL1 = 0 * weights.tL1;
-% % weights.tN = 0 * weights.tN;
-% % weights.tL = 0 * weights.tL;
-% % weights.tW = 0 * weights.tW;
+% weights.Wwt = 0 * weights.Wwt;
+% weights.tL1 = 0 * weights.tL1;
+% weights.tN = 0 * weights.tN;
+weights.tL = 0 * weights.tL;
+weights.tW = 0 * weights.tW;
 % % 
 % % weights.tMN = 0 * weights.tMN;
 % % weights.tMC = 0 * weights.tMC;
 % % 
-% % weights.tWs = 0 * weights.tWs;
-% % weights.tS_starv = 0 * weights.tS_starv;
-% % weights.tS = 0 * weights.tS;
+weights.tWs = 0 * weights.tWs;
+weights.tS_starv = 0 * weights.tS_starv;
+weights.tS = 0 * weights.tS;
 % % 
 % % % weights. = 0 * weights.;
 

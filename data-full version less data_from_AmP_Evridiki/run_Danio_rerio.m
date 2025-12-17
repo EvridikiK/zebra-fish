@@ -37,7 +37,7 @@ end
 
 
 %% Save variables, estimation figures, and HTML
-estim_options('pars_init_method', 1)
+estim_options('pars_init_method', 2)
 estim_options('results_output', 3);
 estim_options('method', 'no');
 

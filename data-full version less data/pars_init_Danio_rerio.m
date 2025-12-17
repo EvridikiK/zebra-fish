@@ -29,13 +29,13 @@ par.s_G = 0.0001069;  free.s_G   = 0;   units.s_G = '-';          label.s_G = 'G
 par.del_Mt = 0.1857;  free.del_Mt = p;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult'; 
 par.V_0 = 1e-10;        free.V_0 = 0;       units.V_0 = 'cm^3';        label.V_0 = 'initial reserve of egg';
 
-e = 1; % Estimate food levels?
-par.f = 1;                        free.f     = 0;   units.f = '-';            label.f = 'scaled functional response'; 
+e = 0; % Estimate food levels?
+par.f = 1;                        free.f     = e;   units.f = '-';            label.f = 'scaled functional response'; 
 par.f_BagaPels2001 = 1.0000;      free.f_BagaPels2001 = e;   units.f_BagaPels2001 = '-';  label.f_BagaPels2001 = 'scaled functional response of BagaPels2001 data'; 
 par.f_BeauGous2015L = 1.0000;     free.f_BeauGous2015L = e;   units.f_BeauGous2015L = '-';  label.f_BeauGous2015L = 'sc. func. resp., BeauGous2015, length data'; 
 par.f_BeauGous2015R = 1.0000;     free.f_BeauGous2015R = e;   units.f_BeauGous2015R = '-';  label.f_BeauGous2015R = 'sc. func. resp., BeauGous2015, reproduction data'; 
-par.f_BestAdat2010 = 1.0000;      free.f_BestAdat2010 = e;   units.f_BestAdat2010 = '-';  label.f_BestAdat2010 = 'scaled functional response of BestAdat2010 data'; 
-par.f_EatoFarl1974 = 1.0000;      free.f_EatoFarl1974 = e;   units.f_EatoFarl1974 = '-';  label.f_EatoFarl1974 = 'scaled functional response of EatoFarl1974b data'; 
+par.f_BestAdat2010 = 1.0000;      free.f_BestAdat2010 = 0;   units.f_BestAdat2010 = '-';  label.f_BestAdat2010 = 'scaled functional response of BestAdat2010 data'; 
+par.f_EatoFarl1974 = 1.0000;      free.f_EatoFarl1974 = 0;   units.f_EatoFarl1974 = '-';  label.f_EatoFarl1974 = 'scaled functional response of EatoFarl1974b data'; 
 par.f_LawrEber2002_high = 1.0000; free.f_LawrEber2002_high = e;   units.f_LawrEber2002_high = '-';  label.f_LawrEber2002_high = 'scaled functional response of LawrEber2002_high data'; 
 par.f_LawrEber2002_low = 1.0000;  free.f_LawrEber2002_low = e;   units.f_LawrEber2002_low = '-';  label.f_LawrEber2002_low = 'scaled functional response of LawrEber2002_low data'; 
 par.f_Schi2002 = 1.0000;          free.f_Schi2002 = e;   units.f_Schi2002 = '-';   label.f_Schi2002 = 'scaled functional response of Schi2002 data'; 

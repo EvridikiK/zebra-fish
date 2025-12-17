@@ -17,8 +17,9 @@ kap = p.kap; E_G = p.kap; E_Hb = p.E_Hb;
 
 % Powers
 p_A = f * p_Am .* s_M .* V.^(2/3) .* (E_H >= E_Hb);
-p_C = E .* (E_G * v ./ V.^(1/3) .* s_M + p_M) ./ (kap * E ./ V + E_G);
 p_S = p_M * V;
+p_C = E .* (E_G * v ./ V.^(1/3) .* s_M + p_M) ./ (kap * E ./ V + E_G);
+% p_C = (E ./ V) .* (E_G .* s_M .* v .* (V.^(2/3)) + p_S) / (kap .* (E ./ V) + E_G);
 p_G = kap * p_C - p_S;
 p_J = k_J * E_H;
 p_R = (1 - kap) * p_C - p_J;
@@ -192,11 +193,13 @@ end
 birthEvent = @(t, VEHRsMG) allMaturityTransitions(t, VEHRsMG, par);
 options = odeset('Events', birthEvent);
 
+f = 1
+TC = tempcorr(C2K(25.5), T_ref, T_A);
 % From fertilization
 V = 1e-10;
 stateFertilization = [V, E_0, 0, 0, 1, 0];
 ode = @(t, VEHRsMG) ode_VEHRsMG(t, VEHRsMG, par, f, TC);
-sol = ode45(ode, [0; 1000], stateFertilization, options);
+sol = ode45(ode, [0 1000], stateFertilization, options);
 
 [t_j, t_p, t_b, l_j, l_p, l_b, l_i, rho_j, rho_B, info] = get_tj(pars_tj, f);
 fprintf('get_tj lengths: L_b %.4e L_j %.4e L_p %.4e s_M %.4e \n', l_b*L_m, l_j*L_m, l_p*L_m, l_j/l_b)
@@ -205,6 +208,7 @@ L_j_simul = sol.ye(1, 2)^(1/3);
 L_p_simul = sol.ye(1, 3)^(1/3);
 s_M_simul = L_j_simul / L_b_simul;
 fprintf('simul  lengths: L_b %.4e L_j %.4e L_p %.4e s_M %.4e \n', L_b_simul, L_j_simul, L_p_simul, s_M_simul)
+% fprintf('simul  lengths: L_b %.4e \n', L_b_simul)
 
 a_b_get_tj = t_b / k_M / TC;
 a_j_get_tj = t_j / k_M / TC;
