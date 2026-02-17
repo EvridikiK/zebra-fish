@@ -20,7 +20,21 @@ markerAlpha = 0.5;   % transparency for overlapping points
 
 %% ---------- SETTINGS ---------
 % Estimation folders to compare
-estimations = {'data_rich', 'data_moderate', 'data_limited'};
+estimations = {
+    'data_rich', ...
+    % 'data_moderate', ...
+    'data_limited'
+    };
+
+opts.plotTransitions = true;
+
+% Oxygen vs weight allometric relationship
+opts.plotAllometric = true;
+allo.a = 0.799;
+allo.b = 0.926;
+allo.color = [0.5 0.5 0.5];
+allo.label = sprintf('Allometric equation: J_O = %.3f W^{%.3f}', allo.a, allo.b);
+
 % Food levels to compare
 F = 0.7;
 
@@ -58,7 +72,7 @@ se_length_vs_age = age_length_weight_data.se_length;
 
 %% ---------- Initialize figures once (plot DATA once) ----------
 
-% Figure 1: Oxygen vs weight (log-log)
+%% Figure 1: Oxygen vs weight (log-log)
 figure(1); clf; hold on
 set(gca, 'FontSize', 14, 'XScale', 'log', 'YScale', 'log')
 h1 = scatter(o2_vs_weight(:,1), o2_vs_weight(:,2), 45, ...
@@ -68,7 +82,17 @@ h1 = scatter(o2_vs_weight(:,1), o2_vs_weight(:,2), 45, ...
 xlabel('Weight (g)')
 ylabel('Oxygen consumption (mg O_2/h)')
 
-% Figure 2: Oxygen vs age
+if opts.plotAllometric
+    wmin = min(o2_vs_weight(:,1));
+    wmax = max(o2_vs_weight(:,1));
+    w_fit = logspace(log10(wmin*0.8), log10(wmax*1.2), 300);
+    jo_fit = allo.a .* (w_fit .^ allo.b);
+    plot(w_fit, jo_fit, '--', 'Color', allo.color, 'LineWidth', 2, ...
+        'DisplayName', allo.label);
+end
+
+
+%% Figure 2: Oxygen vs age
 figure(2); clf; hold on
 set(gca, 'FontSize', 14)
 h2 = scatter(o2_vs_age(:,1), o2_vs_age(:,2), 55, ...
@@ -77,7 +101,7 @@ h2 = scatter(o2_vs_age(:,1), o2_vs_age(:,2), 55, ...
 xlabel('Age (d)')
 ylabel('Oxygen consumption (mg O_2/h)')
 
-% Figure 3: Weight vs age
+%% Figure 3: Weight vs age
 figure(3); clf; hold on
 set(gca, 'FontSize', 14)
 
@@ -90,7 +114,7 @@ h3 = errorbar(weight_vs_age(:,1), weight_vs_age(:,2), se_weight_vs_age, 'o', ...
 xlabel('Age (d)')
 ylabel('Weight (g)')
 
-% Figure 4: Length vs age
+%% Figure 4: Length vs age
 figure(4); clf; hold on
 set(gca, 'FontSize', 14)
 
@@ -106,6 +130,7 @@ ylabel('Length (mm)')
 %% ---------- Loop over estimations: compute + plot predictions ----------
 for i = 1:numel(estimations)
     estimation = estimations{i};
+    plotColor = modelColors(i,:);
 
     % Load parameters for this estimation
     par = loadEstimationParameters(estimation);
@@ -113,27 +138,47 @@ for i = 1:numel(estimations)
     vars_pull(par); vars_pull(cpar);
 
     % Simulate from birth
-    [t, L, W, J_O] = getPredictions(par, cpar, F);
+    [t, L, W, J_O, transitions] = getPredictions(par, cpar, F);
+    % Maturity transition points 
+    tr_ok = ~isnan(transitions.t);
+    t_tr  = transitions.t(tr_ok);   % [tb; tj; tp]
+    L_tr  = transitions.L(tr_ok);
+    W_tr  = transitions.W(tr_ok);
+    JO_tr = transitions.J_O(tr_ok);
 
     % Pretty legend label: "Data rich" / "Data moderate" / "Data limited"
     prettyName = formatEstimationName(estimation);
 
     % Add prediction line to each plot
     figure(1);
-    plot(W, J_O, 'LineWidth', 2, 'Color', modelColors(i,:), ...
+    plot(W, J_O, 'LineWidth', 2, 'Color', plotColor, ...
         'DisplayName', prettyName)
+    if opts.plotTransitions
+        plotTransitionDots(W_tr, JO_tr, plotColor);
+    end
 
     figure(2);
-    plot(t, J_O, 'LineWidth', 2, 'Color', modelColors(i,:), ...
+    plot(t, J_O, 'LineWidth', 2, 'Color', plotColor, ...
         'DisplayName', prettyName)
+    % Maturity transitions (dots on centerline)
+    if opts.plotTransitions
+        plotTransitionDots(t_tr, JO_tr, plotColor);
+    end
 
     figure(3);
-    plot(t, W, 'LineWidth', 2, 'Color', modelColors(i,:), ...
+    plot(t, W, 'LineWidth', 2, 'Color', plotColor, ...
         'DisplayName', prettyName)
+    % Maturity transitions
+    if opts.plotTransitions
+        plotTransitionDots(t_tr, W_tr, plotColor);
+    end
 
     figure(4);
-    plot(t, L, 'LineWidth', 2, 'Color', modelColors(i,:), ...
+    plot(t, L, 'LineWidth', 2, 'Color', plotColor, ...
         'DisplayName', prettyName)
+    if opts.plotTransitions
+        plotTransitionDots(t_tr, L_tr, plotColor);
+    end
 end
 
 %% ---------- Finalize legends + grid + save figures ----------
@@ -207,24 +252,56 @@ load(fullfile('..', estimation, 'results_Danio_rerio.mat'), 'par')
 % [par, ~, ~] = pars_init_Danio_rerio(metaData);
 end
 
-function [t_out, L, W, J_O] = getPredictions(par, cpar, F)
+function [t_out, L, W, J_O, transitions] = getPredictions(par, cpar, F)
+
+% Initialize transitions struct
+maturityThresholds = [par.E_Hb; par.E_Hj; par.E_Hp];
+transitions.E_H = maturityThresholds;
+transitions.t   = nan(3, 1);
+transitions.L   = nan(3, 1);
+transitions.W   = nan(3, 1);
+transitions.J_O = nan(3, 1);
+
 % Simulate from fertilization
 TC = tempcorr(C2K(28), par.T_ref, par.T_A);
 E_0 = getE0(F, par, cpar);
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
 
-t = linspace(0, 200, 201);
-[~, VEHRsMG] = ode45(@ode_VEHRsMG, t, init_cond, [], par, F, TC);
+t = linspace(0, 200, 1001);
+eventFunction = @(tt,yy) maturityEvents(tt, yy, maturityThresholds);
+odeOpts = odeset('Events', eventFunction);
+ode = @(t, VEHRsMG) ode_VEHRsMG(t, VEHRsMG, par, F, TC);
+[~, VEHRsMG, te, ye, ie] = ode45(ode, t, init_cond, odeOpts);
 
 % Keep consistency with your original indexing (drop t=0 row)
 t_out = t(2:end);
 
-V   = VEHRsMG(2:end, 1);
-E   = VEHRsMG(2:end, 2);
-E_H = VEHRsMG(2:end, 3);
-E_R = VEHRsMG(2:end, 4);
-s_M = VEHRsMG(2:end, 5);
-% E_egg = VEHRsMG(2:end, 6); % not used here
+[L, W, J_O] = getLengthWeightOxygen(VEHRsMG(2:end,:), par, cpar, F, TC);
+
+% Extract maturity transitions
+for s = 1:3
+    idx = find(ie == s, 1, 'first');
+    if isempty(idx)
+        continue
+    end
+
+    transitions.t(s) = te(idx);
+    [L_e, W_e, JO_e] = getLengthWeightOxygen(ye(idx, :), par, cpar, F, TC);
+
+    transitions.L(s)   = L_e;
+    transitions.W(s)   = W_e;
+    transitions.J_O(s) = JO_e;
+end
+
+end
+
+function [L, W, J_O] = getLengthWeightOxygen(VEHRsMG, par, cpar, F, TC)
+
+V   = VEHRsMG(:, 1);
+E   = VEHRsMG(:, 2);
+E_H = VEHRsMG(:, 3);
+E_R = VEHRsMG(:, 4);
+s_M = VEHRsMG(:, 5);
 
 [p_A, ~, p_S, p_G, p_J, p_R, p_C2] = compute_powers(V, E, E_H, E_R, s_M, TC, F, par);
 p_D = compute_dissipation_power(p_S, p_J, p_R, p_C2, E_H, par.E_Hp, par.kap_R);
@@ -237,4 +314,22 @@ J_O = [p_A, p_D, p_G] * eta_M(3, :)'; % mol/d
 J_O = -J_O * 32 * 1e3 / 24;          % mg O2/h
 
 W = 1 * V + (E + E_R) * cpar.w_E / par.mu_E / par.d_E; % g
+end
+
+
+function [value, isterminal, direction] = maturityEvents(~, y, EH_targets)
+% Event function to detect maturity transitions when E_H hits targets.
+E_H = y(3);
+value = E_H - EH_targets(:);
+isterminal = [0; 0; 0];
+% Typically E_H increases, so detect upward crossings only
+direction = [1; 1; 1];
+end
+
+function plotTransitionDots(x_tr, y_tr, rgb)
+% Plot maturity transition dots on the current axes.
+if ~~isempty(x_tr); return; end
+plot(x_tr, y_tr, 'o', ...
+    'MarkerSize', 7, 'MarkerFaceColor', rgb, ...
+    'MarkerEdgeColor', rgb, 'HandleVisibility', 'off');
 end
