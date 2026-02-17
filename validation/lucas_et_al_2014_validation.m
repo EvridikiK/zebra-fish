@@ -1,12 +1,9 @@
 clear
 addpath('../ode/')
 
-%% ---------- USER OPTIONS ----------
+%% ---------- PLOT OPTIONS ----------
 % Toggle grid for ALL plots
-opts.gridOn = false;   % set false to turn grid off
-
-% Estimation folders to compare
-estimations = {'data_rich', 'data_moderate', 'data_limited'};
+opts.gridOn = false;  
 
 % Define colors for each estimation (edit to taste)
 % Must be Nx3 RGB in [0,1], same order as `estimations`
@@ -17,10 +14,20 @@ modelColors = [
 ];
 
 % Data styling
-legendLabelData = 'Lucas et. al 2014 data'; % change once, updates all plots
-
+legendLabelData = 'Lucas et. al 2014 data'; 
 dataColor = [1 0 0];  % red
-markerAlpha = 0.5;   % transparency for overlapping points (0..1)
+markerAlpha = 0.5;   % transparency for overlapping points
+
+%% ---------- SETTINGS ---------
+% Estimation folders to compare
+estimations = {'data_rich', 'data_moderate', 'data_limited'};
+% Food levels to compare
+F = 0.7;
+
+% Save options
+saveFigs = false;
+saveFormats = {'png', 'pdf'};    
+figOutDir = fullfile(pwd, 'figures');
 
 %% Load oxygen vs weight data
 dataFolder = fullfile('..', 'data', 'Lucas et al. 2014');
@@ -44,6 +51,10 @@ o2_vs_age = [
 age_length_weight_data = readtable(fullfile(dataFolder, 'age_length_weight.csv'));
 weight_vs_age = [age_length_weight_data.age, age_length_weight_data.weight];
 length_vs_age = [age_length_weight_data.age, age_length_weight_data.length];
+
+% Standard errors for error bars (from table columns)
+se_weight_vs_age = age_length_weight_data.se_weight;
+se_length_vs_age = age_length_weight_data.se_length;
 
 %% ---------- Initialize figures once (plot DATA once) ----------
 
@@ -69,18 +80,26 @@ ylabel('Oxygen consumption (mg O_2/h)')
 % Figure 3: Weight vs age
 figure(3); clf; hold on
 set(gca, 'FontSize', 14)
-h3 = scatter(weight_vs_age(:,1), weight_vs_age(:,2), 35, ...
-    'MarkerFaceColor', dataColor, 'MarkerEdgeColor', dataColor, ...
+
+% Data with error bars (standard error)
+h3 = errorbar(weight_vs_age(:,1), weight_vs_age(:,2), se_weight_vs_age, 'o', ...
+    'Color', dataColor, 'MarkerFaceColor', dataColor, 'MarkerEdgeColor', dataColor, ...
+    'LineStyle', 'none', 'CapSize', 6, ...
     'DisplayName', legendLabelData);
+
 xlabel('Age (d)')
 ylabel('Weight (g)')
 
 % Figure 4: Length vs age
 figure(4); clf; hold on
 set(gca, 'FontSize', 14)
-h4 = scatter(length_vs_age(:,1), length_vs_age(:,2), 35, ...
-    'MarkerFaceColor', dataColor, 'MarkerEdgeColor', dataColor, ...
+
+% Data with error bars (standard error)
+h4 = errorbar(length_vs_age(:,1), length_vs_age(:,2), se_length_vs_age, 'o', ...
+    'Color', dataColor, 'MarkerFaceColor', dataColor, 'MarkerEdgeColor', dataColor, ...
+    'LineStyle', 'none', 'CapSize', 6, ...
     'DisplayName', legendLabelData);
+
 xlabel('Age (d)')
 ylabel('Length (mm)')
 
@@ -94,7 +113,7 @@ for i = 1:numel(estimations)
     vars_pull(par); vars_pull(cpar);
 
     % Simulate from birth
-    [t, L, W, J_O] = getPredictions(par, cpar);
+    [t, L, W, J_O] = getPredictions(par, cpar, F);
 
     % Pretty legend label: "Data rich" / "Data moderate" / "Data limited"
     prettyName = formatEstimationName(estimation);
@@ -120,14 +139,9 @@ end
 %% ---------- Finalize legends + grid + save figures ----------
 
 % Output folder for figures (relative to this script)
-figOutDir = fullfile(pwd, 'figures');
 if ~exist(figOutDir, 'dir')
     mkdir(figOutDir);
 end
-
-% Save options
-saveFigs = true;          % master switch
-saveFormats = {'png'};    % e.g., {'png','pdf','fig'}
 
 for f = 1:4
     figure(f);
@@ -186,14 +200,15 @@ function par = loadEstimationParameters(estimation)
 currentFolder = pwd;
 cleanup = onCleanup(@() cd(currentFolder));
 
-cd(fullfile('..', estimation))
-[~, ~, metaData, ~, ~] = mydata_Danio_rerio;
-[par, ~, ~] = pars_init_Danio_rerio(metaData);
+
+load(fullfile('..', estimation, 'results_Danio_rerio.mat'), 'par')
+% cd(fullfile('..', estimation))
+% [~, ~, metaData, ~, ~] = mydata_Danio_rerio;
+% [par, ~, ~] = pars_init_Danio_rerio(metaData);
 end
 
-function [t_out, L, W, J_O] = getPredictions(par, cpar)
-% Simulate from birth
-F = 1;
+function [t_out, L, W, J_O] = getPredictions(par, cpar, F)
+% Simulate from fertilization
 TC = tempcorr(C2K(28), par.T_ref, par.T_A);
 E_0 = getE0(F, par, cpar);
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
