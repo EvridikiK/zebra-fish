@@ -5,7 +5,7 @@ metaPar.model = 'abj';
 %% reference parameter (not to be changed) 
 par.T_ref = 293.15;   free.T_ref = 0;   units.T_ref = 'K';        label.T_ref = 'Reference temperature'; 
 p = 1; % estimate parameters
-k = 1; % estimate efficiencies and h_a
+k = 1; % estimate efficiencies, E_G, and h_a
 e = 1; % Estimate food levels?
 
 %% core primary parameters 

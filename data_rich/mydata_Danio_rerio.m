@@ -434,7 +434,6 @@ data.tJO_YangYama2019 = [... % time (d post hatch), oxygen consumption MO2 (μg/
     300  260.131
     420  209.804
     660  218.301
-
 ];
 units.tJO_YangYama2019 = {'d', '\mug/h'};  label.tJO_YangYama2019 = {'time', 'oxygen consumption'};
 temp.tJO_YangYama2019 = C2K(28);  units.temp.tJO_YangYama2019 = 'K'; label.temp.tJO_YangYama2019 = 'temperature';
