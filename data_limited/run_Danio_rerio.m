@@ -1,5 +1,6 @@
 close all; 
 global pets 
+addpath('../ode/')
 
 pets = {'Danio_rerio'}; 
 check_my_pet(pets); 
@@ -21,7 +22,7 @@ estim_options('method', 'nm');
 [nsteps, info, fval] = estim_pars;
 % estim_pars
 
-n_runs = 50;
+n_runs = 3;
 estim_options('pars_init_method', 1);
 estim_options('results_output', 0);
 prev_fval = 1e10;
