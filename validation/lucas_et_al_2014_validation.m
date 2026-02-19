@@ -3,7 +3,7 @@ addpath('../ode/')
 
 %% ---------- PLOT OPTIONS ----------
 % Toggle grid for ALL plots
-opts.gridOn = false;  
+opts.gridOn = false;
 
 % Define colors for each estimation (edit to taste)
 % Must be Nx3 RGB in [0,1], same order as `estimations`
@@ -11,10 +11,11 @@ modelColors = [
     0.1216 0.4667 0.7059;   % data_rich (seaborn blue)
     1.0000 0.4980 0.0549;   % data_moderate (seaborn orange)
     0.1725 0.6275 0.1725;   % data_limited (seaborn green)
-];
+    0.8392 0.1529 0.1569;   % data_2p5 (seaborn red)
+    ];
 
 % Data styling
-legendLabelData = 'Lucas et. al 2014 data'; 
+legendLabelData = 'Lucas et. al 2014 data';
 dataColor = [1 0 0];  % red
 markerAlpha = 0.5;   % transparency for overlapping points
 
@@ -23,7 +24,8 @@ markerAlpha = 0.5;   % transparency for overlapping points
 estimations = {
     'data_rich', ...
     % 'data_moderate', ...
-    'data_limited'
+    % 'data_limited', ...
+    'data_2p5'
     };
 
 opts.plotTransitions = true;
@@ -39,8 +41,8 @@ allo.label = sprintf('Allometric equation: J_O = %.3f W^{%.3f}', allo.a, allo.b)
 F = 0.7;
 
 % Save options
-saveFigs = false;
-saveFormats = {'png', 'pdf'};    
+saveFigs = true;
+saveFormats = {'png', 'pdf'};
 figOutDir = fullfile(pwd, 'figures');
 
 %% Load oxygen vs weight data
@@ -54,13 +56,13 @@ o2_vs_weight = [ ...
     larvae_data.weight,   larvae_data.oxygen_consumption;
     juvenile_data.weight, juvenile_data.oxygen_consumption;
     adult_data.weight,    adult_data.oxygen_consumption
-];
+    ];
 
 o2_vs_age = [
     5   mean(larvae_data.oxygen_consumption);
     60  mean(juvenile_data.oxygen_consumption);
     180 mean(adult_data.oxygen_consumption)
-];
+    ];
 
 age_length_weight_data = readtable(fullfile(dataFolder, 'age_length_weight.csv'));
 weight_vs_age = [age_length_weight_data.age, age_length_weight_data.weight];
@@ -139,7 +141,7 @@ for i = 1:numel(estimations)
 
     % Simulate from birth
     [t, L, W, J_O, transitions] = getPredictions(par, cpar, F);
-    % Maturity transition points 
+    % Maturity transition points
     tr_ok = ~isnan(transitions.t);
     t_tr  = transitions.t(tr_ok);   % [tb; tj; tp]
     L_tr  = transitions.L(tr_ok);
@@ -236,9 +238,21 @@ function prettyName = formatEstimationName(estimation)
 %   data_rich     -> Data rich estimation
 %   data_moderate -> Data moderate estimation
 %   data_limited  -> Data limited estimation
-s = strrep(estimation, '_', ' ');
-core = strrep(s, 'data ', ''); % remove leading "data " when present
-prettyName = ['Data ' core ' estimation'];
+%   data_2p5      -> Completeness 2.5 estimation
+switch estimation
+    case 'data_rich'
+        prettyName = 'Data rich';
+    case 'data_moderate'
+        prettyName = 'Data moderate';
+    case 'data_limited'
+        prettyName = 'Data limited';
+    case 'data_2p5'
+        prettyName = 'Completeness 2.5';
+    otherwise
+        % Generic fallback: replace underscores and capitalize
+        s = strrep(estimation, '_', ' ');
+        prettyName = ['Data ' s ' estimation'];
+end
 end
 
 function par = loadEstimationParameters(estimation)
@@ -328,8 +342,8 @@ end
 
 function plotTransitionDots(x_tr, y_tr, rgb)
 % Plot maturity transition dots on the current axes.
-if ~~isempty(x_tr); return; end
-plot(x_tr, y_tr, 'o', ...
+if isempty(x_tr); return; end
+plot(x_tr, y_tr, 's', ...
     'MarkerSize', 7, 'MarkerFaceColor', rgb, ...
     'MarkerEdgeColor', rgb, 'HandleVisibility', 'off');
 end
