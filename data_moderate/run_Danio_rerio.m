@@ -1,27 +1,28 @@
-close all; 
-global pets 
+close all;
+global pets
+addpath('../ode/')
 
-pets = {'Danio_rerio'}; 
-check_my_pet(pets); 
+pets = {'Danio_rerio'};
+check_my_pet(pets);
 
 %% Perform estimation but only save .mat file
 estim_options('default');
 estim_options('max_step_number',500);
 estim_options('max_fun_evals',5e4);
-global simplex_size 
+global simplex_size
 simplex_size = 0.25;
 estim_options('simplex_size', simplex_size);
 estim_options('filter', 3);
-tol_simplex = 1e-4;  
+tol_simplex = 1e-4;
 estim_options('tol_simplex',tol_simplex);
 
-estim_options('pars_init_method', 1);
+estim_options('pars_init_method', 3);
 estim_options('results_output', 0);
 estim_options('method', 'nm');
 [nsteps, info, fval] = estim_pars;
 % estim_pars
 
-n_runs = 50;
+n_runs = 3;
 estim_options('pars_init_method', 1);
 estim_options('results_output', 0);
 prev_fval = 1e10;
@@ -52,7 +53,7 @@ q = rmfield(par, 'free');
 if ~info
     fprintf('BUG!!! BIG BUG!!!')
 end
-    
+
 
 %% Save data and predictions
 save(['results_' pets{1} '.mat'], 'metaData', 'metaPar', 'par', 'txtPar', 'data', 'prdData')
