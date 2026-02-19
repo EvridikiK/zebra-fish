@@ -22,7 +22,7 @@ estim_options('method', 'nm');
 [nsteps, info, fval] = estim_pars;
 % estim_pars
 
-n_runs = 3;
+n_runs = 50;
 estim_options('pars_init_method', 1);
 estim_options('results_output', 0);
 prev_fval = 1e10;
