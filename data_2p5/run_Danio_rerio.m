@@ -16,7 +16,7 @@ estim_options('filter', 3);
 tol_simplex = 1e-4;
 estim_options('tol_simplex',tol_simplex);
 
-estim_options('pars_init_method', 2);
+estim_options('pars_init_method', 3);
 estim_options('results_output', 0);
 estim_options('method', 'nm');
 [nsteps, info, fval] = estim_pars;
