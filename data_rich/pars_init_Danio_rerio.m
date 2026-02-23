@@ -28,9 +28,10 @@ par.h_a = 1.936e-08;  free.h_a   = p;   units.h_a = '1/d^2';      label.h_a = 'W
 par.s_G = 0.0001;     free.s_G   = 0;   units.s_G = '-';          label.s_G = 'Gompertz stress coefficient'; 
 
 %% other parameters 
-par.del_Mt = 0.1857;  free.del_Mt = p;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult'; 
-par.V_0 = 1e-10;      free.V_0 = 0;      units.V_0 = 'cm^3';       label.V_0 = 'initial structure of egg';
+par.del_Mt = 0.20;                free.del_Mt = p;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult'; 
+par.V_0 = 1e-10;                  free.V_0 = 0;      units.V_0 = 'cm^3';       label.V_0 = 'initial structure of egg';
 
+% food levels
 par.f = 1;                        free.f     = 0;   units.f = '-';            label.f = 'scaled functional response'; 
 par.f_BagaPels2001 = 1.0000;      free.f_BagaPels2001 = e;   units.f_BagaPels2001 = '-';  label.f_BagaPels2001 = 'scaled functional response of BagaPels2001 data'; 
 par.f_BeauGous2015L = 1.0000;     free.f_BeauGous2015L = e;   units.f_BeauGous2015L = '-';  label.f_BeauGous2015L = 'sc. func. resp., BeauGous2015, length data'; 

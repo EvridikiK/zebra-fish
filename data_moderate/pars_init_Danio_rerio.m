@@ -25,13 +25,15 @@ par.h_a = 2.082e-09;  free.h_a   = 1;   units.h_a = '1/d^2';      label.h_a = 'W
 par.s_G = 0.0001;     free.s_G   = 0;   units.s_G = '-';          label.s_G = 'Gompertz stress coefficient';
 
 %% other parameters
-par.V_0 = 1e-10;      free.V_0   = 0;   units.V_0 = 'cm^3';       label.V_0 = 'initial structure of egg';
-par.del_Mt = 0.12077;  free.del_Mt = 1;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult';
-par.f = 1;            free.f     = 0;   units.f = '-';            label.f = 'scaled functional response';
-par.f_BagaPels2001 = 0.76793;  free.f_BagaPels2001 = 1;   units.f_BagaPels2001 = '-';  label.f_BagaPels2001 = 'scaled functional response of BagaPels2001 data';
+par.V_0 = 1e-10;                free.V_0   = 0;   units.V_0 = 'cm^3';       label.V_0 = 'initial structure of egg';
+par.del_Mt = 0.20;              free.del_Mt = 1;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult';
+
+% food levels
+par.f = 1;                      free.f     = 0;   units.f = '-';            label.f = 'scaled functional response';
+par.f_BagaPels2001 = 1;         free.f_BagaPels2001 = 1;   units.f_BagaPels2001 = '-';  label.f_BagaPels2001 = 'scaled functional response of BagaPels2001 data';
 par.f_BestAdat2010 = 1;         free.f_BestAdat2010 = 1;   units.f_BestAdat2010 = '-';  label.f_BestAdat2010 = 'scaled functional response of BestAdat2010 data';
-par.f_LawrEber2002_high = 0.80977;  free.f_LawrEber2002_high = 1;   units.f_LawrEber2002_high = '-';  label.f_LawrEber2002_high = 'scaled functional response of LawrEber2002_high data';
-par.f_LawrEber2002_low = 0.54302;  free.f_LawrEber2002_low = 1;   units.f_LawrEber2002_low = '-';  label.f_LawrEber2002_low = 'scaled functional response of LawrEber2002_low data';
+par.f_LawrEber2002_high = 1;    free.f_LawrEber2002_high = 1;   units.f_LawrEber2002_high = '-';  label.f_LawrEber2002_high = 'scaled functional response of LawrEber2002_high data';
+par.f_LawrEber2002_low = 1;     free.f_LawrEber2002_low = 1;   units.f_LawrEber2002_low = '-';  label.f_LawrEber2002_low = 'scaled functional response of LawrEber2002_low data';
 
 %% set chemical parameters from Kooy2010
 [par, units, label, free] = addchem(par, units, label, free, metaData.phylum, metaData.class);
