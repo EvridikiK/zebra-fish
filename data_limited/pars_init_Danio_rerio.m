@@ -29,8 +29,8 @@ par.V_0 = 1e-10;         free.V_0   = 0;   units.V_0 = 'cm^3';       label.V_0 =
 par.del_Mt = 0.20;       free.del_Mt = 1;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult';
 
 % food levels
-par.f = 1;               free.f     = 0;   units.f = '-';            label.f = 'scaled functional response';
-par.f_BestAdat2010 = 1;  free.f_BestAdat2010 = 1;   units.f_BestAdat2010 = '-';  label.f_BestAdat2010 = 'scaled functional response of BestAdat2010 data';
+par.f = 1;               free.f     = 0;            units.f = '-';              label.f = 'scaled functional response';
+par.f_BestAdat2010 = 1;  free.f_BestAdat2010 = 1;   units.f_BestAdat2010 = '-'; label.f_BestAdat2010 = 'scaled functional response of BestAdat2010 data';
 
 %% set chemical parameters from Kooy2010
 [par, units, label, free] = addchem(par, units, label, free, metaData.phylum, metaData.class);
