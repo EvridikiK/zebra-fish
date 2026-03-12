@@ -24,25 +24,28 @@ par.E_Hb = 8.765e-01; free.E_Hb  = p;   units.E_Hb = 'J';         label.E_Hb = '
 par.E_Hj = 9.421e+00; free.E_Hj  = p;   units.E_Hj = 'J';         label.E_Hj = 'maturity at metam'; 
 par.E_Hp = 2.291e+03; free.E_Hp  = p;   units.E_Hp = 'J';         label.E_Hp = 'maturity at puberty'; 
 par.kap_R = 0.95;     free.kap_R = 0;   units.kap_R = '-';        label.kap_R = 'reproduction efficiency'; 
+
+% Aging parameters
 par.h_a = 1e-08;      free.h_a   = p;   units.h_a = '1/d^2';      label.h_a = 'Weibull aging acceleration'; 
 par.s_G = 1e-4;       free.s_G   = 0;   units.s_G = '-';          label.s_G = 'Gompertz stress coefficient'; 
 
 %% other parameters 
-par.del_Mt = 0.20;                free.del_Mt = p;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for adult'; 
-par.V_0 = 1e-10;                  free.V_0 = 0;      units.V_0 = 'cm^3';       label.V_0 = 'initial structure of egg';
+par.del_Mt = 0.20;           free.del_Mt = p;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for total length'; 
+par.del_Ms = 0.20;           free.del_Ms = 0;   units.del_Ms = '-';       label.del_Ms = 'shape coefficient for standard length'; 
+par.V_0 = 1e-10;             free.V_0 = 0;      units.V_0 = 'cm^3';       label.V_0 = 'initial structure of egg';
 
 % food levels
-par.f = 1;                   free.f     = 0;   units.f = '-';            label.f = 'scaled functional response'; 
-par.f_BagaPels2001 = 1;      free.f_BagaPels2001 = e;   units.f_BagaPels2001 = '-';  label.f_BagaPels2001 = 'scaled functional response of BagaPels2001 data'; 
-par.f_BeauGous2015L = 1;     free.f_BeauGous2015L = e;   units.f_BeauGous2015L = '-';  label.f_BeauGous2015L = 'sc. func. resp., BeauGous2015, length data'; 
-par.f_BeauGous2015R = 1;     free.f_BeauGous2015R = e;   units.f_BeauGous2015R = '-';  label.f_BeauGous2015R = 'sc. func. resp., BeauGous2015, reproduction data'; 
-par.f_BestAdat2010 = 1;      free.f_BestAdat2010 = e;   units.f_BestAdat2010 = '-';  label.f_BestAdat2010 = 'scaled functional response of BestAdat2010 data'; 
-par.f_EatoFarl1974 = 1;      free.f_EatoFarl1974 = e;   units.f_EatoFarl1974 = '-';  label.f_EatoFarl1974 = 'scaled functional response of EatoFarl1974b data'; 
-par.f_LawrEber2002_high = 1; free.f_LawrEber2002_high = e;   units.f_LawrEber2002_high = '-';  label.f_LawrEber2002_high = 'scaled functional response of LawrEber2002_high data'; 
-par.f_LawrEber2002_low = 1;  free.f_LawrEber2002_low = e;   units.f_LawrEber2002_low = '-';  label.f_LawrEber2002_low = 'scaled functional response of LawrEber2002_low data'; 
-par.f_Schi2002 = 1;          free.f_Schi2002 = e;   units.f_Schi2002 = '-';   label.f_Schi2002 = 'scaled functional response of Schi2002 data'; 
-par.f_ValKwa2022 = 1;        free.f_ValKwa2022 = e;   units.f_ValKwa2022 = '-';  label.f_ValKwa2022 = 'scaled functional response of ValKwa2022 data'; 
-par.f_YangYama2019 = 1;      free.f_YangYama2019 = e;   units.f_YangYama2019 = '-';  label.f_YangYama2019 = 'scaled functional response of YangYama2019 data'; 
+par.f = 1;                   free.f     = 0;                units.f = '-';                      label.f = 'scaled functional response for 0-var data'; 
+par.f_BagaPels2001 = 1;      free.f_BagaPels2001 = e;       units.f_BagaPels2001 = '-';         label.f_BagaPels2001 = 'sc. func. resp. of BagaPels2001 data'; 
+par.f_BeauGous2015L = 1;     free.f_BeauGous2015L = e;      units.f_BeauGous2015L = '-';        label.f_BeauGous2015L = 'sc. func. resp., BeauGous2015, length data'; 
+par.f_BeauGous2015R = 1;     free.f_BeauGous2015R = e;      units.f_BeauGous2015R = '-';        label.f_BeauGous2015R = 'sc. func. resp., BeauGous2015, reproduction data'; 
+par.f_BestAdat2010 = 1;      free.f_BestAdat2010 = e;       units.f_BestAdat2010 = '-';         label.f_BestAdat2010 = 'sc. func. resp. of BestAdat2010 data'; 
+par.f_EatoFarl1974 = 1;      free.f_EatoFarl1974 = e;       units.f_EatoFarl1974 = '-';         label.f_EatoFarl1974 = 'sc. func. resp. of EatoFarl1974b data'; 
+par.f_LawrEber2008_high = 1; free.f_LawrEber2008_high = e;  units.f_LawrEber2008_high = '-';    label.f_LawrEber2008_high = 'sc. func. resp. of LawrEber2008 data, high food'; 
+par.f_LawrEber2008_low = 1;  free.f_LawrEber2008_low = e;   units.f_LawrEber2008_low = '-';     label.f_LawrEber2008_low = 'sc. func. resp. of LawrEber2008 data, low food'; 
+par.f_Schi2002 = 1;          free.f_Schi2002 = e;           units.f_Schi2002 = '-';             label.f_Schi2002 = 'sc. func. resp. of Schi2002 data'; 
+par.f_ValKwa2022 = 1;        free.f_ValKwa2022 = e;         units.f_ValKwa2022 = '-';           label.f_ValKwa2022 = 'sc. func. resp. of ValKwa2022 data'; 
+par.f_YangYama2019 = 1;      free.f_YangYama2019 = e;       units.f_YangYama2019 = '-';         label.f_YangYama2019 = 'sc. func. resp. of YangYama2019 data'; 
 
 %% set chemical parameters from Kooy2010 
 [par, units, label, free] = addchem(par, units, label, free, metaData.phylum, metaData.class); 
