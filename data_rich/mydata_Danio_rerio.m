@@ -76,7 +76,7 @@ comment.GSI = 'values range from 0.1 - 0.15 and grow bigger with food regime';
 % uni-variate data
 
 % tim-length, larval growth curve T = 28.5 + 273 K total length
-data.tL_Schi2002 = [... %  time since birth (day), TL  (mm) at 28.5 C
+data.tL_Schi2002 = [... %  time since fertilization (day), TL  (mm) at 28.5 C
   2.74878081e+000	3.18144185e+000
   3.49815699e+000	3.45339935e+000
   3.89010948e+000	2.98130930e+000
@@ -146,7 +146,7 @@ data.tL_EatoFarl1974 = [... age (dpf), SL (mm)
   54 22.2;
   75 23.9]; % with possible range from (22 -26)
 data.tL_EatoFarl1974(:,2)  = data.tL_EatoFarl1974(:,2)/ 10; % convert mm to cm
-units.tL_EatoFarl1974 = {'d', 'cm'};  label.tL_EatoFarl1974 = {'time since birth', 'standard length'};
+units.tL_EatoFarl1974 = {'d', 'cm'};  label.tL_EatoFarl1974 = {'time since fertilization', 'standard length'};
 temp.tL_EatoFarl1974 = C2K(25.5);  units.temp.tL_EatoFarl1974 = 'K'; label.temp.tL_EatoFarl1974 = 'temperature';
 bibkey.tL_EatoFarl1974 = {'EatoFarl1974b'};
 
@@ -164,7 +164,7 @@ tLWWY(:,2) = tLWWY(:,2)/ 10; % convert mm to cm
 tLWWY(:,[3 4 5]) = tLWWY(:,[3 4 5])/ 1000; % convert mg to g, mm^3 to cm^3
 %
 data.tL_BagaPels2001 = tLWWY(:, [1 2]);
-units.tL_BagaPels2001 = {'d', 'cm'};  label.tL_BagaPels2001 = {'time since fertilizatixon', 'total length'};
+units.tL_BagaPels2001 = {'d', 'cm'};  label.tL_BagaPels2001 = {'time since fertilizatixon', 'standard length'};
 temp.tL_BagaPels2001 = C2K(25);  units.temp.tL_BagaPels2001 = 'K'; label.temp.tL_BagaPels2001 = 'temperature';
 bibkey.tL_BagaPels2001 = {'BagaPels2001'};
 
@@ -212,7 +212,7 @@ bibkey.tL_BestAdat2010 = {'BestAdat2010'};
 % time-length from study LawrEber2008, but the actual curves were given in pers.
 % communication with C. Lawrence T = 28.5 C and there is about 50 %
 % difference in food given between the high and the low food condition
-data.tL_LawrEber2002_high = [... % day, cm T = 28 + 273 K Total Length
+data.tL_LawrEber2008_high = [... % day, cm T = 28 + 273 K Total Length
   3.55e+00	3.89e-01
   1.07e+01	5.66e-01
   1.09e+01	5.05e-01
@@ -254,11 +254,11 @@ data.tL_LawrEber2002_high = [... % day, cm T = 28 + 273 K Total Length
   8.38e+01	3.24e+00
   8.38e+01	3.31e+00
   8.38e+01	3.36e+00];
-units.tL_LawrEber2002_high = {'d', 'cm'}; label.tL_LawrEber2002_high = {'time since birth', 'total length'};
-temp.tL_LawrEber2002_high = C2K(28.5); units.temp.tL_LawrEber2002_high = 'K'; label.temp.tL_LawrEber2002_high = 'temperature';
-bibkey.tL_LawrEber2002_high = {'LawrEber2008'};
+units.tL_LawrEber2008_high = {'d', 'cm'}; label.tL_LawrEber2008_high = {'time since fertilization', 'total length'};
+temp.tL_LawrEber2008_high = C2K(28.5); units.temp.tL_LawrEber2008_high = 'K'; label.temp.tL_LawrEber2008_high = 'temperature';
+bibkey.tL_LawrEber2008_high = {'LawrEber2008'};
 %
-data.tL_LawrEber2002_low = [... % day, cm T = 28 + 273 K Total Length
+data.tL_LawrEber2008_low = [... % day, cm T = 28 + 273 K Total Length
   3.55e+00	3.62e-01
   1.09e+01	4.50e-01
   1.81e+01	6.55e-01
@@ -288,9 +288,9 @@ data.tL_LawrEber2002_low = [... % day, cm T = 28 + 273 K Total Length
   8.37e+01	2.16e+00
   8.37e+01	2.24e+00
   8.38e+01	2.28e+00];
-units.tL_LawrEber2002_low = {'d', 'cm'}; label.tL_LawrEber2002_low = {'time since birth', 'total length'};
-temp.tL_LawrEber2002_low = C2K(28.5); units.temp.tL_LawrEber2002_low = 'K'; label.temp.tL_LawrEber2002_low = 'temperature';
-bibkey.tL_LawrEber2002_low = {'LawrEber2008'};
+units.tL_LawrEber2008_low = {'d', 'cm'}; label.tL_LawrEber2008_low = {'time since fertilization', 'total length'};
+temp.tL_LawrEber2008_low = C2K(28.5); units.temp.tL_LawrEber2008_low = 'K'; label.temp.tL_LawrEber2008_low = 'temperature';
+bibkey.tL_LawrEber2008_low = {'LawrEber2008'};
 
 data.tLf1_BeauGous2015 = [ ...
   48.987	49.077	48.981	56.181	56.19	63.08	63.096	63.1	70.012	70.103	70.11	77.12	77.13	91.12	91.122	91.123	104.108	104.11	104.195;
@@ -381,23 +381,23 @@ dataValKwa2022 = [ ... % age (d), weight (mg), total length (mm), % feed intake 
   47 52.4 19.3  9.7
   ];
 data.tWw_ValKwa2022 = [dataValKwa2022(:, 1), dataValKwa2022(:, 2)];
-units.tWw_ValKwa2022 = {'d', 'mg'};  label.tWw_ValKwa2022 = {'time', 'wet weight'};
+units.tWw_ValKwa2022 = {'d', 'mg'};  label.tWw_ValKwa2022 = {'time since fertilization', 'wet weight'};
 temp.tWw_ValKwa2022 =  C2K(26.72);  units.temp.tWw_ValKwa2022 = 'K'; label.temp.tWw_ValKwa2022 = 'temperature';
 bibkey.tWw_ValKwa2022 = {'ValKwa2022'};
 
 data.tL_ValKwa2022 = [dataValKwa2022(:, 1), dataValKwa2022(:, 3)];
-units.tL_ValKwa2022 = {'d', 'mm'};  label.tL_ValKwa2022 = {'time', 'total length'};
+units.tL_ValKwa2022 = {'d', 'mm'};  label.tL_ValKwa2022 = {'time since fertilization', 'total length'};
 temp.tL_ValKwa2022 =  C2K(26.72);  units.temp.tL_ValKwa2022 = 'K'; label.temp.tL_ValKwa2022 = 'temperature';
 bibkey.tL_ValKwa2022 = {'ValKwa2022'};
 
 data.tJX_ValKwa2022 = [dataValKwa2022(:, 1), dataValKwa2022(:, 4)];
-units.tJX_ValKwa2022 = {'d', '%bw/d'};  label.tJX_ValKwa2022 = {'time', 'feed intake'};
+units.tJX_ValKwa2022 = {'d', '%bw/d'};  label.tJX_ValKwa2022 = {'time since fertilization', 'feed intake'};
 init.tJX_ValKwa2022 = 0.789; label.init.tJX_ValKwa2022 = 'ash-free dry/wet ratio of feed'; units.init.tJX_ValKwa2022 = '-';
 temp.tJX_ValKwa2022 =  C2K(26.72);  units.temp.tJX_ValKwa2022 = 'K'; label.temp.tJX_ValKwa2022 = 'temperature';
 bibkey.tJX_ValKwa2022 = {'ValKwa2022'};
-% %
-% % %% Data form Yang et al. 2019
-% %
+
+%% Data form Yang et al. 2019
+
 data.tL_YangYama2019 = [... % time since fertilization (d), length (cm)
   30  1.336;
   60  2.323;
@@ -407,12 +407,11 @@ data.tL_YangYama2019 = [... % time since fertilization (d), length (cm)
   420  3.659;
   660  3.799
   ];
-units.tL_YangYama2019 = {'d', 'cm'};  label.tL_YangYama2019 = {'time', 'total length'};
+units.tL_YangYama2019 = {'d', 'cm'};  label.tL_YangYama2019 = {'time since fertilization', 'total length'};
 temp.tL_YangYama2019 = C2K(28);  units.temp.tL_YangYama2019 = 'K'; label.temp.tL_YangYama2019 = 'temperature';
 bibkey.tL_YangYama2019 = {'YangYama2019'};
 comment.tL_YangYama2019 = 'Paper does not specificy the length measure, assuming total length';
 
-% time-weight
 data.tWw_YangYama2019 = [... % time since fertilization (d), wet weight (g)
   30  0.018;
   60  0.094;
@@ -422,7 +421,7 @@ data.tWw_YangYama2019 = [... % time since fertilization (d), wet weight (g)
   420  0.369;
   660  0.359
   ];
-units.tWw_YangYama2019 = {'d', 'g'};  label.tWw_YangYama2019 = {'time', 'wet weight'};
+units.tWw_YangYama2019 = {'d', 'g'};  label.tWw_YangYama2019 = {'time since fertilization', 'wet weight'};
 temp.tWw_YangYama2019 =  C2K(28);  units.temp.tWw_YangYama2019 = 'K'; label.temp.tWw_YangYama2019 = 'temperature';
 bibkey.tWw_YangYama2019 = {'YangYama2019'};
 
@@ -435,7 +434,7 @@ data.tJO_YangYama2019 = [... % time (d post hatch), oxygen consumption MO2 (μg/
   420  209.804
   660  218.301
   ];
-units.tJO_YangYama2019 = {'d', '\mug/h'};  label.tJO_YangYama2019 = {'time', 'oxygen consumption'};
+units.tJO_YangYama2019 = {'d', '\mug/h'};  label.tJO_YangYama2019 = {'time since fertilization', 'oxygen consumption'};
 temp.tJO_YangYama2019 = C2K(28);  units.temp.tJO_YangYama2019 = 'K'; label.temp.tJO_YangYama2019 = 'temperature';
 bibkey.tJO_YangYama2019 = {'YangYama2019'};
 
@@ -456,7 +455,7 @@ for i=1:numel(datanames)
     continue
   end
   if ~isfield(title, datum)
-    dataTitle = [strjoin(label.(datum), ' vs ') ', ' datum];
+    dataTitle = [strjoin(label.(datum), ' vs ') ', ' strrep(datum, '_', '\_');];
     if isfield(bibkey, datum)
       dataTitle = [dataTitle ', ' bibkey.(datum){:}];
     end
@@ -476,7 +475,7 @@ txtData.comment = comment;
 txtData.title = title;
 
 %% Group plots
-set3 = {'tL_LawrEber2002_high','tL_LawrEber2002_low'}; subtitle3 = {'LawrEber2002 data at high, low food'};
+set3 = {'tL_LawrEber2008_high','tL_LawrEber2008_low'}; subtitle3 = {'LawrEber2008 data at high, low food'};
 set5 = {'tLf1_BeauGous2015','tLf2_BeauGous2015','tLf3_BeauGous2015'}; subtitle5 = {'no fasting, fasting every 3 d, fasting every other day'};
 metaData.grp.sets = {set3,  set5};
 metaData.grp.subtitle = {subtitle3,  subtitle5};
