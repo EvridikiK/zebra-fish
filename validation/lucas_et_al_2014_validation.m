@@ -37,8 +37,8 @@ allo.b = 0.926;
 allo.color = [0.5 0.5 0.5];
 allo.label = sprintf('Allometric equation: J_O = %.3f W^{%.3f}', allo.a, allo.b);
 
-% Food levels to compare
-F = 0.7;
+% Food levels of each estimation
+F = [0.75, 0.75];
 
 % Save options
 saveFigs = true;
@@ -140,7 +140,7 @@ for i = 1:numel(estimations)
     vars_pull(par); vars_pull(cpar);
 
     % Simulate from birth
-    [t, L, W, J_O, transitions] = getPredictions(par, cpar, F);
+    [t, L, W, J_O, transitions] = getPredictions(par, cpar, F(i));
     % Maturity transition points
     tr_ok = ~isnan(transitions.t);
     t_tr  = transitions.t(tr_ok);   % [tb; tj; tp]
@@ -241,13 +241,13 @@ function prettyName = formatEstimationName(estimation)
 %   data_2p5      -> Completeness 2.5 estimation
 switch estimation
     case 'data_rich'
-        prettyName = 'Data rich';
+        prettyName = 'Data-rich';
     case 'data_moderate'
-        prettyName = 'Data moderate';
+        prettyName = 'Data-moderate';
     case 'data_limited'
-        prettyName = 'Data limited';
+        prettyName = 'Data-limited';
     case 'data_2p5'
-        prettyName = 'Completeness 2.5';
+        prettyName = 'Data-limited'; % In the paper, this calibration is referred to as "data-limited"
     otherwise
         % Generic fallback: replace underscores and capitalize
         s = strrep(estimation, '_', ' ');
@@ -281,7 +281,7 @@ TC = tempcorr(C2K(28), par.T_ref, par.T_A);
 E_0 = getE0(F, par, cpar);
 init_cond = [1e-10; E_0; 0; 0; 1; 0];
 
-t = linspace(0, 200, 1001);
+t = linspace(0, 400, 1001);
 eventFunction = @(tt,yy) maturityEvents(tt, yy, maturityThresholds);
 odeOpts = odeset('Events', eventFunction);
 ode = @(t, VEHRsMG) ode_VEHRsMG(t, VEHRsMG, par, F, TC);
