@@ -25,7 +25,7 @@ TC_Schi2002 = tempcorr(temp.tL_Schi2002, T_ref, T_A);
 TC_EatoFarl1974 = tempcorr(temp.tL_EatoFarl1974, T_ref, T_A);
 TC_BagaPels2001 = tempcorr(temp.tL_BagaPels2001, T_ref, T_A);
 TC_BestAdat2010 = tempcorr(temp.tL_BestAdat2010, T_ref, T_A);
-TC_LawrEber2002 = tempcorr(temp.tL_LawrEber2002_high, T_ref, T_A);
+TC_LawrEber2008 = tempcorr(temp.tL_LawrEber2008_high, T_ref, T_A);
 TC_28 = tempcorr(temp.tL_YangYama2019, T_ref, T_A);
 TC_26_72 = tempcorr(temp.tL_ValKwa2022, T_ref, T_A);
 
@@ -45,8 +45,11 @@ Wd_0 = E_0 * w_E/ mu_E;      % g, egg dry weight
 V0 = Wd_0/ d_E;             % cm^3, egg volume
 Lw_0 = (6 * V0/ pi)^(1/3);  % cm, egg diameter
 
+% Fertilization initial state
+fertilizationState = [V_0; E_0; 0; 0; 1; 0];
 
-[a_b, a_j, ~, L_b, L_j, ~, info] = getAgeAndLengthAtTransitions(par, f, TC_ab, E_0);
+
+[a_b, a_j, ~, L_b, L_j, L_p, info] = getAgeAndLengthAtTransitions(par, f, TC_ab, E_0);
 if ~info; prdData = []; return; end
 
 % birth
@@ -83,9 +86,9 @@ aT_m = tau_m/ k_M/ TC_am;               % d, mean life span at T
 % puberty at f_EatoFarl1974b
 F = f_EatoFarl1974;
 E_0_p = getE0(F, par, cPar);          % J, energy in egg
-[~, ~, a_p, ~, ~, L_p, info] = getAgeAndLengthAtTransitions(par, F, TC_ap, E_0_p);
+[~, ~, a_p, ~, ~, L_p_F, info] = getAgeAndLengthAtTransitions(par, F, TC_ap, E_0_p);
 if ~info; prdData = []; return; end
-Lw_p = L_p/ del_Mt;                % cm, total length at puberty at F
+Lw_p = L_p_F/ del_Mt;                % cm, total length at puberty at F
 
 % pack to output
 prdData.ab = a_b;
@@ -106,7 +109,7 @@ prdData.GSI = GSIT;
 
 %% Feeding data (Valentine and Kwasek 2022)
 
-init_cond = [V_0; E_0; 0; 0; 1; 0];
+init_cond = fertilizationState;
 F = f_ValKwa2022;
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tL_ValKwa2022(:,1)], init_cond, [], par, F, TC_26_72);
 V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5); E_egg = VEHRsMG(2:end, 6);
@@ -121,7 +124,7 @@ prdData.tWw_ValKwa2022 = W * 1000; % mg
 prdData.tJX_ValKwa2022 = JX ./ W * 100 / auxData.init.tJX_ValKwa2022; % (%bw/d)
 
 %% Data from Yang et al. 2019
-init_cond = [V_0; E_0; 0; 0; 1; 0];
+init_cond = fertilizationState;
 F = f_YangYama2019;
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; data.tL_YangYama2019(:,1)], init_cond, [], par, F, TC_28);
 V = VEHRsMG(2:end, 1); E = VEHRsMG(2:end, 2); E_H = VEHRsMG(2:end, 3); E_R = VEHRsMG(2:end, 4); s_M = VEHRsMG(2:end, 5); E_egg = VEHRsMG(2:end, 6);
@@ -139,7 +142,7 @@ prdData.tWw_YangYama2019 = W; % g
 prdData.tJO_YangYama2019 = J_O; % mumol/h
 
 %% Length data from BeauGous2015
-init_cond = [V_0; E_0; 0; 0; 1; 0];
+init_cond = fertilizationState;
 TC = TC_BeauGous2015;
 
 % --------- high food level:
@@ -149,7 +152,7 @@ a = [0; tLf1_BeauGous2015(:,1)];
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, t_sort, init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); L = V.^(1/3);
 L = L(it_sort); L = L(2:end); % reconstuct L
-prdData.tLf1_BeauGous2015 = L / del_Mt * 10;
+prdData.tLf1_BeauGous2015 = L / del_Ms * 10;
 
 % ----------- medium food level:
 F = f_BeauGous2015L * 0.9;
@@ -158,7 +161,7 @@ a = [0; tLf2_BeauGous2015(:,1)];
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, t_sort, init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); L = V.^(1/3);
 L = L(it_sort); L = L(2:end); % reconstuct L
-prdData.tLf2_BeauGous2015 = L / del_Mt * 10;
+prdData.tLf2_BeauGous2015 = L / del_Ms * 10;
 
 % --------------- low food level:
 F = f_BeauGous2015L * 0.8;
@@ -167,37 +170,37 @@ a = [0; tLf3_BeauGous2015(:,1)];
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, t_sort, init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); L = V.^(1/3);
 L = L(it_sort); L = L(2:end); % reconstuct L
-prdData.tLf3_BeauGous2015 = L / del_Mt * 10;
+prdData.tLf3_BeauGous2015 = L / del_Ms * 10;
 
-%% tL_LawrEber2002 at low and high
-init_cond = [V_0; E_0; 0; 0; 1; 0];
-TC = TC_LawrEber2002;
+%% tL_LawrEber2008 at low and high
+init_cond = fertilizationState;
+TC = TC_LawrEber2008;
 
 % --- Low:
-F = f_LawrEber2002_low;
-a = [0; tL_LawrEber2002_low(:,1)];
+F = f_LawrEber2008_low;
+a = [0; tL_LawrEber2008_low(:,1)];
 [t_sort, ~, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
 
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, t_sort, init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); L = V.^(1/3);
 
 L = L(it_sort); L = L(2:end); % reconstuct L
-prdData.tL_LawrEber2002_low = L / del_Mt;
+prdData.tL_LawrEber2008_low = L / del_Mt;
 
 % --- High:
-F = f_LawrEber2002_high;
-a = [0; tL_LawrEber2002_high(:,1)];
+F = f_LawrEber2008_high;
+a = [0; tL_LawrEber2008_high(:,1)];
 [t_sort, ~, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
 
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, t_sort, init_cond, [], par, F, TC);
 V = VEHRsMG(:, 1); L = V.^(1/3);
 
 L = L(it_sort); L = L(2:end); % reconstuct L
-prdData.tL_LawrEber2002_high = L / del_Mt;
+prdData.tL_LawrEber2008_high = L / del_Mt;
 
 
 %% tL_BestAdat2010:
-init_cond = [V_0; E_0; 0; 0; 1; 0];
+init_cond = fertilizationState;
 TC = TC_BestAdat2010;  F = f_BestAdat2010;
 a = [0; tL_BestAdat2010(:,1)];
 [t_sort, ~, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
@@ -210,7 +213,7 @@ prdData.tL_BestAdat2010 = L / del_Mt;
 
 
 %% tL of Schi2002
-init_cond = [V_0; E_0; 0; 0; 1; 0];
+init_cond = fertilizationState;
 TC = TC_Schi2002; F = f_Schi2002;
 a = [0; tL_Schi2002(:,1)];
 [t_sort, ~, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
@@ -223,7 +226,7 @@ prdData.tL_Schi2002 = L / del_Mt;
 
 
 %% tL of EatoFarl1974
-init_cond = [V_0; E_0; 0; 0; 1; 0];
+init_cond = fertilizationState;
 TC = TC_EatoFarl1974; F = f_EatoFarl1974;
 a = [0; tL_EatoFarl1974(:,1)];
 [t_sort, ~, it_sort] = unique(a,'sorted'); % returns the unique values in t in sorted order
@@ -232,11 +235,11 @@ a = [0; tL_EatoFarl1974(:,1)];
 V = VEHRsMG(:, 1); L = V.^(1/3);
 
 L = L(it_sort); L = L(2:end); % reconstuct L
-prdData.tL_EatoFarl1974 = L / del_Mt;
+prdData.tL_EatoFarl1974 = L / del_Ms;
 
 
 %% tL, tWw and tWd of BagaPels2001
-init_cond = [V_0; E_0; 0; 0; 1; 0];
+init_cond = fertilizationState;
 F = f_BagaPels2001; TC = TC_BagaPels2001;
 
 [~, VEHRsMG] = ode45(@ode_VEHRsMG, [0; tL_BagaPels2001(:,1)], init_cond, [], par, F, TC);
