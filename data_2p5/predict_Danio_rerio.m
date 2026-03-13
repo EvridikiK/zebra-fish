@@ -11,6 +11,9 @@ TC_am = tempcorr(temp.am, T_ref, T_A);
 TC_Ri = tempcorr(temp.Ri, T_ref, T_A);
 TC_BestAdat2010 = tempcorr(temp.tL_BestAdat2010, T_ref, T_A);
 
+% Assume that standard length is 80% of total length
+del_Ms = del_Mt / 0.8;
+
 %% zero-variate data
 % initial
 E_0 = getE0(f, par, cPar); % J, energy in egg
