@@ -49,7 +49,7 @@ data.am = 4.5 * 365; units.am = 'd'; label.am = 'life span';              bibkey
 
 data.Lb = 4e-1;   units.Lb = 'cm';   label.Lb = 'total length at birth';  bibkey.Lb = 'Schi2002';
   comment.Lb = 'Swim bladder inflates, active feeding, pronephric tubules';
-data.Lp = 2.6*1.25; units.Lp = 'cm'; label.Lp = 'total length at puberty';bibkey.Lp = 'EatoFarl1974a';
+data.Lp = 2.6; units.Lp = 'cm'; label.Lp = 'standard length at puberty';bibkey.Lp = 'EatoFarl1974a';
   comment.Lp = 'Female are between 2.4 - 2.6 cm SL in the study at first egg laying';
 data.Li = 5;      units.Li = 'cm';   label.Li = 'ultimate total length';  bibkey.Li = {'SpenGerl2008','Schi2002'}; 
   comment.Li = 'also Lawr pers. comm';

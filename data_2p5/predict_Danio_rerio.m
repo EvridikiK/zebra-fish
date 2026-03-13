@@ -16,7 +16,7 @@ TC_BestAdat2010 = tempcorr(temp.tL_BestAdat2010, T_ref, T_A);
 E_0 = getE0(f, par, cPar); % J, energy in egg
 
 % life cycle
-[a_b, a_j, ~, L_b, L_j, ~, info] = getAgeAndLengthAtTransitions(par, f, TC_ab, E_0);
+[a_b, a_j, a_p, L_b, L_j, L_p, info] = getAgeAndLengthAtTransitions(par, f, TC_ab, E_0);
 if ~info; prdData = []; return; end
 
 % birth
@@ -24,6 +24,9 @@ Lw_b = L_b/ del_Mt;                % cm, total length at birth
 
 % metamorphosis
 s_M_f = L_j/ L_b;                   % -, acceleration factor at f
+
+% puberty
+Lw_p = L_p/ del_Ms;                % cm, standard length at puberty at F
 
 % ultimate
 L_i = f * L_m * s_M_f;                  % cm, ultimate structural length at f
@@ -40,14 +43,6 @@ RT_i =  kap_R * p_C2_max / E_0; % Temperature correction is done inside the comp
 % life span
 [tau_m, ~, ~] = get_tm_mod('abj', par, f);
 aT_m = tau_m/ k_M/ TC_am;               % d, mean life span at T
-
-% puberty
-F = f;
-E_0_p = getE0(F, par, cPar); % J, energy in egg
-[~, ~, a_p, ~, ~, L_p, info] = getAgeAndLengthAtTransitions(par, F, TC_ap, E_0_p);
-if ~info; prdData = []; return; end
-
-Lw_p = L_p/ del_Mt;                % cm, total length at puberty at F
 
 % pack to output
 prdData.ab = a_b;
