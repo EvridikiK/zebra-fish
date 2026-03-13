@@ -54,7 +54,7 @@ scatter(ax, lawrLowData(:,1), lawrLowData(:,2), 42, ...
 
 xlabel(ax, 'Time since fertilization (d)')
 ylabel(ax, 'Total length (cm)')
-title(ax, 'Lawrence et al. 2008 growth trajectories with data-rich calibration')
+title(ax, 'Lawrence et al. 2008 growth trajectories')
 legend(ax, 'Location', 'northwest')
 box(ax, 'on')
 grid(ax, 'off')

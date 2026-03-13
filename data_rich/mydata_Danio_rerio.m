@@ -56,13 +56,13 @@ data.Lb = 4e-1;   units.Lb = 'cm';   label.Lb = 'total length at birth';  bibkey
 comment.Lb = 'Swim bladder inflates, active feeding, pronephric tubules';
 data.Lj = 1;   units.Lj = 'cm';   label.Lj = 'total length at metam';  bibkey.Lj = 'Schi2002';
 comment.Lj = 'Adult fin and pigmentation pattern';
-data.Lp = 2.6*1.25; units.Lp = 'cm'; label.Lp = 'total length at puberty';bibkey.Lp = 'EatoFarl1974a';
+data.Lp = 2.6; units.Lp = 'cm'; label.Lp = 'standard length at puberty';bibkey.Lp = 'EatoFarl1974a';
 comment.Lp = 'Female are between 2.4 - 2.6 cm SL in the study at first egg laying';
 data.Li = 5;      units.Li = 'cm';   label.Li = 'ultimate total length';  bibkey.Li = {'SpenGerl2008','Schi2002'};
 comment.Li = 'also Lawr pers. comm';
 
-data.Wd0 = 100e-6; units.Wd0 = 'g';    label.Wd0 = 'egg dry weight';         bibkey.Wd0 = 'Augu2009';
-data.Wwi = 1;      units.Wwi = 'g';    label.Wwi = 'ultimate wet weight';    bibkey.Wwi = 'Augu2009';
+data.Wd0 = 100e-6; units.Wd0 = 'g';    label.Wd0 = 'egg dry weight';         bibkey.Wd0 = 'Augu2011';
+data.Wwi = 1;      units.Wwi = 'g';    label.Wwi = 'ultimate wet weight';    bibkey.Wwi = 'Augu2011';
 
 data.Ri = 240;    units.Ri = '#/d';  label.Ri = 'max reproduction';       bibkey.Ri = {'EatoFarl1974b'};
 temp.Ri = C2K(26);  units.temp.Ri = 'K'; label.temp.Ri = 'temperature';
@@ -503,11 +503,16 @@ metaData.links.id_fishbase = 'Danio-rerio'; % fishbase
 %% References
 
 %
-bibkey = 'Augu2009'; type = 'Misc'; bib = [ ...
-  'year = {2009}, ' ...
-  'author = {S. Augustine}, ' ...
-  'note = {unpublished 2009, f = 1}'];
+bibkey = 'Augu2011'; type = 'Article'; bib = [ ...
+  'doi = {10.1016/j.cbpa.2011.03.016}, ' ...
+  'author = {Augustine S., and Gagnaire B., and Floriani B. M., and Adam-Guillermin C., and Kooijman S.A.L.M.}, ' ...
+  'year  = {2011}, ' ...
+  'title = {Developmental energetics of zebrafish, \emph{Danio rerio}}, ' ...
+  'journal = {Comparative Biochemistry and Physiology, Part A}, ' ...
+  'volume = {159}, ' ...
+  'pages = {275-283}'];
 metaData.biblist.(bibkey) = ['''@', type, '{', bibkey, ', ' bib, '}'';'];
+
 
 %
 bibkey = 'BagaPels2001'; type = 'Article'; bib = [ ...
