@@ -16,7 +16,6 @@ T_A = 8000;
 
 %% compute temperature correction factors
 TC_ab = tempcorr(temp.ab, T_ref, T_A);
-TC_aj = tempcorr(temp.aj, T_ref, T_A);
 TC_ap = tempcorr(temp.ap, T_ref, T_A);
 TC_am = tempcorr(temp.am, T_ref, T_A);
 TC_Ri = tempcorr(temp.Ri, T_ref, T_A);
@@ -28,12 +27,11 @@ TC_BestAdat2010 = tempcorr(temp.tL_BestAdat2010, T_ref, T_A);
 TC_LawrEber2008 = tempcorr(temp.tL_LawrEber2008_high, T_ref, T_A);
 TC_28 = tempcorr(temp.tL_YangYama2019, T_ref, T_A);
 TC_26_72 = tempcorr(temp.tL_ValKwa2022, T_ref, T_A);
-
 TC_BeauGous2015 = tempcorr(temp.tLf1_BeauGous2015, T_ref, T_A); % juvenile growth trials
 TC_tN = tempcorr(temp.tN, T_ref, T_A); % for the reproduction trials in BeauGous2015
 
 % standard length is 80% of the total length:
-del_Ms = del_Mt * 1.25; % -,
+% del_Ms = del_Mt * 1.25; % -,
 
 %% zero-variate data
 
@@ -88,7 +86,7 @@ F = f_EatoFarl1974;
 E_0_p = getE0(F, par, cPar);          % J, energy in egg
 [~, ~, a_p, ~, ~, L_p_F, info] = getAgeAndLengthAtTransitions(par, F, TC_ap, E_0_p);
 if ~info; prdData = []; return; end
-Lw_p = L_p_F/ del_Mt;                % cm, total length at puberty at F
+Lw_p = L_p_F/ del_Ms;                % cm, standard length at puberty at F
 
 % pack to output
 prdData.ab = a_b;

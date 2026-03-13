@@ -31,7 +31,7 @@ par.s_G = 1e-4;       free.s_G   = 0;   units.s_G = '-';          label.s_G = 'G
 
 %% other parameters 
 par.del_Mt = 0.20;           free.del_Mt = p;   units.del_Mt = '-';       label.del_Mt = 'shape coefficient for total length'; 
-par.del_Ms = 0.20;           free.del_Ms = 0;   units.del_Ms = '-';       label.del_Ms = 'shape coefficient for standard length'; 
+par.del_Ms = 0.20;           free.del_Ms = p;   units.del_Ms = '-';       label.del_Ms = 'shape coefficient for standard length'; 
 par.V_0 = 1e-10;             free.V_0 = 0;      units.V_0 = 'cm^3';       label.V_0 = 'initial structure of egg';
 
 % food levels
