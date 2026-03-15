@@ -25,11 +25,17 @@ init_cond = [par.V_0; getE0(par.f, par, parscomp_st(par)); 0; 0; 1; 0];
 tEnd = max([lawrHighData(:,1); lawrLowData(:,1)]) + 5;
 tPlot = linspace(0, tEnd, 500)';
 
+yMin = min([lawrHighData(:,2); lawrLowData(:,2)]);
+yMax = max([lawrHighData(:,2); lawrLowData(:,2)]);
+
 %% tL_LawrEber2008 at low and high
 predLow = predictLengthCurve(tPlot, init_cond, par, par.f_LawrEber2008_low, TC_LawrEber2008);
 predHigh = predictLengthCurve(tPlot, init_cond, par, par.f_LawrEber2008_high, TC_LawrEber2008);
+yMin = min([yMin; predHigh(:); predLow(:)]);
+yMax = max([yMax; predHigh(:); predLow(:)]);
+yPad = 0.08 * (yMax - yMin);
 
-%% Figure
+%% Figure with predictions
 fig = figure('Color', 'w', 'Units', 'pixels', 'Position', [100 100 980 620]);
 ax = axes(fig);
 hold(ax, 'on')
@@ -54,24 +60,47 @@ scatter(ax, lawrLowData(:,1), lawrLowData(:,2), 42, ...
 
 xlabel(ax, 'Time since fertilization (d)')
 ylabel(ax, 'Total length (cm)')
-title(ax, 'Lawrence et al. 2008 growth trajectories')
+title(ax, 'Growth trajectories from Lawrence et al. 2008')
 legend(ax, 'Location', 'northwest')
-box(ax, 'on')
+box(ax, 'off')
 grid(ax, 'off')
 xlim(ax, [0, tEnd])
-yMin = min([lawrHighData(:,2); lawrLowData(:,2); predHigh(:); predLow(:)]);
-yMax = max([lawrHighData(:,2); lawrLowData(:,2); predHigh(:); predLow(:)]);
-yPad = 0.08 * (yMax - yMin);
 ylim(ax, [max(0, yMin - yPad), yMax + yPad])
 
-%% Save figure
+%% Figure with data only
+dataFig = figure('Color', 'w', 'Units', 'pixels', 'Position', [100 100 980 620]);
+dataAx = axes(dataFig);
+hold(dataAx, 'on')
+set(dataAx, 'FontSize', 14, 'Position', [0.11 0.13 0.84 0.78])
+dataAx.Toolbar.Visible = 'off';
+dataAx.Interactions = [];
+
+scatter(dataAx, lawrHighData(:,1), lawrHighData(:,2), 42, ...
+    'o', 'MarkerEdgeColor', highColor, 'MarkerFaceColor', highColor, ...
+    'DisplayName', 'High food data')
+scatter(dataAx, lawrLowData(:,1), lawrLowData(:,2), 42, ...
+    's', 'MarkerEdgeColor', lowColor, 'MarkerFaceColor', lowColor, ...
+    'DisplayName', 'Low food data')
+
+xlabel(dataAx, 'Time since fertilization (d)')
+ylabel(dataAx, 'Total length (cm)')
+title(dataAx, 'Growth data from Lawrence et al. 2008')
+legend(dataAx, 'Location', 'northwest')
+box(dataAx, 'off')
+grid(dataAx, 'off')
+xlim(dataAx, [0, tEnd])
+ylim(dataAx, [max(0, yMin - yPad), yMax + yPad])
+
+%% Save figures
 figOutDir = fullfile(scriptDir, 'figures');
 if ~exist(figOutDir, 'dir')
     mkdir(figOutDir);
 end
 
-exportgraphics(fig, fullfile(figOutDir, 'lawrence_et_al_2008_validation.png'), 'Resolution', 300);
-exportgraphics(fig, fullfile(figOutDir, 'lawrence_et_al_2008_validation.pdf'), 'ContentType', 'vector');
+exportgraphics(fig, fullfile(figOutDir, 'lawrence_et_al_2008_predictions.png'), 'Resolution', 300);
+exportgraphics(fig, fullfile(figOutDir, 'lawrence_et_al_2008_predictions.pdf'), 'ContentType', 'vector');
+exportgraphics(dataFig, fullfile(figOutDir, 'lawrence_et_al_2008_data_only.png'), 'Resolution', 300);
+exportgraphics(dataFig, fullfile(figOutDir, 'lawrence_et_al_2008_data_only.pdf'), 'ContentType', 'vector');
 
 %% Prediction function
 function pred = predictLengthCurve(curveData, init_cond, par, F, TC)
