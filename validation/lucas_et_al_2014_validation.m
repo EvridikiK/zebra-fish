@@ -38,7 +38,7 @@ allo.color = [0.5 0.5 0.5];
 allo.label = sprintf('Allometric equation: J_O = %.3f W^{%.3f}', allo.a, allo.b);
 
 % Food levels of each estimation
-F = [0.75, 0.75];
+F = [0.80, 0.80];
 
 % Save options
 saveFigs = true;
