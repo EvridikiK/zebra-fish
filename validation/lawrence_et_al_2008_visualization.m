@@ -1,6 +1,22 @@
 clear
 close all
 
+%% Figure options
+transparentBackground = true;
+figureWidth = 1220;
+figureHeight = 680;
+axisFontSize = 18;
+labelFontSize = 21;
+legendFontSize = 17;
+titleFontSize = 21;
+exportPadding = 60;
+
+if transparentBackground
+    displayBackgroundColor = 'none';
+else
+    displayBackgroundColor = 'w';
+end
+
 %% Paths and calibration inputs
 scriptDir = fileparts(mfilename('fullpath'));
 repoRoot = fileparts(scriptDir);
@@ -35,16 +51,17 @@ yMin = min([yMin; predHigh(:); predLow(:)]);
 yMax = max([yMax; predHigh(:); predLow(:)]);
 yPad = 0.08 * (yMax - yMin);
 
-%% Figure with predictions
-fig = figure('Color', 'w', 'Units', 'pixels', 'Position', [100 100 980 620]);
-ax = axes(fig);
-hold(ax, 'on')
-set(ax, 'FontSize', 14, 'Position', [0.11 0.13 0.84 0.78])
-ax.Toolbar.Visible = 'off';
-ax.Interactions = [];
-
 highColor = [0.1216 0.4667 0.7059];
 lowColor = [0.8392 0.1529 0.1569];
+
+%% Figure with predictions
+fig = figure('Color', displayBackgroundColor, 'Units', 'pixels', 'Position', [100 100 figureWidth figureHeight]);
+tl = tiledlayout(fig, 1, 1, 'Padding', 'loose', 'TileSpacing', 'loose');
+ax = nexttile(tl);
+hold(ax, 'on')
+set(ax, 'FontSize', axisFontSize, 'Color', displayBackgroundColor)
+ax.Toolbar.Visible = 'off';
+ax.Interactions = [];
 
 plot(ax, tPlot, predHigh, 'LineWidth', 2.5, ...
     'Color', highColor, 'DisplayName', 'High food prediction')
@@ -58,20 +75,21 @@ scatter(ax, lawrLowData(:,1), lawrLowData(:,2), 42, ...
     's', 'MarkerEdgeColor', lowColor, 'MarkerFaceColor', lowColor, ...
     'DisplayName', 'Low food data')
 
-xlabel(ax, 'Time since fertilization (d)')
-ylabel(ax, 'Total length (cm)')
-title(ax, 'Growth trajectories from Lawrence et al. 2008')
-legend(ax, 'Location', 'northwest')
+xlabel(ax, 'Time since fertilization (d)', 'FontSize', labelFontSize)
+ylabel(ax, 'Total length (cm)', 'FontSize', labelFontSize)
+sgtitle(tl, 'Growth trajectories from Lawrence et al. 2008', 'FontSize', titleFontSize)
+legend(ax, 'Location', 'northwest', 'FontSize', legendFontSize)
 box(ax, 'off')
 grid(ax, 'off')
 xlim(ax, [0, tEnd])
 ylim(ax, [max(0, yMin - yPad), yMax + yPad])
 
 %% Figure with data only
-dataFig = figure('Color', 'w', 'Units', 'pixels', 'Position', [100 100 980 620]);
-dataAx = axes(dataFig);
+dataFig = figure('Color', displayBackgroundColor, 'Units', 'pixels', 'Position', [100 100 figureWidth figureHeight]);
+dataTl = tiledlayout(dataFig, 1, 1, 'Padding', 'loose', 'TileSpacing', 'loose');
+dataAx = nexttile(dataTl);
 hold(dataAx, 'on')
-set(dataAx, 'FontSize', 14, 'Position', [0.11 0.13 0.84 0.78])
+set(dataAx, 'FontSize', axisFontSize, 'Color', displayBackgroundColor)
 dataAx.Toolbar.Visible = 'off';
 dataAx.Interactions = [];
 
@@ -82,10 +100,10 @@ scatter(dataAx, lawrLowData(:,1), lawrLowData(:,2), 42, ...
     's', 'MarkerEdgeColor', lowColor, 'MarkerFaceColor', lowColor, ...
     'DisplayName', 'Low food data')
 
-xlabel(dataAx, 'Time since fertilization (d)')
-ylabel(dataAx, 'Total length (cm)')
-title(dataAx, 'Growth data from Lawrence et al. 2008')
-legend(dataAx, 'Location', 'northwest')
+xlabel(dataAx, 'Time since fertilization (d)', 'FontSize', labelFontSize)
+ylabel(dataAx, 'Total length (cm)', 'FontSize', labelFontSize)
+sgtitle(dataTl, 'Growth data from Lawrence et al. 2008', 'FontSize', titleFontSize)
+legend(dataAx, 'Location', 'northwest', 'FontSize', legendFontSize)
 box(dataAx, 'off')
 grid(dataAx, 'off')
 xlim(dataAx, [0, tEnd])
@@ -97,10 +115,8 @@ if ~exist(figOutDir, 'dir')
     mkdir(figOutDir);
 end
 
-exportgraphics(fig, fullfile(figOutDir, 'lawrence_et_al_2008_predictions.png'), 'Resolution', 300);
-exportgraphics(fig, fullfile(figOutDir, 'lawrence_et_al_2008_predictions.pdf'), 'ContentType', 'vector');
-exportgraphics(dataFig, fullfile(figOutDir, 'lawrence_et_al_2008_data_only.png'), 'Resolution', 300);
-exportgraphics(dataFig, fullfile(figOutDir, 'lawrence_et_al_2008_data_only.pdf'), 'ContentType', 'vector');
+saveFigurePair(fig, tl, ax, fullfile(figOutDir, 'lawrence_et_al_2008_predictions.png'), fullfile(figOutDir, 'lawrence_et_al_2008_predictions.pdf'), transparentBackground, exportPadding);
+saveFigurePair(dataFig, dataTl, dataAx, fullfile(figOutDir, 'lawrence_et_al_2008_data_only.png'), fullfile(figOutDir, 'lawrence_et_al_2008_data_only.pdf'), transparentBackground, exportPadding);
 
 %% Prediction function
 function pred = predictLengthCurve(curveData, init_cond, par, F, TC)
@@ -114,3 +130,60 @@ L = V.^(1/3);
 L = L(it_sort); L = L(2:end); % reconstuct L
 pred = L / par.del_Mt;
 end
+
+%% Save helper
+function saveFigurePair(figHandle, layoutHandle, axesHandle, pngPath, pdfPath, transparentBackground, exportPadding)
+if transparentBackground
+    saveTransparentPng(figHandle, layoutHandle, axesHandle, pngPath, exportPadding);
+    exportgraphics(layoutHandle, pdfPath, 'ContentType', 'vector', 'Padding', exportPadding, 'BackgroundColor', 'w');
+else
+    exportgraphics(layoutHandle, pngPath, 'Resolution', 300, 'Padding', exportPadding, 'BackgroundColor', 'w');
+    exportgraphics(layoutHandle, pdfPath, 'ContentType', 'vector', 'Padding', exportPadding, 'BackgroundColor', 'w');
+end
+end
+
+%% Transparent PNG helper
+function saveTransparentPng(figHandle, layoutHandle, axesHandle, pngPath, exportPadding)
+keyColor = [1 0 1];
+tmpPngPath = [pngPath '.tmp.png'];
+
+originalFigureColor = figHandle.Color;
+originalAxesColor = axesHandle.Color;
+figHandle.Color = keyColor;
+axesHandle.Color = keyColor;
+
+cleanupObj = onCleanup(@() restoreColors(figHandle, axesHandle, originalFigureColor, originalAxesColor));
+exportgraphics(layoutHandle, tmpPngPath, 'Resolution', 300, 'Padding', exportPadding, 'BackgroundColor', keyColor);
+makePngBackgroundTransparent(tmpPngPath, pngPath, keyColor);
+delete(tmpPngPath);
+clear cleanupObj
+end
+
+%% Restore helper
+function restoreColors(figHandle, axesHandle, figureColor, axesColor)
+figHandle.Color = figureColor;
+axesHandle.Color = axesColor;
+end
+
+%% Alpha helper
+function makePngBackgroundTransparent(inputPath, outputPath, keyColor)
+rgbImage = im2double(imread(inputPath));
+if size(rgbImage, 3) == 1
+    rgbImage = repmat(rgbImage, [1 1 3]);
+end
+
+[height, width, ~] = size(rgbImage);
+backgroundImage = repmat(reshape(keyColor, 1, 1, 3), height, width);
+distanceToBackground = sqrt(sum((rgbImage - backgroundImage) .^ 2, 3));
+alphaThreshold = 0.35;
+alphaChannel = min(1, distanceToBackground / alphaThreshold);
+alphaChannel(distanceToBackground < 1e-8) = 0;
+
+alphaImage = repmat(max(alphaChannel, eps), 1, 1, 3);
+foregroundImage = (rgbImage - (1 - alphaImage) .* backgroundImage) ./ alphaImage;
+foregroundImage = min(max(foregroundImage, 0), 1);
+foregroundImage(repmat(alphaChannel == 0, 1, 1, 3)) = 0;
+
+imwrite(foregroundImage, outputPath, 'Alpha', alphaChannel);
+end
+
