@@ -4,6 +4,11 @@ addpath('../ode/')
 %% ---------- PLOT OPTIONS ----------
 % Toggle grid for ALL plots
 opts.gridOn = false;
+opts.axisFontSize = 18;
+opts.labelFontSize = 20;
+opts.legendFontSize = 16;
+% Options for each plot, in order: oxygen vs weight, oxygen vs age, weight vs age, length vs age
+opts.legendLocations = {'southeast', 'southeast', 'southeast', 'southeast'};
 
 % Define colors for each estimation (edit to taste)
 % Must be Nx3 RGB in [0,1], same order as `estimations`
@@ -76,13 +81,13 @@ se_length_vs_age = age_length_weight_data.se_length;
 
 %% Figure 1: Oxygen vs weight (log-log)
 figure(1); clf; hold on
-set(gca, 'FontSize', 14, 'XScale', 'log', 'YScale', 'log')
+set(gca, 'FontSize', opts.axisFontSize, 'XScale', 'log', 'YScale', 'log')
 h1 = scatter(o2_vs_weight(:,1), o2_vs_weight(:,2), 45, ...
     'MarkerFaceColor', dataColor, 'MarkerEdgeColor', dataColor, ...
     'MarkerFaceAlpha', markerAlpha, 'MarkerEdgeAlpha', markerAlpha, ...
     'DisplayName', legendLabelData);
-xlabel('Weight (g)')
-ylabel('Oxygen consumption (mg O_2/h)')
+xlabel('Weight (g)', 'FontSize', opts.labelFontSize)
+ylabel('Oxygen consumption (mg O_2/h)', 'FontSize', opts.labelFontSize)
 
 if opts.plotAllometric
     wmin = min(o2_vs_weight(:,1));
@@ -96,16 +101,16 @@ end
 
 %% Figure 2: Oxygen vs age
 figure(2); clf; hold on
-set(gca, 'FontSize', 14)
+set(gca, 'FontSize', opts.axisFontSize)
 h2 = scatter(o2_vs_age(:,1), o2_vs_age(:,2), 55, ...
     'MarkerFaceColor', dataColor, 'MarkerEdgeColor', dataColor, ...
     'DisplayName', legendLabelData);
-xlabel('Age (d)')
-ylabel('Oxygen consumption (mg O_2/h)')
+xlabel('Age (d)', 'FontSize', opts.labelFontSize)
+ylabel('Oxygen consumption (mg O_2/h)', 'FontSize', opts.labelFontSize)
 
 %% Figure 3: Weight vs age
 figure(3); clf; hold on
-set(gca, 'FontSize', 14)
+set(gca, 'FontSize', opts.axisFontSize)
 
 % Data with error bars (standard error)
 h3 = errorbar(weight_vs_age(:,1), weight_vs_age(:,2), se_weight_vs_age, 'o', ...
@@ -113,12 +118,12 @@ h3 = errorbar(weight_vs_age(:,1), weight_vs_age(:,2), se_weight_vs_age, 'o', ...
     'LineStyle', 'none', 'CapSize', 6, ...
     'DisplayName', legendLabelData);
 
-xlabel('Age (d)')
-ylabel('Weight (g)')
+xlabel('Age (d)', 'FontSize', opts.labelFontSize)
+ylabel('Weight (g)', 'FontSize', opts.labelFontSize)
 
 %% Figure 4: Length vs age
 figure(4); clf; hold on
-set(gca, 'FontSize', 14)
+set(gca, 'FontSize', opts.axisFontSize)
 
 % Data with error bars (standard error)
 h4 = errorbar(length_vs_age(:,1), length_vs_age(:,2), se_length_vs_age, 'o', ...
@@ -126,8 +131,8 @@ h4 = errorbar(length_vs_age(:,1), length_vs_age(:,2), se_length_vs_age, 'o', ...
     'LineStyle', 'none', 'CapSize', 6, ...
     'DisplayName', legendLabelData);
 
-xlabel('Age (d)')
-ylabel('Length (mm)')
+xlabel('Age (d)', 'FontSize', opts.labelFontSize)
+ylabel('Length (mm)', 'FontSize', opts.labelFontSize)
 
 %% ---------- Loop over estimations: compute + plot predictions ----------
 for i = 1:numel(estimations)
@@ -192,7 +197,7 @@ end
 
 for f = 1:4
     figure(f);
-    legend('Location','NorthWest');
+    legend('Location', opts.legendLocations{f}, 'FontSize', opts.legendFontSize);
     if opts.gridOn
         grid on
     else
