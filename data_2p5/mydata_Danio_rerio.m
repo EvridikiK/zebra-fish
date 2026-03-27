@@ -37,62 +37,43 @@ metaData.curator     = {'Bas Kooijman'};
 metaData.email_cur   = {'bas.kooijman@vu.nl'}; 
 metaData.date_acc    = [2018 08 09]; 
 
+%% load externalized calibration data
+repoRoot = fileparts(fileparts(mfilename('fullpath')));
+addpath(fullfile(repoRoot, 'data_pipeline'));
+
 %% set data
 % zero-variate data
-data.ab = 5;      units.ab = 'd';    label.ab = 'age at birth';           bibkey.ab = 'BestAdat2010'; 
-  temp.ab = C2K(25);  units.temp.ab = 'K'; label.temp.ab = 'temperature';
-data.ap = 75;     units.ap = 'd';    label.ap = 'age at puberty';         bibkey.ap = 'EatoFarl1974a'; 
-  temp.ap = C2K(25.5);  units.temp.ap = 'K'; label.temp.ap = 'temperature';
-  comment.ap = '(74 - 75 day of development)';
-data.am = 4.5 * 365; units.am = 'd'; label.am = 'life span';              bibkey.am = 'GerhKauf2002';   
-  temp.am = C2K(26); units.temp.am = 'K'; label.temp.am = 'temperature';
-
-data.Lb = 4e-1;   units.Lb = 'cm';   label.Lb = 'total length at birth';  bibkey.Lb = 'Schi2002';
-  comment.Lb = 'Swim bladder inflates, active feeding, pronephric tubules';
-data.Lp = 2.6; units.Lp = 'cm'; label.Lp = 'standard length at puberty';bibkey.Lp = 'EatoFarl1974a';
-  comment.Lp = 'Female are between 2.4 - 2.6 cm SL in the study at first egg laying';
-data.Li = 5;      units.Li = 'cm';   label.Li = 'ultimate total length';  bibkey.Li = {'SpenGerl2008','Schi2002'}; 
-  comment.Li = 'also Lawr pers. comm';
-
-data.Wwi = 1;      units.Wwi = 'g';    label.Wwi = 'ultimate wet weight';    bibkey.Wwi = 'Augu2009';
-
-data.Ri = 240;    units.Ri = '#/d';  label.Ri = 'max reproduction';       bibkey.Ri = {'EatoFarl1974b'}; 
-  temp.Ri = C2K(26);  units.temp.Ri = 'K'; label.temp.Ri = 'temperature';
+zeroVariateIds = { ...
+    'ab', ...   % age at birth, BestAdat2010
+    'ap', ...   % age at puberty, EatoFarl1974a
+    'am', ...   % life span, GerhKauf2002
+    'Lb', ...   % total length at birth, Schi2002
+    'Lp', ...   % standard length at puberty, EatoFarl1974a
+    'Li', ...   % ultimate total length, SpenGerl2008 and Schi2002
+    'Wwi', ...  % ultimate wet weight, Augu2011
+    'Ri' ...    % max reproduction, EatoFarl1974b
+    };
 
   
 % uni-variate data
-
 % BestAdat2010 T = 25 C, rotifers from day 5 till 9, then transition to
 % regular feeding from 9 till 12 was originally given in personnal
 % communication with C. Lawrence
 % I digitalized all the points which in fact
 % correspond to 2 different strains (AB and nacre)
 % time-length
-data.tL_BestAdat2010 = [... age (dpf), total length (cm)
-5.00741992	0.30707071;
-5.01034883	0.42828283;
-5.97532950	0.36363636;
-5.97698922	0.43232323;
-6.99107806	0.40000000;
-6.99215200	0.44444444;
-7.96045210	0.51717172;
-8.00731478	0.45656566;
-8.97571251	0.53333333;
-9.94401261	0.60606061;
-10.95819908	0.57777778;
-10.95946828	0.63030303;
-11.97404528	0.61818182;
-11.97648604	0.71919192;
-16.03869925	0.83232323;
-16.03996845	0.88484848;
-23.10393150	1.22424242;
-23.10481018	1.26060606;
-30.17170214	1.72121212;
-90 3.19;
-90 3.41];
-units.tL_BestAdat2010 = {'d', 'cm'}; label.tL_BestAdat2010 = {'time since fertilization', 'total length'}; 
-temp.tL_BestAdat2010 = C2K(25); units.temp.tL_BestAdat2010 = 'K'; label.temp.tL_BestAdat2010 = 'temperature';
-bibkey.tL_BestAdat2010 = {'BestAdat2010'};
+bestAdat2010Ids = { ...
+    'tL_BestAdat2010' ... % larval time-length data, BestAdat2010
+    };
+
+datasetIds = [zeroVariateIds, bestAdat2010Ids];
+[data, auxData, externalTxtData] = load_calibration_data(datasetIds);
+
+units = externalTxtData.units;
+label = externalTxtData.label;
+comment = externalTxtData.comment;
+bibkey = externalTxtData.bibkey;
+temp = auxData.temp;
 
 %% set weights for all real data
 weights = setweights(data, []);
