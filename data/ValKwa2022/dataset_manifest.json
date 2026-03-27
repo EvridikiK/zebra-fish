@@ -1,0 +1,43 @@
+{
+  "study_id": "ValKwa2022",
+  "datasets": [
+    {
+      "id": "tWw_ValKwa2022",
+      "type": "series",
+      "derived_file": "derived/data_ValKwa2022.csv",
+      "data_columns": ["age_d", "wet_weight_mg"],
+      "units": ["d", "mg"],
+      "labels": ["time since fertilization", "wet weight"],
+      "bibkey": ["ValKwa2022"],
+      "temperature_celsius": 26.72,
+      "comment": ""
+    },
+    {
+      "id": "tL_ValKwa2022",
+      "type": "series",
+      "derived_file": "derived/data_ValKwa2022.csv",
+      "data_columns": ["age_d", "total_length_mm"],
+      "units": ["d", "mm"],
+      "labels": ["time since fertilization", "total length"],
+      "bibkey": ["ValKwa2022"],
+      "temperature_celsius": 26.72,
+      "comment": ""
+    },
+    {
+      "id": "tJX_ValKwa2022",
+      "type": "series",
+      "derived_file": "derived/data_ValKwa2022.csv",
+      "data_columns": ["age_d", "feed_intake_percent_bw_d"],
+      "units": ["d", "%bw/d"],
+      "labels": ["time since fertilization", "feed intake"],
+      "bibkey": ["ValKwa2022"],
+      "temperature_celsius": 26.72,
+      "init": {
+        "value": 0.789,
+        "units": "-",
+        "label": "ash-free dry/wet ratio of feed"
+      },
+      "comment": ""
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "study_id": "Danio_rerio_traits",
+  "transform_script": "transform/generate_derived_data.m",
+  "datasets": [
+    {
+      "id": "ab",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "ab" },
+      "data_columns": ["value"],
+      "units": ["d"],
+      "labels": ["age at birth"],
+      "bibkey": "BestAdat2010",
+      "temperature_celsius": 25,
+      "comment": ""
+    },
+    {
+      "id": "aj",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "aj" },
+      "data_columns": ["value"],
+      "units": ["d"],
+      "labels": ["age at metam"],
+      "bibkey": "BestAdat2010",
+      "temperature_celsius": 25,
+      "comment": "length at 1 cm"
+    },
+    {
+      "id": "ap",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "ap" },
+      "data_columns": ["value"],
+      "units": ["d"],
+      "labels": ["age at puberty"],
+      "bibkey": "EatoFarl1974a",
+      "temperature_celsius": 25.5,
+      "comment": "(74 - 75 day of development)"
+    },
+    {
+      "id": "am",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "am" },
+      "data_columns": ["value"],
+      "units": ["d"],
+      "labels": ["life span"],
+      "bibkey": "GerhKauf2002",
+      "temperature_celsius": 26,
+      "comment": ""
+    },
+    {
+      "id": "L0",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "L0" },
+      "data_columns": ["value"],
+      "units": ["cm"],
+      "labels": ["egg diameter"],
+      "bibkey": "ForbPres2010",
+      "comment": "yolk diameter 0.055 - 0.075 cm ForbPres2010, but egg diameter = 0.08 - 0.09 and yolk diameter around 0.05 UuliWolt2010"
+    },
+    {
+      "id": "Lb",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "Lb" },
+      "data_columns": ["value"],
+      "units": ["cm"],
+      "labels": ["total length at birth"],
+      "bibkey": "Schi2002",
+      "comment": "Swim bladder inflates, active feeding, pronephric tubules"
+    },
+    {
+      "id": "Lj",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "Lj" },
+      "data_columns": ["value"],
+      "units": ["cm"],
+      "labels": ["total length at metam"],
+      "bibkey": "Schi2002",
+      "comment": "Adult fin and pigmentation pattern"
+    },
+    {
+      "id": "Lp",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "Lp" },
+      "data_columns": ["value"],
+      "units": ["cm"],
+      "labels": ["standard length at puberty"],
+      "bibkey": "EatoFarl1974a",
+      "comment": "Female are between 2.4 - 2.6 cm SL in the study at first egg laying"
+    },
+    {
+      "id": "Li",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "Li" },
+      "data_columns": ["value"],
+      "units": ["cm"],
+      "labels": ["ultimate total length"],
+      "bibkey": ["SpenGerl2008", "Schi2002"],
+      "comment": "also Lawr pers. comm"
+    },
+    {
+      "id": "Wd0",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "Wd0" },
+      "data_columns": ["value"],
+      "units": ["g"],
+      "labels": ["egg dry weight"],
+      "bibkey": "Augu2011",
+      "comment": ""
+    },
+    {
+      "id": "Wwi",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "Wwi" },
+      "data_columns": ["value"],
+      "units": ["g"],
+      "labels": ["ultimate wet weight"],
+      "bibkey": "Augu2011",
+      "comment": ""
+    },
+    {
+      "id": "Ri",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "Ri" },
+      "data_columns": ["value"],
+      "units": ["#/d"],
+      "labels": ["max reproduction"],
+      "bibkey": ["EatoFarl1974b"],
+      "temperature_celsius": 26,
+      "comment": ""
+    },
+    {
+      "id": "GSI",
+      "type": "scalar",
+      "derived_file": "derived/traits.csv",
+      "row_filter": { "column": "dataset_id", "equals": "GSI" },
+      "data_columns": ["value"],
+      "units": ["g/g"],
+      "labels": ["Gonado Somatic Index"],
+      "bibkey": ["ForbPres2010"],
+      "temperature_celsius": 26,
+      "comment": "values range from 0.1 - 0.15 and grow bigger with food regime",
+      "init": {
+        "value": 3,
+        "units": "d",
+        "label": "simulation time for GSI"
+      }
+    }
+  ]
+}

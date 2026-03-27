@@ -1,0 +1,14 @@
+dataset_id,value,unit,label,temp_celsius,comment
+ab,5,d,age at birth,25,
+aj,22,d,age at metam,25,length at 1 cm
+ap,75,d,age at puberty,25.5,"(74 - 75 day of development)"
+am,1642.5,d,life span,26,
+L0,0.07,cm,egg diameter,,"yolk diameter 0.055 - 0.075 cm ForbPres2010, but egg diameter = 0.08 - 0.09 and yolk diameter around 0.05 UuliWolt2010"
+Lb,0.4,cm,total length at birth,,"Swim bladder inflates, active feeding, pronephric tubules"
+Lj,1,cm,total length at metam,,"Adult fin and pigmentation pattern"
+Lp,2.6,cm,standard length at puberty,,"Female are between 2.4 - 2.6 cm SL in the study at first egg laying"
+Li,5,cm,ultimate total length,,also Lawr pers. comm
+Wd0,0.0001,g,egg dry weight,,
+Wwi,1,g,ultimate wet weight,,
+Ri,240,#/d,max reproduction,26,
+GSI,0.15,g/g,Gonado Somatic Index,26,values range from 0.1 - 0.15 and grow bigger with food regime

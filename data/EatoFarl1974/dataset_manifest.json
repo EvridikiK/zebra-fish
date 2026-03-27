@@ -1,0 +1,17 @@
+{
+  "study_id": "EatoFarl1974",
+  "transform_script": "transform/generate_derived_data.m",
+  "datasets": [
+    {
+      "id": "tL_EatoFarl1974",
+      "type": "series",
+      "derived_file": "derived/tL_EatoFarl1974.csv",
+      "data_columns": ["age_d", "standard_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since fertilization", "standard length"],
+      "bibkey": ["EatoFarl1974b"],
+      "temperature_celsius": 25.5,
+      "comment": ""
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "study_id": "YangYama2019",
+  "datasets": [
+    {
+      "id": "tL_YangYama2019",
+      "type": "series",
+      "derived_file": "derived/data_YangYama2019.csv",
+      "data_columns": ["age_d", "total_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since fertilization", "total length"],
+      "bibkey": ["YangYama2019"],
+      "temperature_celsius": 28,
+      "comment": "Paper does not specificy the length measure, assuming total length"
+    },
+    {
+      "id": "tWw_YangYama2019",
+      "type": "series",
+      "derived_file": "derived/data_YangYama2019.csv",
+      "data_columns": ["age_d", "wet_weight_g"],
+      "units": ["d", "g"],
+      "labels": ["time since fertilization", "wet weight"],
+      "bibkey": ["YangYama2019"],
+      "temperature_celsius": 28,
+      "comment": ""
+    },
+    {
+      "id": "tJO_YangYama2019",
+      "type": "series",
+      "derived_file": "derived/data_YangYama2019.csv",
+      "data_columns": ["age_d", "oxygen_consumption_ug_h"],
+      "units": ["d", "\\mug/h"],
+      "labels": ["time since fertilization", "oxygen consumption"],
+      "bibkey": ["YangYama2019"],
+      "temperature_celsius": 28,
+      "comment": ""
+    }
+  ]
+}

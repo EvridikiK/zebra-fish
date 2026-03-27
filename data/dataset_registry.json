@@ -1,0 +1,40 @@
+{
+  "studies": [
+    {
+      "id": "Danio_rerio_traits",
+      "manifest": "data/Danio_rerio_traits/dataset_manifest.json"
+    },
+    {
+      "id": "BagaPels2001",
+      "manifest": "data/BagaPels2001/dataset_manifest.json"
+    },
+    {
+      "id": "BestAdat2010",
+      "manifest": "data/BestAdat2010/dataset_manifest.json"
+    },
+    {
+      "id": "LawrEber2008",
+      "manifest": "data/LawrEber2008/dataset_manifest.json"
+    },
+    {
+      "id": "Schi2002",
+      "manifest": "data/Schi2002/dataset_manifest.json"
+    },
+    {
+      "id": "EatoFarl1974",
+      "manifest": "data/EatoFarl1974/dataset_manifest.json"
+    },
+    {
+      "id": "BeauGous2015",
+      "manifest": "data/BeauGous2015/dataset_manifest.json"
+    },
+    {
+      "id": "ValKwa2022",
+      "manifest": "data/ValKwa2022/dataset_manifest.json"
+    },
+    {
+      "id": "YangYama2019",
+      "manifest": "data/YangYama2019/dataset_manifest.json"
+    }
+  ]
+}

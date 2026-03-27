@@ -1,0 +1,89 @@
+{
+  "study_id": "BeauGous2015",
+  "transform_script": "transform/generate_derived_data.m",
+  "datasets": [
+    {
+      "id": "tLf1_BeauGous2015",
+      "type": "series",
+      "derived_file": "derived/tLf1_BeauGous2015.csv",
+      "data_columns": ["time_dpf", "standard_length_mm"],
+      "units": ["dpf", "mm"],
+      "labels": ["time since fertilization", "standard length"],
+      "bibkey": ["BeauGous2015"],
+      "temperature_celsius": 27.1,
+      "comment": ""
+    },
+    {
+      "id": "tLf2_BeauGous2015",
+      "type": "series",
+      "derived_file": "derived/tLf2_BeauGous2015.csv",
+      "data_columns": ["time_dpf", "standard_length_mm"],
+      "units": ["dpf", "mm"],
+      "labels": ["time since fertilization", "standard length"],
+      "bibkey": ["BeauGous2015"],
+      "temperature_celsius": 27.1,
+      "comment": "fasted once every three days"
+    },
+    {
+      "id": "tLf3_BeauGous2015",
+      "type": "series",
+      "derived_file": "derived/tLf3_BeauGous2015.csv",
+      "data_columns": ["time_dpf", "standard_length_mm"],
+      "units": ["dpf", "mm"],
+      "labels": ["time since fertilization", "standard length"],
+      "bibkey": ["BeauGous2015"],
+      "temperature_celsius": 27.1,
+      "comment": "fasted every other day"
+    },
+    {
+      "id": "tL1",
+      "type": "series",
+      "derived_file": "derived/tL1.csv",
+      "data_columns": ["time_d", "standard_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time", "standard length"],
+      "bibkey": ["BeauGous2015"],
+      "temperature_celsius": [29, 29],
+      "treat": {
+        "value": 0,
+        "wrap_in_cell": true,
+        "units": "",
+        "label": ""
+      },
+      "comment": "mean value, from raw data provided as courtesy of R. Beaudouin"
+    },
+    {
+      "id": "Wwt",
+      "type": "scalar",
+      "derived_file": "derived/Wwt.csv",
+      "data_columns": ["value_g"],
+      "units": ["g"],
+      "labels": ["final wet weight"],
+      "bibkey": ["BeauGous2015"],
+      "temperature_celsius": 29,
+      "treat": {
+        "value": 0,
+        "wrap_in_cell": true,
+        "units": "",
+        "label": ""
+      },
+      "comment": "mean value, from raw data provided as courtesy of R. Beaudouin"
+    },
+    {
+      "id": "tN",
+      "type": "series",
+      "derived_file": "derived/tN.csv",
+      "data_columns": ["time_d", "cumulated_eggs_n"],
+      "units": ["d", "#"],
+      "labels": ["time", "cumulated number of eggs"],
+      "bibkey": ["BeauGous2015"],
+      "temperature_celsius": 29,
+      "init": {
+        "value": 3.55714285714286,
+        "units": "cm",
+        "label": "initial length"
+      },
+      "comment": "mean value, from raw data provided as courtesy of R. Beaudouin"
+    }
+  ]
+}

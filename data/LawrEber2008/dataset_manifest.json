@@ -1,0 +1,53 @@
+{
+  "study_id": "LawrEber2008",
+  "datasets": [
+    {
+      "id": "tL_LawrEber2002_high",
+      "type": "series",
+      "derived_file": "derived/tL_conditions.csv",
+      "row_filter": { "column": "condition", "equals": "high" },
+      "data_columns": ["time_d", "total_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since birth", "total length"],
+      "bibkey": ["LawrEber2008"],
+      "temperature_celsius": 28.5,
+      "comment": ""
+    },
+    {
+      "id": "tL_LawrEber2002_low",
+      "type": "series",
+      "derived_file": "derived/tL_conditions.csv",
+      "row_filter": { "column": "condition", "equals": "low" },
+      "data_columns": ["time_d", "total_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since birth", "total length"],
+      "bibkey": ["LawrEber2008"],
+      "temperature_celsius": 28.5,
+      "comment": ""
+    },
+    {
+      "id": "tL_LawrEber2008_high",
+      "type": "series",
+      "derived_file": "derived/tL_conditions.csv",
+      "row_filter": { "column": "condition", "equals": "high" },
+      "data_columns": ["time_d", "total_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since fertilization", "total length"],
+      "bibkey": ["LawrEber2008"],
+      "temperature_celsius": 28.5,
+      "comment": ""
+    },
+    {
+      "id": "tL_LawrEber2008_low",
+      "type": "series",
+      "derived_file": "derived/tL_conditions.csv",
+      "row_filter": { "column": "condition", "equals": "low" },
+      "data_columns": ["time_d", "total_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since fertilization", "total length"],
+      "bibkey": ["LawrEber2008"],
+      "temperature_celsius": 28.5,
+      "comment": ""
+    }
+  ]
+}

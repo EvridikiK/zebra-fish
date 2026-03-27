@@ -1,0 +1,16 @@
+{
+  "study_id": "BestAdat2010",
+  "datasets": [
+    {
+      "id": "tL_BestAdat2010",
+      "type": "series",
+      "derived_file": "derived/tL_BestAdat2010.csv",
+      "data_columns": ["age_d", "total_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since fertilization", "total length"],
+      "bibkey": ["BestAdat2010"],
+      "temperature_celsius": 25,
+      "comment": ""
+    }
+  ]
+}

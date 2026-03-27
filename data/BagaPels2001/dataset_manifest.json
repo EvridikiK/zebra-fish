@@ -1,0 +1,37 @@
+{
+  "study_id": "BagaPels2001",
+  "transform_script": "transform/generate_derived_data.m",
+  "datasets": [
+    {
+      "id": "tL_BagaPels2001",
+      "type": "series",
+      "derived_file": "derived/tLWWY_converted.csv",
+      "data_columns": ["age_d", "length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since fertilizatixon", "standard length"],
+      "bibkey": ["BagaPels2001"],
+      "temperature_celsius": 25,
+      "comment": ""
+    },
+    {
+      "id": "tWw_BagaPels2001",
+      "type": "series",
+      "derived_file": "derived/tLWWY_converted.csv",
+      "data_columns": ["age_d", "wet_weight_g"],
+      "units": ["d", "g"],
+      "labels": ["time since fertilization", "wet weight"],
+      "bibkey": ["BagaPels2001"],
+      "comment": ""
+    },
+    {
+      "id": "tWd_BagaPels2001",
+      "type": "series",
+      "derived_file": "derived/tLWWY_converted.csv",
+      "data_columns": ["age_d", "dry_weight_g"],
+      "units": ["d", "g"],
+      "labels": ["time since fertilization", "dry weight"],
+      "bibkey": ["BagaPels2001"],
+      "comment": ""
+    }
+  ]
+}

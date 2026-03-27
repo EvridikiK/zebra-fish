@@ -1,0 +1,17 @@
+{
+  "study_id": "Schi2002",
+  "transform_script": "transform/generate_derived_data.m",
+  "datasets": [
+    {
+      "id": "tL_Schi2002",
+      "type": "series",
+      "derived_file": "derived/tL_Schi2002.csv",
+      "data_columns": ["time_d", "total_length_cm"],
+      "units": ["d", "cm"],
+      "labels": ["time since fertilization", "total length"],
+      "bibkey": ["Schi2002"],
+      "temperature_celsius": 28.5,
+      "comment": ""
+    }
+  ]
+}
