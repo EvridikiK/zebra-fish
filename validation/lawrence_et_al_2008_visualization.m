@@ -22,7 +22,6 @@ scriptDir = fileparts(mfilename('fullpath'));
 repoRoot = fileparts(scriptDir);
 
 addpath(fullfile(repoRoot, 'ode'))
-addpath(fullfile(repoRoot, 'data_rich'))
 
 loadedResults = load(fullfile(repoRoot, 'data_rich', 'results_Danio_rerio.mat'), 'par');
 par = loadedResults.par;
@@ -30,12 +29,11 @@ if isfield(par, 'free')
     par = rmfield(par, 'free');
 end
 
-[data, auxData] = mydata_Danio_rerio;
+lawrTable = readtable(fullfile(repoRoot, 'data', 'LawrEber2008', 'derived', 'tL_conditions.csv'));
+lawrHighData = lawrTable{strcmp(lawrTable.condition, 'high'), {'time_d', 'total_length_cm'}};
+lawrLowData = lawrTable{strcmp(lawrTable.condition, 'low'), {'time_d', 'total_length_cm'}};
 
-lawrHighData = data.tL_LawrEber2008_high;
-lawrLowData = data.tL_LawrEber2008_low;
-
-TC_LawrEber2008 = tempcorr(auxData.temp.tL_LawrEber2008_high, par.T_ref, par.T_A);
+TC_LawrEber2008 = tempcorr(C2K(28.5), par.T_ref, par.T_A);
 init_cond = [par.V_0; getE0(par.f, par, parscomp_st(par)); 0; 0; 1; 0];
 
 tEnd = max([lawrHighData(:,1); lawrLowData(:,1)]) + 5;
