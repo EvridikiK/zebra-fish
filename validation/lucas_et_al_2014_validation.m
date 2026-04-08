@@ -1,5 +1,7 @@
 clear
-addpath('../ode/')
+scriptDir = fileparts(mfilename('fullpath'));
+repoRoot = fileparts(scriptDir);
+addpath(fullfile(repoRoot, 'ode'))
 
 %% ---------- PLOT OPTIONS ----------
 % Toggle grid for ALL plots
@@ -48,34 +50,24 @@ F = [0.80, 0.80];
 % Save options
 saveFigs = true;
 saveFormats = {'png', 'pdf'};
-figOutDir = fullfile(pwd, 'figures');
+figOutDir = fullfile(scriptDir, 'figures');
 
 %% Load oxygen vs weight data
-dataFolder = fullfile('..', 'data', 'Lucas et al. 2014');
+dataFolder = fullfile(repoRoot, 'data', 'Lucas2014', 'derived');
 
-larvae_data   = readtable(fullfile(dataFolder, '5-day_larvae.csv'));
-juvenile_data = readtable(fullfile(dataFolder, '2-month_juveniles.csv'));
-adult_data    = readtable(fullfile(dataFolder, '6-month_adults.csv'));
+oxygen_data = readtable(fullfile(dataFolder, 'oxygen_by_stage.csv'));
+o2_vs_weight = [oxygen_data.weight_g, oxygen_data.oxygen_consumption_mg_o2_h];
 
-o2_vs_weight = [ ...
-    larvae_data.weight,   larvae_data.oxygen_consumption;
-    juvenile_data.weight, juvenile_data.oxygen_consumption;
-    adult_data.weight,    adult_data.oxygen_consumption
-    ];
+o2_age_groups = groupsummary(oxygen_data, 'age_d', 'mean', 'oxygen_consumption_mg_o2_h');
+o2_vs_age = [o2_age_groups.age_d, o2_age_groups.mean_oxygen_consumption_mg_o2_h];
 
-o2_vs_age = [
-    5   mean(larvae_data.oxygen_consumption);
-    60  mean(juvenile_data.oxygen_consumption);
-    180 mean(adult_data.oxygen_consumption)
-    ];
-
-age_length_weight_data = readtable(fullfile(dataFolder, 'age_length_weight.csv'));
-weight_vs_age = [age_length_weight_data.age, age_length_weight_data.weight];
-length_vs_age = [age_length_weight_data.age, age_length_weight_data.length];
+age_length_weight_data = readtable(fullfile(dataFolder, 'age_length_weight_summary.csv'));
+weight_vs_age = [age_length_weight_data.age_d, age_length_weight_data.weight_g];
+length_vs_age = [age_length_weight_data.age_d, age_length_weight_data.length_mm];
 
 % Standard errors for error bars (from table columns)
-se_weight_vs_age = age_length_weight_data.se_weight;
-se_length_vs_age = age_length_weight_data.se_length;
+se_weight_vs_age = age_length_weight_data.se_weight_g;
+se_length_vs_age = age_length_weight_data.se_length_mm;
 
 %% ---------- Initialize figures once (plot DATA once) ----------
 

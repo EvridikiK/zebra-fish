@@ -1,0 +1,28 @@
+{
+  "study_id": "Lucas2014",
+  "transform_script": "transform/generate_derived_data.m",
+  "datasets": [
+    {
+      "id": "oxygen_by_stage",
+      "type": "series",
+      "derived_file": "derived/oxygen_by_stage.csv",
+      "data_columns": ["age_d", "weight_g", "oxygen_consumption_mg_o2_h"],
+      "units": ["d", "g", "mg O_2/h"],
+      "labels": ["age", "weight", "oxygen consumption"],
+      "bibkey": ["Lucas2014"],
+      "temperature_celsius": 28,
+      "comment": "Digitized from Figure 1(b) of Lucas et al. 2014; stage is retained as an extra column in the derived file."
+    },
+    {
+      "id": "age_length_weight_summary",
+      "type": "series",
+      "derived_file": "derived/age_length_weight_summary.csv",
+      "data_columns": ["age_d", "weight_g", "length_mm"],
+      "units": ["d", "g", "mm"],
+      "labels": ["age", "weight", "length"],
+      "bibkey": ["Lucas2014"],
+      "temperature_celsius": 28,
+      "comment": "Age-level mean weights and lengths with standard errors reported in Lucas et al. 2014."
+    }
+  ]
+}

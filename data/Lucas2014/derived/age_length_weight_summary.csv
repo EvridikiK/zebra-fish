@@ -1,0 +1,4 @@
+age_d,weight_g,se_weight_g,length_mm,se_length_mm
+5,0.000245,3.6e-05,NaN,NaN
+60,0.097,0.035,18.5,2.2
+180,0.326,0.103,26.9,1.9
