@@ -15,10 +15,10 @@ opts.legendLocations = {'southeast', 'southeast', 'southeast', 'southeast'};
 % Define colors for each estimation (edit to taste)
 % Must be Nx3 RGB in [0,1], same order as `estimations`
 modelColors = [
-    0.1216 0.4667 0.7059;   % data_rich (seaborn blue)
-    1.0000 0.4980 0.0549;   % data_moderate (seaborn orange)
-    0.1725 0.6275 0.1725;   % data_limited (seaborn green)
-    0.8392 0.1529 0.1569;   % data_2p5 (seaborn red)
+    0.1216 0.4667 0.7059;   % seaborn blue
+    1.0000 0.4980 0.0549;   % seaborn orange
+    0.1725 0.6275 0.1725;   % seaborn green
+    0.8392 0.1529 0.1569;   % seaborn red
     ];
 
 % Data styling
@@ -30,8 +30,6 @@ markerAlpha = 0.5;   % transparency for overlapping points
 % Estimation folders to compare
 estimations = {
     'data_rich', ...
-    % 'data_moderate', ...
-    % 'data_limited', ...
     'data_2p5'
     };
 
@@ -145,7 +143,7 @@ for i = 1:numel(estimations)
     W_tr  = transitions.W(tr_ok);
     JO_tr = transitions.J_O(tr_ok);
 
-    % Pretty legend label: "Data rich" / "Data moderate" / "Data limited"
+    % Pretty legend label: "Data rich" / "Data limited"
     prettyName = formatEstimationName(estimation);
 
     % Add prediction line to each plot
@@ -233,16 +231,10 @@ end
 function prettyName = formatEstimationName(estimation)
 % Converts:
 %   data_rich     -> Data rich estimation
-%   data_moderate -> Data moderate estimation
-%   data_limited  -> Data limited estimation
-%   data_2p5      -> Completeness 2.5 estimation
+%   data_2p5      -> Data-limited estimation
 switch estimation
     case 'data_rich'
         prettyName = 'Data-rich';
-    case 'data_moderate'
-        prettyName = 'Data-moderate';
-    case 'data_limited'
-        prettyName = 'Data-limited';
     case 'data_2p5'
         prettyName = 'Data-limited'; % In the paper, this calibration is referred to as "data-limited"
     otherwise
