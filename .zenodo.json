@@ -1,0 +1,37 @@
+{
+  "title": "how2deb-zebra-fish",
+  "version": "1.0.0",
+  "upload_type": "software",
+  "description": "Code accompanying the paper 'How to build Dynamic Energy Budget models: a step-by-step guide', including model implementation, calibration scripts, and analysis workflows for the zebrafish case study.",
+  "creators": [
+    {
+      "name": "Klagkou, Evridiki",
+      "affiliation": "Department of Biology, University of Crete, Voutes Campus, 70013 Heraklion, Greece",
+      "orcid": "0009-0002-0267-225X"
+    },
+    {
+      "name": "Tan, Tjui Yeuw",
+      "affiliation": "Wageningen University and Research, Wageningen Marine Research, Korringaweg 7, Yerseke, 4401 NT, Zeeland, The Netherlands; Wageningen University and Research, Aquaculture Biology and Fisheries Ecology Group, De Elst 1, Wageningen, 6708 WD, Gelderland, The Netherlands",
+      "orcid": "0000-0001-5915-0917"
+    },
+    {
+      "name": "Lagunes, María-José",
+      "affiliation": "Univ Brest, IRD, CNRS, Ifremer, LEMAR, IUEM, Plouzané, F-29280, France; MARBEC, Univ Montpellier, CNRS, Ifremer, IRD, Sète, 34200, France",
+      "orcid": "0009-0008-3112-6032"
+    },
+    {
+      "name": "Oliveira, Diogo F.",
+      "affiliation": "Terraprima - Serviços Ambientais, Centro de Negócios do Porto Alto, Fracção S, Avenida das Nações Unidas 97, 2135-199 Samora Correia, Portugal; MARETEC – Marine, Environment and Technology Centre, LARSyS, Instituto Superior Técnico, Universidade de Lisboa, Avenida Rovisco Pais 1, 1049-001 Lisboa, Portugal; IDMEC, Instituto Superior Técnico, Universidade de Lisboa, Avenida Rovisco Pais 1, 1049-001 Lisboa, Portugal",
+      "orcid": "0000-0002-2675-8077"
+    }
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": [
+    "Dynamic Energy Budget",
+    "DEB",
+    "bioenergetics",
+    "zebrafish",
+    "Danio rerio"
+  ]
+}
