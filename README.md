@@ -1,5 +1,9 @@
 # Zebrafish DEB Parameter Estimation
 
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19481412.svg)](https://doi.org/10.5281/zenodo.19481412)
+
+
 This repository develops Dynamic Energy Budget (DEB) models for zebrafish
 (`Danio rerio`) under different levels of data availability. The main goal is
 to compare sparse and rich calibrations while keeping a shared mechanistic DEB
@@ -21,6 +25,29 @@ The repository also contains:
 - validation and comparison scripts in `validation/`
 - the original AmP calibration in `AmPentry/`, kept for reference only
 
+## Citation
+
+If you use this repository, please cite the version archived on Zenodo:
+```bibtex
+@software{klagkou2026zebrafish,
+  title = {Zebrafish DEB Parameter Estimation},
+  author = {Klagkou, Evridiki and Tan, Tjui Yeuw and Lagunes, María-José and Oliveira, Diogo F.},
+  year = 2026,
+  version = {1.0.0},
+  doi = {10.5281/zenodo.19481412},
+  url = {https://zenodo.org/records/19481412}
+}
+```
+
+If you use this code, please also cite the associated manuscript:
+
+Oliveira, D. F., Sulc, A., Le Moan, E., Donati, E., Klagkou, E., Lagunes, M.-J., Dajčman, U., and Tan, T. Y. (2026).
+*How to build Dynamic Energy Budget models: a step-by-step guide*.  
+Submitted to *Ecological Modelling*.
+
+> Status: submitted, under review. This citation will be updated with full bibliographic details once available.
+  
+
 ## Repository overview
 
 ### Top-level structure
@@ -34,6 +61,9 @@ The repository also contains:
 | `ode/` | Shared mechanistic DEB equations and helper functions |
 | `validation/` | Post-processing, figure generation, and comparison utilities |
 | `AmPentry/` | Original AmP zebrafish entry kept as a read-only reference |
+| `calibration_data_summary.md` | Human-readable summary of calibration data coverage |
+| `CITATION.cff` | Repository citation metadata used by GitHub and release archiving workflows |
+| `AGENTS.md` | Repository-specific working notes and conventions for coding agents |
 
 ### Core naming convention
 
